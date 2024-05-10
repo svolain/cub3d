@@ -6,7 +6,7 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/05/09 14:09:27 by jmertane         ###   ########.fr        #
+#    Updated: 2024/05/10 16:06:53 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,8 +28,16 @@ DEPFLAGS	=	-c -MT $$@ -MMD -MP -MF $(DEPSDIR)/$$*.d
 SCREENCLR	:=	printf "\033c"
 SLEEP		:=	sleep .1
 
-MODULES		:=	main \
-				utils
+MLXDIR		:=	mlx
+MLXLIB		:=	$(MLXDIR)/$(OBJSDIR)/libmlx42.a
+MLXBREW		=	-L "$(HOME)/.brew/opt/glfw/lib/"
+MLXFLAGS	=	-ldl -lglfw -pthread -lm
+
+ifeq ($(shell uname), Darwin)
+	MLXFLAGS += $(MLXBREW)
+endif
+
+MODULES		:=	main
 
 SOURCES 	= 	main.c
 
@@ -42,7 +50,7 @@ DEPS		:=	$(patsubst $(SRCSDIR)/%.c, $(DEPSDIR)/%.d, $(SRCS))
 INCS	 	:=	$(foreach header, $(INCSDIR), -I $(header))
 INCS	 	+=	$(foreach header, $(LIBFTDIR)/$(INCSDIR), -I $(header))
 
-F			=	=====================================
+F			=	=================================
 B			=	\033[1m
 T			=	\033[0m
 G			=	\033[32m
@@ -51,11 +59,11 @@ C			=	\033[36m
 R			=	\033[31m
 Y			=	\033[33m
 
-vpath %.c $(SRCS) $(SOURCEDIR)
+vpath %.c $(SOURCEDIR)
 
 define cc_cmd
 $1/%.o: %.c | $(BUILDDIR) $(DEPENDDIR)
-	@if ! $(CC) $(CFLAGS) $(INCS) $(RL_INC) $(DEPFLAGS) $$< -o $$@ 2> $(ERRTXT); then \
+	@if ! $(CC) $(CFLAGS) $(INCS) $(DEPFLAGS) $$< -o $$@ 2> $(ERRTXT); then \
 		printf "$(R)$(B)\nERROR!\n$(F)$(T)\n"; \
 		printf "$(V)Unable to create object file:$(T)\n\n"; \
 		printf "$(R)$(B)$$@$(T)\n"; \
@@ -66,14 +74,25 @@ $1/%.o: %.c | $(BUILDDIR) $(DEPENDDIR)
 	fi
 endef
 
-all: $(LIBFTBIN) $(NAME)
+all: $(MLXLIB) $(LIBFTBIN) $(NAME)
+
+$(MLXLIB):
+	@$(SCREENCLR)
+ifeq ("$(wildcard $(MLXDIR))", "")
+	@echo "$(G)$(B)$(MLXDIR)$(T)$(V) not found, commencing download.$(T)\n"
+	@git clone https://github.com/codam-coding-college/MLX42.git $(MLXDIR)
+else
+	@echo "\n$(V)Skipping download, $(G)$(B)$(MLXDIR)$(T)$(V) exists.$(T)"
+endif
+	@echo "\n$(V)Building $(G)$(B)MLX42$(T)$(V) binary...$(T)\n"
+	@cmake $(MLXDIR) -B $(MLXDIR)/build && make -C $(MLXDIR)/build -j4
 
 $(LIBFTBIN):
 	@make --quiet -C $(LIBFTDIR) all
 	@make title
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(INCS) $^ $(LIBFTBIN) -o $@
+	@$(CC) $(CFLAGS) $(INCS) $^ $(LIBFTBIN) $(MLXLIB) $(MLXFLAGS) -o $@
 	@make finish
 
 debug: CFLAGS += $(DEBUGFLAGS)
@@ -85,9 +104,14 @@ clean:
 
 fclean: clean
 	@make --quiet -C $(LIBFTDIR) fclean
+	@$(RM) $(MLXDIR)/build
 	@$(RM) $(NAME)
 
 re: fclean all
+
+nm:
+	@$(foreach header, $(INCSDIR), norminette -R CheckDefine $(header))
+	@$(foreach source, $(SRCSDIR), norminette -R CheckForbiddenSourceHeader $(source))
 
 title:
 	@$(SCREENCLR) && printf "\n"
@@ -110,4 +134,4 @@ $(DEPS):
 
 $(foreach build, $(BUILDDIR), $(eval $(call cc_cmd, $(build))))
 
-.PHONY: all debug clean fclean re title finish
+.PHONY: all debug clean fclean re nm title finish

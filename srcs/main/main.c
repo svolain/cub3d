@@ -6,13 +6,13 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:32:06 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/08 21:27:23 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/10 15:38:36 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-int	main(int argc, char **argv)
+int	main(void)
 {
 	return (0);
 }
