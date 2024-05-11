@@ -6,7 +6,7 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/05/10 16:06:53 by jmertane         ###   ########.fr        #
+#    Updated: 2024/05/10 21:18:06 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ RM			:=	rm -rf
 AR			:=	ar -rcs
 CC			:=	cc
 CFLAGS		:=	-Wall -Werror -Wextra
-DEBUGFLAGS	=	-g #-fsanitize=address
+DEBUGFLAGS	=	-g -fsanitize=address
 DEPFLAGS	=	-c -MT $$@ -MMD -MP -MF $(DEPSDIR)/$$*.d
 SCREENCLR	:=	printf "\033c"
 SLEEP		:=	sleep .1
@@ -49,6 +49,7 @@ OBJS		:=	$(patsubst $(SRCSDIR)/%.c, $(OBJSDIR)/%.o, $(SRCS))
 DEPS		:=	$(patsubst $(SRCSDIR)/%.c, $(DEPSDIR)/%.d, $(SRCS))
 INCS	 	:=	$(foreach header, $(INCSDIR), -I $(header))
 INCS	 	+=	$(foreach header, $(LIBFTDIR)/$(INCSDIR), -I $(header))
+INCS	 	+=	$(foreach header, $(MLXDIR)/include/MLX42, -I $(header))
 
 F			=	=================================
 B			=	\033[1m
@@ -104,7 +105,7 @@ clean:
 
 fclean: clean
 	@make --quiet -C $(LIBFTDIR) fclean
-	@$(RM) $(MLXDIR)/build
+	@$(RM) $(MLXDIR)/$(OBJSDIR)
 	@$(RM) $(NAME)
 
 re: fclean all
