@@ -14,7 +14,7 @@
 
 float	py = 4 * CELLSIZE;
 float	px = 4 * CELLSIZE;
-float	pa = NORTH;
+float	pa = NORTH - DEGREE;
 
 mlx_t			*mlx;
 mlx_image_t 	*player;
