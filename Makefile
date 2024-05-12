@@ -62,7 +62,7 @@ Y			=	\033[33m
 
 vpath %.c $(SOURCEDIR)
 
-define cc_cmd
+define build_cmd
 $1/%.o: %.c | $(BUILDDIR) $(DEPENDDIR)
 	@if ! $(CC) $(CFLAGS) $(INCS) $(DEPFLAGS) $$< -o $$@ 2> $(ERRTXT); then \
 		printf "$(R)$(B)\nERROR!\n$(F)$(T)\n"; \
@@ -133,6 +133,6 @@ $(BUILDDIR) $(DEPENDDIR):
 $(DEPS):
 	include $(wildcard $(DEPS))
 
-$(foreach build, $(BUILDDIR), $(eval $(call cc_cmd, $(build))))
+$(foreach build, $(BUILDDIR), $(eval $(call build_cmd, $(build))))
 
 .PHONY: all debug clean fclean re nm title finish

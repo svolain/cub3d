@@ -32,8 +32,8 @@ char *map[] = { "11111111\n",
 
 void	find_collosion_point(t_vector *vec, float offset_x, float offset_y)
 {
-	float	map_x;
-	float	map_y;
+	int	map_x;
+	int	map_y;
 	int		i;
 
 	i = 0;
@@ -52,8 +52,6 @@ void	find_collosion_point(t_vector *vec, float offset_x, float offset_y)
 		}
 		i++;
 	}
-	vec->x = map_x;
-	vec->y = map_y;
 }
 
 void	horizontal_collosion(t_vector *vec)
