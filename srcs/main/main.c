@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:32:06 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/11 19:04:13 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/12 20:36:57 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 float	py = 4 * CELLSIZE;
 float	px = 4 * CELLSIZE;
-float	pa = PI / 2;
+float	pa = NORTH;
 
 mlx_t			*mlx;
 mlx_image_t 	*player;
@@ -30,55 +30,53 @@ char *map[] = { "11111111\n",
 				"10000001\n",
 				"11111111" };
 
-/* void	calculate_collosion(t_vector *vec) */
-/* { */
-/* 	int	i; */
-/**/
-/* 	i = 0; */
-/* 	while (i < 8) // TODO replace with map limit */
-/* 	{ */
-/* 		if (map[(int)vec->y / CELLSIZE][(int)vec->x / CELLSIZE] == '1') */
-/* 			break ; */
-/* 		else */
-/* 		{ */
-/* 			vec->x += offset_x; */
-/* 			vec->y += offset_y; */
-/* 		} */
-/* 		i++; */
-/* 	} */
-/* } */
-
-void	horizontal_collosion(t_vector *vec)
+void	find_collosion_point(t_vector *vec, float offset_x, float offset_y)
 {
-	float	offset_x;
-	float	offset_y;
+	float	map_x;
+	float	map_y;
+	int		i;
 
-	vec->angle = pa;
-	if (vec->angle < PI)
+	i = 0;
+	while (i < 8) // TODO replace iterative loop with infinite since walls are closed
 	{
-		vec->y = ((py / CELLSIZE) * CELLSIZE) + (Y.line - py);
-		vec->x = (py - vec->y) / -tan(pa) + px;
-		offset_y = CELLSIZE;
-		offset_x = offset_y * tan(pa);
-	}
-	else if (vec->angle > PI)
-	{
-		vec->y = ((py / CELLSIZE) * CELLSIZE) - (Y.line - py);
-		vec->x = (py - vec->y) / -tan(pa) + px;
-		offset_y = -CELLSIZE;
-		offset_x = offset_y * tan(pa);
-	}
-	int	i = -1;
-	while (i++ < 8)
-	{
-		if (map[(int)vec->y / CELLSIZE][(int)vec->x / CELLSIZE] == '1')
+		// TODO need to add limit checks so coordinates won't overflow
+		// should be calculated from player x/y distance from map edge using CELLSIZE
+		map_x = (int)vec->y / CELLSIZE;
+		map_y = (int)vec->x / CELLSIZE;
+		if (map[map_y][map_x] == '1')
 			break ;
 		else
 		{
 			vec->x += offset_x;
 			vec->y += offset_y;
 		}
+		i++;
 	}
+	vec->x = map_x;
+	vec->y = map_y;
+}
+
+void	horizontal_collosion(t_vector *vec)
+{
+	float	offset_x;
+	float	offset_y;
+
+	vec->angle = pa; //TODO need to check if vector angle is really needed
+	if (vec->angle < WEST)
+	{
+		vec->y = ((py / CELLSIZE) * CELLSIZE) + (Y.line - py);
+		vec->x = (py - vec->y) / -tan(pa) + px;
+		offset_y = CELLSIZE;
+		offset_x = offset_y * tan(pa);
+	}
+	else if (vec->angle > WEST)
+	{
+		vec->y = ((py / CELLSIZE) * CELLSIZE) - (Y.line - py);
+		vec->x = (py - vec->y) / -tan(pa) + px;
+		offset_y = -CELLSIZE;
+		offset_x = offset_y * tan(pa);
+	}
+	find_collosion_point(vec, offset_x, offset_y);
 }
 
 void	vertical_collosion(t_vector *vec)
@@ -86,32 +84,22 @@ void	vertical_collosion(t_vector *vec)
 	float	offset_x;
 	float	offset_y;
 
-	vec->angle = pa;
-	if (vec->angle < PI / 2 || vec->angle > (3 / 2) * PI)
+	vec->angle = pa; //TODO need to check if vector angle is really needed
+	if (vec->angle < NORTH || vec->angle > SOUTH)
 	{
 		vec->x = ((px / CELLSIZE) * CELLSIZE) + (X.line - px);
 		vec->y = (px - vec->x) / -tan(pa) + py;
 		offset_x = CELLSIZE;
 		offset_y = offset_x * tan(pa);
 	}
-	else if (vec->angle > PI / 2 || vec->angle < (3 / 2) * PI)
+	else if (vec->angle > NORTH || vec->angle < SOUTH)
 	{
 		vec->x = ((px / CELLSIZE) * CELLSIZE) - (X.line - px);
 		vec->y = (px - vec->x) / -tan(pa) + py;
 		offset_x = -CELLSIZE;
 		offset_y = offset_x * tan(pa);
 	}
-	int	i = -1;
-	while (i++ < 8)
-	{
-		if (map[(int)vec->y / CELLSIZE][(int)vec->x / CELLSIZE] == '1')
-			break ;
-		else
-		{
-			vec->x += offset_x;
-			vec->y += offset_y;
-		}
-	}
+	find_collosion_point(vec, offset_x, offset_y);
 }
 
 void	rotate_player_left()
@@ -124,10 +112,8 @@ void	rotate_player_left()
 		pa += 2 * PI;
 	horizontal_collosion(&horizontal);
 	vertical_collosion(&vertical);
-	// drawray();
-	// img = mlx_new_image(mlx, 8, 8);
-	// ft_memset(img->pixels, 255, img->width * img->height * BPP);
-	// mlx_image_to_window(mlx, img, px + pdx, py + pdy);
+	// TODO need to calculate which collosion happened first
+	// TODO need to create test drawing function
 }
 
 void	rotate_player_right()
@@ -140,37 +126,35 @@ void	rotate_player_right()
 		pa -= 2 * PI;
 	horizontal_collosion(&horizontal);
 	vertical_collosion(&vertical);
-	// img = mlx_new_image(mlx, 8, 8);
-	// ft_memset(img->pixels, 255, img->width * img->height * BPP);
-	// mlx_image_to_window(mlx, img, px + pdx, py + pdy);
 }
 
 void	move_keyhook(mlx_key_data_t keydata, void *param)
 {
-	param = NULL;
+	if (!param)
+		return ;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 		mlx_close_window(mlx);
 	if (player->instances[0].enabled == true)
 	{
 		if (mlx_is_key_down(mlx, MLX_KEY_W))
 		{
-			player->instances[0].y -= 8;
-			py -= 8;
+			player->instances[0].y -= STEP_MOVE;
+			py -= STEP_MOVE;
 		}
 		if (mlx_is_key_down(mlx, MLX_KEY_S))
 		{
-			player->instances[0].y += 8;
-			py += 8;
+			player->instances[0].y += STEP_MOVE;
+			py += STEP_MOVE;
 		}
 		if (mlx_is_key_down(mlx, MLX_KEY_A))
 		{
-			player->instances[0].x -= 8;
-			px -= 8;
+			player->instances[0].x -= STEP_MOVE;
+			px -= STEP_MOVE;
 		}
 		if (mlx_is_key_down(mlx, MLX_KEY_D))
 		{
-			player->instances[0].x += 8;
-			px += 8;
+			player->instances[0].x += STEP_MOVE;
+			px += STEP_MOVE;
 		}
 		if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
 			rotate_player_right();
@@ -209,68 +193,3 @@ int	main(void)
 
 	return (0);
 }
-
-// static int get_rgba(int r, int g, int b, int a)
-// {
-// 	return (r << 24 | g << 16 | b << 8 | a);
-// }
-
-// void	drawray()
-// {
-// 	int		i;
-// 	float	atan;
-//
-// 	int mx, my, dof; // , mp
-// 	float rx, ry, ra, xo, yo;
-//
-// 	i = 0;
-// 	ra = pa;
-// 	while (i < 1)
-// 	{
-// 		dof = 0;
-// 		atan = -1 / tan(ra);
-// 		if (ra > PI) // ray is facing down
-// 		{
-// 			ry = ((py / CELLSIZE) * CELLSIZE);
-// 			rx = (py - ry) * atan + px;
-// 			yo = -64;
-// 			xo = -yo * atan;
-// 		}
-// 		else if (ra < PI) // ray is facing up
-// 		{
-// 			ry = (((int)py >> 6) << 6) + 64;
-// 			rx = (py - ry) * atan + px;
-// 			yo = 64;
-// 			xo = -yo * atan;
-// 		}
-// 		else if (ra == 0 || ra == PI) // ray is horizontal
-// 			return ;
-// 		// {
-// 		// 	rx = px;
-// 		// 	ry = py;
-// 		// 	dof = 8;
-// 		// 	xo = 0;
-// 		// 	yo = 0;
-// 		// }
-// 		while (dof < 8)
-// 		{
-// 			mx = (int)rx >> 6; // >> 6 == / 64
-// 			my = (int)ry >> 6; // >> 6 == / 64
-// 			printf("mx is: %d | my is: %d | dof is: %d\n", mx, my, dof);
-// 			// mp = my * 8 + mx;
-// 			// break;
-// 			if (dof < 8 && mx < 8 && my < 8 && map[mx][my] == '1')
-// 				break ;
-// 			else
-// 			{
-// 				rx += xo;
-// 				ry += yo;
-// 			}
-// 			dof++;
-// 		}
-// 		img = mlx_new_image(mlx, 8, 8);
-// 		ft_memset(img->pixels, 255, img->width * img->height * BPP);
-// 		mlx_image_to_window(mlx, img, rx, ry);
-// 		i++;
-// 	}
-// }
