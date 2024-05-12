@@ -30,39 +30,88 @@ char *map[] = { "11111111\n",
 				"10000001\n",
 				"11111111" };
 
-void	horizontal_collation(t_vector *vec)
+/* void	calculate_collosion(t_vector *vec) */
+/* { */
+/* 	int	i; */
+/**/
+/* 	i = 0; */
+/* 	while (i < 8) // TODO replace with map limit */
+/* 	{ */
+/* 		if (map[(int)vec->y / CELLSIZE][(int)vec->x / CELLSIZE] == '1') */
+/* 			break ; */
+/* 		else */
+/* 		{ */
+/* 			vec->x += offset_x; */
+/* 			vec->y += offset_y; */
+/* 		} */
+/* 		i++; */
+/* 	} */
+/* } */
+
+void	horizontal_collosion(t_vector *vec)
 {
 	float	offset_x;
 	float	offset_y;
 
 	vec->angle = pa;
-
-	vec->y = ((py / CELLSIZE) * CELLSIZE) + (Y.line - py);
-	vec->x = (py - vec->y) / -tan(pa) + px;
-	offset_y = CELLSIZE;
-	offset_x = offset_y * tan(pa);
-
-	vec->y = ((py / CELLSIZE) * CELLSIZE) - (Y.line - py);
-	vec->x = (py - vec->y) / -tan(pa) + px;
-	offset_y = -CELLSIZE;
-	offset_x = offset_y * tan(pa);
+	if (vec->angle < PI)
+	{
+		vec->y = ((py / CELLSIZE) * CELLSIZE) + (Y.line - py);
+		vec->x = (py - vec->y) / -tan(pa) + px;
+		offset_y = CELLSIZE;
+		offset_x = offset_y * tan(pa);
+	}
+	else if (vec->angle > PI)
+	{
+		vec->y = ((py / CELLSIZE) * CELLSIZE) - (Y.line - py);
+		vec->x = (py - vec->y) / -tan(pa) + px;
+		offset_y = -CELLSIZE;
+		offset_x = offset_y * tan(pa);
+	}
+	int	i = -1;
+	while (i++ < 8)
+	{
+		if (map[(int)vec->y / CELLSIZE][(int)vec->x / CELLSIZE] == '1')
+			break ;
+		else
+		{
+			vec->x += offset_x;
+			vec->y += offset_y;
+		}
+	}
 }
-void	vertical_collation(t_vector *vec)
+
+void	vertical_collosion(t_vector *vec)
 {
 	float	offset_x;
 	float	offset_y;
 
 	vec->angle = pa;
-
-	vec->x = ((px / CELLSIZE) * CELLSIZE) + (X.line - px);
-	vec->y = (px - vec->x) / -tan(pa) + py;
-	offset_x = CELLSIZE;
-	offset_y = offset_x * tan(pa);
-
-	vec->x = ((px / CELLSIZE) * CELLSIZE) - (X.line - px);
-	vec->y = (px - vec->x) / -tan(pa) + py;
-	offset_x = -CELLSIZE;
-	offset_y = offset_x * tan(pa);
+	if (vec->angle < PI / 2 || vec->angle > (3 / 2) * PI)
+	{
+		vec->x = ((px / CELLSIZE) * CELLSIZE) + (X.line - px);
+		vec->y = (px - vec->x) / -tan(pa) + py;
+		offset_x = CELLSIZE;
+		offset_y = offset_x * tan(pa);
+	}
+	else if (vec->angle > PI / 2 || vec->angle < (3 / 2) * PI)
+	{
+		vec->x = ((px / CELLSIZE) * CELLSIZE) - (X.line - px);
+		vec->y = (px - vec->x) / -tan(pa) + py;
+		offset_x = -CELLSIZE;
+		offset_y = offset_x * tan(pa);
+	}
+	int	i = -1;
+	while (i++ < 8)
+	{
+		if (map[(int)vec->y / CELLSIZE][(int)vec->x / CELLSIZE] == '1')
+			break ;
+		else
+		{
+			vec->x += offset_x;
+			vec->y += offset_y;
+		}
+	}
 }
 
 void	rotate_player_left()
@@ -73,8 +122,8 @@ void	rotate_player_left()
 	pa -= STEP_ANGLE;
 	if (pa < 0)
 		pa += 2 * PI;
-	horizontal_collation(&horizontal);
-	vertical_collation(&vertical);
+	horizontal_collosion(&horizontal);
+	vertical_collosion(&vertical);
 	// drawray();
 	// img = mlx_new_image(mlx, 8, 8);
 	// ft_memset(img->pixels, 255, img->width * img->height * BPP);
@@ -89,8 +138,8 @@ void	rotate_player_right()
 	pa += STEP_ANGLE;
 	if (pa > 2 * PI)
 		pa -= 2 * PI;
-	horizontal_collation(&horizontal);
-	vertical_collation(&vertical);
+	horizontal_collosion(&horizontal);
+	vertical_collosion(&vertical);
 	// img = mlx_new_image(mlx, 8, 8);
 	// ft_memset(img->pixels, 255, img->width * img->height * BPP);
 	// mlx_image_to_window(mlx, img, px + pdx, py + pdy);
@@ -98,9 +147,7 @@ void	rotate_player_right()
 
 void	move_keyhook(mlx_key_data_t keydata, void *param)
 {
-	char **map;
-
-	map = param;
+	param = NULL;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 		mlx_close_window(mlx);
 	if (player->instances[0].enabled == true)
