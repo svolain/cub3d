@@ -34,23 +34,20 @@ void	find_collosion_point(t_vector *vec, float offset_x, float offset_y)
 {
 	int	map_x;
 	int	map_y;
-	int		i;
 
-	i = 0;
-	while (i < 8) // TODO replace iterative loop with infinite since walls are closed
+	while (true)
 	{
-		// TODO need to add limit checks so coordinates won't overflow
-		// should be calculated from player x/y distance from map edge using CELLSIZE
-		map_x = (int)vec->y / CELLSIZE;
-		map_y = (int)vec->x / CELLSIZE;
-		if (map[map_y][map_x] == '1')
+		map_x = (int)vec->x / CELLSIZE;
+		map_y = (int)vec->y / CELLSIZE;
+		if (map_x < 0 || map_x >= 8
+			|| map_y < 0 || map_y >= 8
+			|| map[map_y][map_x] == '1')
 			break ;
 		else
 		{
 			vec->x += offset_x;
 			vec->y += offset_y;
 		}
-		i++;
 	}
 }
 
@@ -58,21 +55,24 @@ void	horizontal_collosion(t_vector *vec)
 {
 	float	offset_x;
 	float	offset_y;
+	float	atan;
 
-	vec->angle = pa; //TODO need to check if vector angle is really needed
-	if (vec->angle < WEST)
+	vec->angle = pa;
+	atan = 1 / -tan(vec->angle);
+	// facing up / north
+	if (vec->angle > WEST)
 	{
-		vec->y = ((py / CELLSIZE) * CELLSIZE) + (Y.line - py);
-		vec->x = (py - vec->y) / -tan(pa) + px;
-		offset_y = CELLSIZE;
-		offset_x = offset_y * tan(pa);
-	}
-	else if (vec->angle > WEST)
-	{
-		vec->y = ((py / CELLSIZE) * CELLSIZE) - (Y.line - py);
-		vec->x = (py - vec->y) / -tan(pa) + px;
+		vec->y = ((py / CELLSIZE) * CELLSIZE);
+		vec->x = (py - vec->y) * atan + px;
 		offset_y = -CELLSIZE;
-		offset_x = offset_y * tan(pa);
+		offset_x = -offset_y * atan;
+	}
+	else
+	{
+		vec->y = ((py / CELLSIZE) * CELLSIZE) + CELLSIZE;
+		vec->x = (py - vec->y) * atan + px;
+		offset_y = CELLSIZE;
+		offset_x = -offset_y * atan;
 	}
 	find_collosion_point(vec, offset_x, offset_y);
 }
@@ -81,21 +81,24 @@ void	vertical_collosion(t_vector *vec)
 {
 	float	offset_x;
 	float	offset_y;
+	float	ntan;
 
-	vec->angle = pa; //TODO need to check if vector angle is really needed
-	if (vec->angle < NORTH || vec->angle > SOUTH)
+	vec->angle = pa;
+	ntan = -tan(vec->angle);
+	// facing left / west
+	if (vec->angle > NORTH && vec->angle < SOUTH)
 	{
-		vec->x = ((px / CELLSIZE) * CELLSIZE) + (X.line - px);
-		vec->y = (px - vec->x) / -tan(pa) + py;
-		offset_x = CELLSIZE;
-		offset_y = offset_x * tan(pa);
-	}
-	else if (vec->angle > NORTH || vec->angle < SOUTH)
-	{
-		vec->x = ((px / CELLSIZE) * CELLSIZE) - (X.line - px);
-		vec->y = (px - vec->x) / -tan(pa) + py;
+		vec->x = ((px / CELLSIZE) * CELLSIZE);
+		vec->y = (px - vec->x) * ntan + py;
 		offset_x = -CELLSIZE;
-		offset_y = offset_x * tan(pa);
+		offset_y = -offset_x * ntan;
+	}
+	else
+	{
+		vec->x = ((px / CELLSIZE) * CELLSIZE) + CELLSIZE;
+		vec->y = (px - vec->x) * ntan + py;
+		offset_x = CELLSIZE;
+		offset_y = -offset_x * ntan;
 	}
 	find_collosion_point(vec, offset_x, offset_y);
 }
@@ -110,8 +113,10 @@ void	rotate_player_left()
 		pa += 2 * PI;
 	horizontal_collosion(&horizontal);
 	vertical_collosion(&vertical);
-	// TODO need to calculate which collosion happened first
-	// TODO need to create test drawing function
+	img = mlx_new_image(mlx, 8, 8);
+	ft_memset(img->pixels, 222, img->width * img->height * BPP);
+	mlx_image_to_window(mlx, img, horizontal.x, horizontal.y);
+	mlx_image_to_window(mlx, img, vertical.x, vertical.y);
 }
 
 void	rotate_player_right()
@@ -124,6 +129,10 @@ void	rotate_player_right()
 		pa -= 2 * PI;
 	horizontal_collosion(&horizontal);
 	vertical_collosion(&vertical);
+	img = mlx_new_image(mlx, 8, 8);
+	ft_memset(img->pixels, 222, img->width * img->height * BPP);
+	mlx_image_to_window(mlx, img, horizontal.x, horizontal.y);
+	mlx_image_to_window(mlx, img, vertical.x, vertical.y);
 }
 
 void	move_keyhook(mlx_key_data_t keydata, void *param)
