@@ -48,7 +48,7 @@ void	find_collosion_point(t_vector *vec, float *offset)
 	}
 }
 
-void	horizontal_collosion(t_vector *vec)
+static float	horizontal_collosion(t_vector *vec)
 {
 	float	offset[2];
 	float	atan;
@@ -57,20 +57,21 @@ void	horizontal_collosion(t_vector *vec)
 	atan = 1 / -tan(vec->angle);
 	if (vec->angle > WEST)
 	{
-		vec->y = ((py / CELLSIZE) * CELLSIZE - 0.00001f);
+		vec->y = py / CELLSIZE * CELLSIZE - 0.00001f;
 		offset[Y] = -CELLSIZE;
 	}
 	else
 	{
-		vec->y = ((py / CELLSIZE) * CELLSIZE) + CELLSIZE;
+		vec->y = py / CELLSIZE * CELLSIZE + CELLSIZE;
 		offset[Y] = CELLSIZE;
 	}
 	vec->x = (py - vec->y) * atan + px;
 	offset[X] = -offset[Y] * atan;
 	find_collosion_point(vec, offset);
+	return (sqrtf(powf((vec->x - px), 2) + powf((vec->y - py), 2)));
 }
 
-void	vertical_collosion(t_vector *vec)
+static float	vertical_collosion(t_vector *vec)
 {
 	float	offset[2];
 	float	ntan;
@@ -79,56 +80,59 @@ void	vertical_collosion(t_vector *vec)
 	ntan = -tan(vec->angle);
 	if (vec->angle > NORTH && vec->angle < SOUTH)
 	{
-		vec->x = ((px / CELLSIZE) * CELLSIZE) - 0.00001f;
+		vec->x = px / CELLSIZE * CELLSIZE - 0.00001f;
 		offset[X] = -CELLSIZE;
 	}
 	else
 	{
-		vec->x = ((px / CELLSIZE) * CELLSIZE) + CELLSIZE;
+		vec->x = px / CELLSIZE * CELLSIZE + CELLSIZE;
 		offset[X] = CELLSIZE;
 	}
 	vec->y = (px - vec->x) * ntan + py;
 	offset[Y] = -offset[X] * ntan;
 	find_collosion_point(vec, offset);
+	return (sqrtf(powf((vec->x - px), 2) + powf((vec->y - py), 2)));
 }
 
-/* void	calculate_rays() */
-/* { */
-/* 	t_vector	ray; */
-/**/
-/**/
-/* } */
+void	calculate_rays()
+{
+	t_vector	ray;
+	t_vector	horizontal;
+	t_vector	vertical;
+	float		distance[2];
+
+	distance[H] = horizontal_collosion(&horizontal);
+	distance[V] = vertical_collosion(&vertical);
+	// printf("Hdist is: %f\nVdist is: %f\n", distance[H], distance[V]);
+	if (distance[H] < distance[V])
+	{
+		ray.x = horizontal.x;
+		ray.y = horizontal.y;
+	}
+	else 
+	{
+		ray.x = vertical.x;
+		ray.y = vertical.y;
+	}
+	img = mlx_new_image(mlx, 8, 8);
+	ft_memset(img->pixels, 222, img->width * img->height * BPP);
+	mlx_image_to_window(mlx, img, ray.x, ray.y);
+}
 
 void	rotate_player_left()
 {
-	t_vector	horizontal;
-	t_vector	vertical;
-
 	pa -= STEP_ANGLE;
 	if (pa < 0)
 		pa += 2 * PI;
-	horizontal_collosion(&horizontal);
-	vertical_collosion(&vertical);
-	img = mlx_new_image(mlx, 8, 8);
-	ft_memset(img->pixels, 222, img->width * img->height * BPP);
-	mlx_image_to_window(mlx, img, horizontal.x, horizontal.y);
-	mlx_image_to_window(mlx, img, vertical.x, vertical.y);
+	calculate_rays();
 }
 
 void	rotate_player_right()
 {
-	t_vector	horizontal;
-	t_vector	vertical;
-
 	pa += STEP_ANGLE;
 	if (pa > 2 * PI)
 		pa -= 2 * PI;
-	horizontal_collosion(&horizontal);
-	vertical_collosion(&vertical);
-	img = mlx_new_image(mlx, 8, 8);
-	ft_memset(img->pixels, 222, img->width * img->height * BPP);
-	mlx_image_to_window(mlx, img, horizontal.x, horizontal.y);
-	mlx_image_to_window(mlx, img, vertical.x, vertical.y);
+	calculate_rays();
 }
 
 void	move_keyhook(mlx_key_data_t keydata, void *param)

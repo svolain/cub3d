@@ -45,7 +45,9 @@ typedef enum e_checker
 	FAILURE = -1,
 	SUCCESS = 0,
 	X = 0,
-	Y = 1
+	Y = 1,
+	H = 0,
+	V = 1
 }	t_checker;
 
 typedef enum e_elements
