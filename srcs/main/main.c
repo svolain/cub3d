@@ -81,7 +81,6 @@ void	count_v_dist(void)
 	}
 }
 
-
 static float	horizontal_collosion(t_vector *vec)
 {
 	float	offset[2];
@@ -90,14 +89,14 @@ static float	horizontal_collosion(t_vector *vec)
 	vec->angle = pa;
 	atan = 1 / -tan(vec->angle);
 	count_h_dist();
-	if (vec->angle > PI)
+	if (vec->angle > WEST)
 	{
-		vec->y = py / CELLSIZE * CELLSIZE - dist_north - 0.00001f;
+		vec->y = (int)py / CELLSIZE * CELLSIZE - 0.0001f;
 		offset[Y] = -CELLSIZE;
 	}
 	else
 	{
-		vec->y = py / CELLSIZE * CELLSIZE + dist_south;
+		vec->y = (int)py / CELLSIZE * CELLSIZE + CELLSIZE;
 		offset[Y] = CELLSIZE;
 	}
 	vec->x = (py - vec->y) * atan + px;
@@ -114,14 +113,14 @@ static float	vertical_collosion(t_vector *vec)
 	vec->angle = pa;
 	ntan = -tan(vec->angle);
 	count_v_dist();
-	if (vec->angle > (PI / 2) && vec->angle < ((3 / 2) * PI))
+	if (vec->angle > NORTH && vec->angle < SOUTH)
 	{
-		vec->x = px / CELLSIZE * CELLSIZE - dist_west - 0.00001f;
+		vec->x = (int)px / CELLSIZE * CELLSIZE - 0.0001f;
 		offset[X] = -CELLSIZE;
 	}
 	else
 	{
-		vec->x = px / CELLSIZE * CELLSIZE + dist_east;
+		vec->x = (int)px / CELLSIZE * CELLSIZE + CELLSIZE;
 		offset[X] = CELLSIZE;
 	}
 	vec->y = (px - vec->x) * ntan + py;
