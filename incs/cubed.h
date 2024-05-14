@@ -6,13 +6,14 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/13 09:18:52 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/14 09:23:19 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBED_H
 # define CUBED_H
 
+# include <MLX42.h>
 # include <libft.h>
 # include <error.h>
 
@@ -22,7 +23,6 @@
 # include <errno.h>
 # include <math.h>
 # include <stdio.h>
-# include "../mlx/include/MLX42/MLX42.h" 
 
 # define CELLSIZE 64
 # define SCREEN_WIDTH 1920
@@ -40,14 +40,28 @@
 # define STEP_MOVE 8
 # define BPP sizeof(int)
 
-typedef struct s_player
+typedef enum e_checker
+{
+	FAILURE = -1,
+	SUCCESS = 0,
+	X = 0,
+	Y = 1
+}	t_checker;
+
+typedef enum e_elements
+{
+	FLOOR = 48,
+	WALL
+}	t_elements;
+
+typedef struct s_camera
 {
 	float	x;
 	float	y;
 	float	angle;
 	float	fov;
 	int		dof;
-}	t_player;
+}	t_camera;
 
 typedef struct s_vector
 {
@@ -75,9 +89,9 @@ typedef struct s_texture
 
 typedef struct s_cubed
 {
-	t_player	player;
+	t_camera	cam;
 	t_mapinfo	map;
-	t_texture	*texture;
+	t_texture	*tex;
 	void		*mlx;
 }	t_cubed;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*                                               +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:32:06 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/14 08:59:54 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/14 09:18:53 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 float	py = 4 * CELLSIZE;
 float	px = 4 * CELLSIZE;
 float	pa = NORTH - DEGREE;
+float	dist_north;
+float	dist_south;
+float	dist_west;
+float	dist_east;
 
 mlx_t			*mlx;
 mlx_image_t 	*player;
@@ -30,40 +34,24 @@ char *map[] = { "11111111\n",
 				"10000001\n",
 				"11111111" };
 
-void	find_collosion_point(t_vector *vec, float offset_x, float offset_y)
+void	find_collosion_point(t_vector *vec, float *offset)
 {
 	int	map_x;
 	int	map_y;
-	int		i;
 
-	i = 0;
-	while (i < 8) // TODO replace iterative loop with infinite since walls are closed
+	while (true)
 	{
-		// TODO need to add limit checks so coordinates won't overflow
-		// should be calculated from player x/y distance from map edge using CELLSIZE
-			map_x = (int)vec->x / CELLSIZE;
-			map_y = (int)vec->y / CELLSIZE;
-		if (map_x > 7)
-			map_x = 7;
-		if (map_y > 7)
-			map_y = 7;
-		if (map_x < 1)
-			map_x = 0;
-		if (map_y < 1)
-			map_y = 0;
-		printf("mapx %d\n", map_x);
-		printf("mapy %d\n", map_y);
-		if (map[map_y][map_x] == '1')
+		map_x = vec->x / CELLSIZE;
+		map_y = vec->y / CELLSIZE;
+		if (map_x < 0 || map_x >= 8 // TODO: replace with map width
+			|| map_y < 0 || map_y >= 8 // TODO: replace with map height
+			|| map[map_y][map_x] != FLOOR)
 			break ;
-		else
-		{
-				vec->x += offset_x;
-				vec->y += offset_y;
-		}
-		i++;
+		vec->x += offset[X];
+		vec->y += offset[Y];
 	}
 }
-/*
+
 void	count_h_dist(void)
 {
 	double y;
@@ -92,30 +80,29 @@ void	count_v_dist(void)
 		}
 	}
 }
-*/
+
 
 void	horizontal_collosion(t_vector *vec)
 {
 	float	offset[2];
 	float	atan;
 
-	vec->angle = pa; //TODO need to check if vector angle is really needed
+	vec->angle = pa;
+	atan = 1 / -tan(vec->angle);
 	count_h_dist();
-	if (vec->angle < WEST)
+	if (vec->angle > PI)
 	{
-		vec->y = ((py / CELLSIZE) * CELLSIZE);
-		vec->x = (py - vec->y) / -tan(pa) + px;
-		offset_y = CELLSIZE;
-		offset_x = offset_y * tan(pa);
+		vec->y = py / CELLSIZE * CELLSIZE - dist_north - 0.00001f;
+		offset[Y] = -CELLSIZE;
 	}
-	else if (vec->angle > WEST)
+	else
 	{
-		vec->y = ((py / CELLSIZE) * CELLSIZE);
-		vec->x = (py - vec->y) / -tan(pa) + px;
-		offset_y = -CELLSIZE;
-		offset_x = offset_y * tan(pa);
+		vec->y = py / CELLSIZE * CELLSIZE + dist_south;
+		offset[Y] = CELLSIZE;
 	}
-	find_collosion_point(vec, offset_x, offset_y);
+	vec->x = (py - vec->y) * atan + px;
+	offset[X] = -offset[Y] * atan;
+	find_collosion_point(vec, offset);
 }
 
 void	vertical_collosion(t_vector *vec)
@@ -124,18 +111,20 @@ void	vertical_collosion(t_vector *vec)
 	float	ntan;
 
 	vec->angle = pa;
-	ntan = pa;
-	if (vec->angle < NORTH || vec->angle > SOUTH)
+	ntan = -tan(vec->angle);
+	count_v_dist();
+	if (vec->angle > (PI / 2) && vec->angle < ((3 / 2) * PI))
 	{
-		vec->x = ((px / CELLSIZE) * CELLSIZE) - 0.00001f;
+		vec->x = px / CELLSIZE * CELLSIZE - dist_west - 0.00001f;
 		offset[X] = -CELLSIZE;
 	}
-	else if (vec->angle > NORTH && vec->angle < SOUTH)
+	else
 	{
-		vec->x = ((px / CELLSIZE) * CELLSIZE) + CELLSIZE;
+		vec->x = px / CELLSIZE * CELLSIZE + dist_east;
 		offset[X] = CELLSIZE;
 	}
-	vec->y = ((px / CELLSIZE) * CELLSIZE) - 0.00001f;
+	vec->y = (px - vec->x) * ntan + py;
+	offset[Y] = -offset[X] * ntan;
 	find_collosion_point(vec, offset);
 }
 
@@ -150,7 +139,7 @@ void	rotate_player_left()
 	horizontal_collosion(&horizontal);
 	vertical_collosion(&vertical);
 	img = mlx_new_image(mlx, 8, 8);
-	ft_memset(img->pixels, 222, img->width * img->height *BPP);
+	ft_memset(img->pixels, 222, img->width * img->height * BPP);
 	mlx_image_to_window(mlx, img, horizontal.x, horizontal.y);
 	mlx_image_to_window(mlx, img, vertical.x, vertical.y);
 }
@@ -165,8 +154,10 @@ void	rotate_player_right()
 		pa -= 2 * PI;
 	horizontal_collosion(&horizontal);
 	vertical_collosion(&vertical);
-	mlx_image_to_window(mlx, img, horizontal.x, horizontal.x);
-	mlx_image_to_window(mlx, img, vertical.x, vertical.x);
+	img = mlx_new_image(mlx, 8, 8);
+	ft_memset(img->pixels, 222, img->width * img->height * BPP);
+	mlx_image_to_window(mlx, img, horizontal.x, horizontal.y);
+	mlx_image_to_window(mlx, img, vertical.x, vertical.y);
 }
 
 void	move_keyhook(mlx_key_data_t keydata, void *param)

@@ -6,7 +6,7 @@
 #    By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/05/13 10:13:58 by vsavolai         ###   ########.fr        #
+#    Updated: 2024/05/14 09:23:14 by vsavolai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,8 @@ LIBFTBIN	:=	$(LIBFTDIR)/libft.a
 RM			:=	rm -rf
 AR			:=	ar -rcs
 CC			:=	cc
-CFLAGS		:=	-Wall -Werror -Wextra -g
-DEBUGFLAGS	=	-g #-fsanitize=address
+CFLAGS		:=	-Wall -Werror -Wextra
+DEBUGFLAGS	=	-g -fsanitize=address
 DEPFLAGS	=	-c -MT $$@ -MMD -MP -MF $(DEPSDIR)/$$*.d
 SCREENCLR	:=	printf "\033c"
 SLEEP		:=	sleep .1
@@ -49,6 +49,7 @@ OBJS		:=	$(patsubst $(SRCSDIR)/%.c, $(OBJSDIR)/%.o, $(SRCS))
 DEPS		:=	$(patsubst $(SRCSDIR)/%.c, $(DEPSDIR)/%.d, $(SRCS))
 INCS	 	:=	$(foreach header, $(INCSDIR), -I $(header))
 INCS	 	+=	$(foreach header, $(LIBFTDIR)/$(INCSDIR), -I $(header))
+INCS	 	+=	$(foreach header, $(MLXDIR)/include/MLX42, -I $(header))
 
 F			=	=================================
 B			=	\033[1m
@@ -61,7 +62,7 @@ Y			=	\033[33m
 
 vpath %.c $(SOURCEDIR)
 
-define cc_cmd
+define build_cmd
 $1/%.o: %.c | $(BUILDDIR) $(DEPENDDIR)
 	@if ! $(CC) $(CFLAGS) $(INCS) $(DEPFLAGS) $$< -o $$@ 2> $(ERRTXT); then \
 		printf "$(R)$(B)\nERROR!\n$(F)$(T)\n"; \
@@ -104,7 +105,7 @@ clean:
 
 fclean: clean
 	@make --quiet -C $(LIBFTDIR) fclean
-	@$(RM) $(MLXDIR)/build
+	@$(RM) $(MLXDIR)/$(OBJSDIR)
 	@$(RM) $(NAME)
 
 re: fclean all
@@ -132,6 +133,6 @@ $(BUILDDIR) $(DEPENDDIR):
 $(DEPS):
 	include $(wildcard $(DEPS))
 
-$(foreach build, $(BUILDDIR), $(eval $(call cc_cmd, $(build))))
+$(foreach build, $(BUILDDIR), $(eval $(call build_cmd, $(build))))
 
 .PHONY: all debug clean fclean re nm title finish
