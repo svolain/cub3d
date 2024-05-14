@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                               +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:32:06 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/12 20:36:57 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/14 09:18:53 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 float	py = 4 * CELLSIZE;
 float	px = 4 * CELLSIZE;
 float	pa = NORTH - DEGREE;
+float	dist_north;
+float	dist_south;
+float	dist_west;
+float	dist_east;
 
 mlx_t			*mlx;
 mlx_image_t 	*player;
@@ -48,6 +52,36 @@ void	find_collosion_point(t_vector *vec, float *offset)
 	}
 }
 
+void	count_h_dist(void)
+{
+	double y;
+
+	y = -1;
+	while(++y <= 7)
+	{
+		if (py < ((y + 1) * CELLSIZE) && py > (y * CELLSIZE))
+		{
+			dist_north = py - (y * CELLSIZE);
+			dist_south = ((y + 1) * CELLSIZE) - py;
+		}
+	}
+}
+
+void	count_v_dist(void)
+{
+	double x;
+	x = -1;
+	while (++x <= 7)
+	{
+		if ((x * CELLSIZE) < px && ((x + 1) * CELLSIZE) > px)
+		{
+			dist_west = py - (x * CELLSIZE);
+			dist_east = ((x + 1) * CELLSIZE) - px;
+		}
+	}
+}
+
+
 static float	horizontal_collosion(t_vector *vec)
 {
 	float	offset[2];
@@ -55,14 +89,15 @@ static float	horizontal_collosion(t_vector *vec)
 
 	vec->angle = pa;
 	atan = 1 / -tan(vec->angle);
-	if (vec->angle > WEST)
+	count_h_dist();
+	if (vec->angle > PI)
 	{
-		vec->y = py / CELLSIZE * CELLSIZE - 0.00001f;
+		vec->y = py / CELLSIZE * CELLSIZE - dist_north - 0.00001f;
 		offset[Y] = -CELLSIZE;
 	}
 	else
 	{
-		vec->y = py / CELLSIZE * CELLSIZE + CELLSIZE;
+		vec->y = py / CELLSIZE * CELLSIZE + dist_south;
 		offset[Y] = CELLSIZE;
 	}
 	vec->x = (py - vec->y) * atan + px;
@@ -78,14 +113,15 @@ static float	vertical_collosion(t_vector *vec)
 
 	vec->angle = pa;
 	ntan = -tan(vec->angle);
-	if (vec->angle > NORTH && vec->angle < SOUTH)
+	count_v_dist();
+	if (vec->angle > (PI / 2) && vec->angle < ((3 / 2) * PI))
 	{
-		vec->x = px / CELLSIZE * CELLSIZE - 0.00001f;
+		vec->x = px / CELLSIZE * CELLSIZE - dist_west - 0.00001f;
 		offset[X] = -CELLSIZE;
 	}
 	else
 	{
-		vec->x = px / CELLSIZE * CELLSIZE + CELLSIZE;
+		vec->x = px / CELLSIZE * CELLSIZE + dist_east;
 		offset[X] = CELLSIZE;
 	}
 	vec->y = (px - vec->x) * ntan + py;
@@ -109,7 +145,7 @@ void	calculate_rays()
 		ray.x = horizontal.x;
 		ray.y = horizontal.y;
 	}
-	else 
+	else
 	{
 		ray.x = vertical.x;
 		ray.y = vertical.y;
@@ -180,7 +216,6 @@ int	main(void)
 	ft_memset(player->pixels, 200, player->width * player->height * BPP);
 	wall = mlx_new_image(mlx, CELLSIZE - 2, CELLSIZE - 2);
 	ft_memset(wall->pixels, 255, wall->width * wall->height * BPP);
-
 	while (i < 8)
 	{
 		j = 0;
@@ -192,7 +227,6 @@ int	main(void)
 		}
 		i++;
 	}
-
 	mlx_image_to_window(mlx, player, px, py);
 	mlx_key_hook(mlx, &move_keyhook, map);
 	mlx_loop(mlx);
