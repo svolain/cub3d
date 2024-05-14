@@ -52,35 +52,6 @@ void	find_collosion_point(t_vector *vec, float *offset)
 	}
 }
 
-void	count_h_dist(void)
-{
-	double y;
-
-	y = -1;
-	while(++y <= 7)
-	{
-		if (py < ((y + 1) * CELLSIZE) && py > (y * CELLSIZE))
-		{
-			dist_north = py - (y * CELLSIZE);
-			dist_south = ((y + 1) * CELLSIZE) - py;
-		}
-	}
-}
-
-void	count_v_dist(void)
-{
-	double x;
-	x = -1;
-	while (++x <= 7)
-	{
-		if ((x * CELLSIZE) < px && ((x + 1) * CELLSIZE) > px)
-		{
-			dist_west = py - (x * CELLSIZE);
-			dist_east = ((x + 1) * CELLSIZE) - px;
-		}
-	}
-}
-
 static float	horizontal_collosion(t_vector *vec)
 {
 	float	offset[2];
@@ -88,7 +59,6 @@ static float	horizontal_collosion(t_vector *vec)
 
 	vec->angle = pa;
 	atan = 1 / -tan(vec->angle);
-	count_h_dist();
 	if (vec->angle > WEST)
 	{
 		vec->y = (int)py / CELLSIZE * CELLSIZE - 0.0001f;
@@ -112,7 +82,6 @@ static float	vertical_collosion(t_vector *vec)
 
 	vec->angle = pa;
 	ntan = -tan(vec->angle);
-	count_v_dist();
 	if (vec->angle > NORTH && vec->angle < SOUTH)
 	{
 		vec->x = (int)px / CELLSIZE * CELLSIZE - 0.0001f;
@@ -138,7 +107,6 @@ void	calculate_rays()
 
 	distance[H] = horizontal_collosion(&horizontal);
 	distance[V] = vertical_collosion(&vertical);
-	// printf("Hdist is: %f\nVdist is: %f\n", distance[H], distance[V]);
 	if (distance[H] < distance[V])
 	{
 		ray.x = horizontal.x;
@@ -180,23 +148,23 @@ void	move_keyhook(mlx_key_data_t keydata, void *param)
 	{
 		if (mlx_is_key_down(mlx, MLX_KEY_W))
 		{
-			player->instances[0].y -= STEP_MOVE;
-			py -= STEP_MOVE;
+			player->instances[0].y -= STEP_MOVEMENT;
+			py -= STEP_MOVEMENT;
 		}
 		if (mlx_is_key_down(mlx, MLX_KEY_S))
 		{
-			player->instances[0].y += STEP_MOVE;
-			py += STEP_MOVE;
+			player->instances[0].y += STEP_MOVEMENT;
+			py += STEP_MOVEMENT;
 		}
 		if (mlx_is_key_down(mlx, MLX_KEY_A))
 		{
-			player->instances[0].x -= STEP_MOVE;
-			px -= STEP_MOVE;
+			player->instances[0].x -= STEP_MOVEMENT;
+			px -= STEP_MOVEMENT;
 		}
 		if (mlx_is_key_down(mlx, MLX_KEY_D))
 		{
-			player->instances[0].x += STEP_MOVE;
-			px += STEP_MOVE;
+			player->instances[0].x += STEP_MOVEMENT;
+			px += STEP_MOVEMENT;
 		}
 		if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
 			rotate_player_right();

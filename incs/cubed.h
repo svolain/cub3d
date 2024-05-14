@@ -36,8 +36,10 @@
 # define WEST PI
 # define SOUTH 3 * PI / 2
 
-# define STEP_ANGLE 0.1
-# define STEP_MOVE 8
+# define FOV PI / 4
+
+# define STEP_ANGLE 0.05
+# define STEP_MOVEMENT CELLSIZE / 8
 # define BPP sizeof(int)
 
 typedef enum e_checker
@@ -61,8 +63,6 @@ typedef struct s_camera
 	float	x;
 	float	y;
 	float	angle;
-	float	fov;
-	int		dof;
 }	t_camera;
 
 typedef struct s_vector
