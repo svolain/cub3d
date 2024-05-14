@@ -4,7 +4,7 @@
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                               +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:32:06 by jmertane          #+#    #+#             */
 /*   Updated: 2024/05/12 20:36:57 by jmertane         ###   ########.fr       */
 /*                                                                            */
@@ -30,78 +30,74 @@ char *map[] = { "11111111\n",
 				"10000001\n",
 				"11111111" };
 
-void	find_collosion_point(t_vector *vec, float offset_x, float offset_y)
+void	find_collosion_point(t_vector *vec, float *offset)
 {
 	int	map_x;
 	int	map_y;
 
 	while (true)
 	{
-		map_x = (int)vec->x / CELLSIZE;
-		map_y = (int)vec->y / CELLSIZE;
-		if (map_x < 0 || map_x >= 8
-			|| map_y < 0 || map_y >= 8
-			|| map[map_y][map_x] == '1')
+		map_x = vec->x / CELLSIZE;
+		map_y = vec->y / CELLSIZE;
+		if (map_x < 0 || map_x >= 8 // TODO: replace with map width
+			|| map_y < 0 || map_y >= 8 // TODO: replace with map height
+			|| map[map_y][map_x] != FLOOR)
 			break ;
-		else
-		{
-			vec->x += offset_x;
-			vec->y += offset_y;
-		}
+		vec->x += offset[X];
+		vec->y += offset[Y];
 	}
 }
 
 void	horizontal_collosion(t_vector *vec)
 {
-	float	offset_x;
-	float	offset_y;
+	float	offset[2];
 	float	atan;
 
 	vec->angle = pa;
 	atan = 1 / -tan(vec->angle);
-	// facing up / north
 	if (vec->angle > WEST)
 	{
-		vec->y = ((py / CELLSIZE) * CELLSIZE);
-		vec->x = (py - vec->y) * atan + px;
-		offset_y = -CELLSIZE;
-		offset_x = -offset_y * atan;
+		vec->y = ((py / CELLSIZE) * CELLSIZE - 0.00001f);
+		offset[Y] = -CELLSIZE;
 	}
 	else
 	{
 		vec->y = ((py / CELLSIZE) * CELLSIZE) + CELLSIZE;
-		vec->x = (py - vec->y) * atan + px;
-		offset_y = CELLSIZE;
-		offset_x = -offset_y * atan;
+		offset[Y] = CELLSIZE;
 	}
-	find_collosion_point(vec, offset_x, offset_y);
+	vec->x = (py - vec->y) * atan + px;
+	offset[X] = -offset[Y] * atan;
+	find_collosion_point(vec, offset);
 }
 
 void	vertical_collosion(t_vector *vec)
 {
-	float	offset_x;
-	float	offset_y;
+	float	offset[2];
 	float	ntan;
 
 	vec->angle = pa;
 	ntan = -tan(vec->angle);
-	// facing left / west
 	if (vec->angle > NORTH && vec->angle < SOUTH)
 	{
-		vec->x = ((px / CELLSIZE) * CELLSIZE);
-		vec->y = (px - vec->x) * ntan + py;
-		offset_x = -CELLSIZE;
-		offset_y = -offset_x * ntan;
+		vec->x = ((px / CELLSIZE) * CELLSIZE) - 0.00001f;
+		offset[X] = -CELLSIZE;
 	}
 	else
 	{
 		vec->x = ((px / CELLSIZE) * CELLSIZE) + CELLSIZE;
-		vec->y = (px - vec->x) * ntan + py;
-		offset_x = CELLSIZE;
-		offset_y = -offset_x * ntan;
+		offset[X] = CELLSIZE;
 	}
-	find_collosion_point(vec, offset_x, offset_y);
+	vec->y = (px - vec->x) * ntan + py;
+	offset[Y] = -offset[X] * ntan;
+	find_collosion_point(vec, offset);
 }
+
+/* void	calculate_rays() */
+/* { */
+/* 	t_vector	ray; */
+/**/
+/**/
+/* } */
 
 void	rotate_player_left()
 {

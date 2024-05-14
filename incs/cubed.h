@@ -40,14 +40,28 @@
 # define STEP_MOVE 8
 # define BPP sizeof(int)
 
-typedef struct s_player
+typedef enum e_checker
+{
+	FAILURE = -1,
+	SUCCESS = 0,
+	X = 0,
+	Y = 1
+}	t_checker;
+
+typedef enum e_elements
+{
+	FLOOR = 48,
+	WALL
+}	t_elements;
+
+typedef struct s_camera
 {
 	float	x;
 	float	y;
 	float	angle;
 	float	fov;
 	int		dof;
-}	t_player;
+}	t_camera;
 
 typedef struct s_vector
 {
@@ -75,9 +89,9 @@ typedef struct s_texture
 
 typedef struct s_cubed
 {
-	t_player	player;
+	t_camera	cam;
 	t_mapinfo	map;
-	t_texture	*texture;
+	t_texture	*tex;
 	void		*mlx;
 }	t_cubed;
 
