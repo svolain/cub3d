@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+         #
+#    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/05/14 09:23:14 by vsavolai         ###   ########.fr        #
+#    Updated: 2024/05/15 08:11:07 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,15 @@ ifeq ($(shell uname), Darwin)
 	MLXFLAGS += $(MLXBREW)
 endif
 
-MODULES		:=	main
+MODULES		:=	main \
+				init \
+				utils
 
-SOURCES 	= 	main.c
+SOURCES 	= 	main.c \
+				init.c \
+				error.c \
+				free.c \
+				safe.c
 
 SOURCEDIR	:=	$(addprefix $(SRCSDIR)/, $(MODULES))
 BUILDDIR	:=	$(addprefix $(OBJSDIR)/, $(MODULES))
