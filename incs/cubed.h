@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/15 08:20:32 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:09:08 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define WEST PI
 # define SOUTH 3 * PI / 2
 
-# define FOV PI / 4
+# define FOV PI / 2
 
 # define STEP_ANGLE 0.05
 # define STEP_MOVEMENT CELLSIZE / 8
@@ -56,51 +56,62 @@ typedef enum e_checker
 	V = 1
 }	t_checker;
 
-typedef enum e_elements
+typedef enum e_action
+{
+	ROTATE_LEFT,
+	ROTATE_RIGHT,
+	MOVE_UP,
+	MOVE_DOWN,
+	MOVE_LEFT,
+	MOVE_RIGHT
+}	t_action;
+
+typedef enum e_element
 {
 	FLOOR = 48,
 	WALL
-}	t_elements;
+}	t_element;
 
-typedef struct s_cam
+typedef struct s_camera
 {
 	float	x;
 	float	y;
 	float	a;
-}	t_cam;
+}	t_camera;
 
-typedef struct s_vec
+typedef struct s_vector
 {
 	float	x;
 	float	y;
 	float	a;
-}	t_vec;
+}	t_vector;
 
-typedef struct s_map
+typedef struct s_texture
 {
-	char	**map;
-	char	*file;
-	int		width;
-	int		height;
-	int		fd;
-}	t_map;
+	t_vector			*vec;
+	float				scale;
+	mlx_texture_t		*tex;
+	mlx_image_t			*img;
+	int					fd;
+	struct s_texture	*next;
+}	t_texture;
 
-typedef struct s_tex
+typedef struct s_mapinfo
 {
-	t_vec			vec;
-	float			scale;
-	void			*tex;
-	void			*img;
-	int				fd;
-	struct s_tex	*next;
-}	t_tex;
+	char		**matrix;
+	char		*file;
+	int			width;
+	int			height;
+	t_texture	*tex;
+	int			fd;
+}	t_mapinfo;
 
 typedef struct s_cubed
 {
-	t_cam		*cam;
-	t_map		*map;
-	t_tex		*tex;
-	void		*mlx;
+	t_camera	*cam;
+	t_mapinfo	*map;
+	t_texture	*tex;
+	mlx_t		*mlx;
 }	t_cubed;
 
 //		Initialization
@@ -109,13 +120,21 @@ void	init_game(t_cubed *game, char *file);
 //		Calculations
 void	calculate_rays(t_cubed *game);
 
+//		Hooks
+void	move_hook(mlx_key_data_t keydata, void *param);
+void	rotate_hook(mlx_key_data_t keydata, void *param);
+
 //		Error handling
-void	free_exit(t_cubed *game);
 void	error_exit(int errcode, char *errmsg, t_cubed *game);
 void	error_fatal(int errcode, char *errmsg, t_cubed *game);
 
+//		Free functions
+void	escape_window(mlx_key_data_t keydata, void *param);
+void	close_window(void *param);
+void	free_exit(t_cubed *game);
+
 //		Safety wrappers
-char	*safe_strjoin(char *s1, char *s2, char **buf, t_cubed *game);
+char	*safe_strjoin(char *s1, char *s2, char **free_on_err, t_cubed *game);
 void	*safe_calloc(size_t n, t_cubed *game);
 
 #endif

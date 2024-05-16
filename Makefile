@@ -6,7 +6,7 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/05/15 08:11:07 by jmertane         ###   ########.fr        #
+#    Updated: 2024/05/16 15:49:15 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,10 +39,15 @@ endif
 
 MODULES		:=	main \
 				init \
+				hook \
+				calc \
 				utils
 
 SOURCES 	= 	main.c \
 				init.c \
+				move.c \
+				rotate.c \
+				rays.c \
 				error.c \
 				free.c \
 				safe.c
