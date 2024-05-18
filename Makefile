@@ -3,16 +3,13 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+         #
+#    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2024/05/18 12:37:39 by jmertane         ###   ########.fr        #
-=======
-#    Updated: 2024/05/18 11:27:26 by vsavolai         ###   ########.fr        #
->>>>>>> a08461b596acd1186f9f553d4206caddc090f3a6
+#    Updated: 2024/05/18 21:00:46 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
 
 NAME 		:=	cub3d
 ERRTXT		:=	error.txt
@@ -45,21 +42,19 @@ MODULES		:=	main \
 				init \
 				hook \
 				calc \
-				utils \
-				draw
+				draw \
+				utils
 
-SOURCES 	= 	main.c \
+SOURCES 	:= 	main.c \
 				init.c \
-				keyhook.c \
+				keys.c \
 				rays.c \
+				walls.c \
+				colors.c \
 				error.c \
 				free.c \
-<<<<<<< HEAD
-				utils.c
-=======
-				safe.c \
+				utils.c \
 				minimap.c
->>>>>>> a08461b596acd1186f9f553d4206caddc090f3a6
 
 SOURCEDIR	:=	$(addprefix $(SRCSDIR)/, $(MODULES))
 BUILDDIR	:=	$(addprefix $(OBJSDIR)/, $(MODULES))
@@ -91,7 +86,7 @@ $1/%.o: %.c | $(BUILDDIR) $(DEPENDDIR)
 		printf "$(Y)\n"; sed '$$d' $(ERRTXT); \
 		printf "$(R)$(B)\n$(F)\nExiting...$(T)\n"; exit 1 ; \
 	else \
-		printf "$(C)$(B)☑$(T)$(V) $$<$ \n    $(C)⮑\t$(G)$(B)$$@$(T) \t\n"; \
+		printf "$(C)$(B)☑$(T)$(V) $(CC) $(CFLAGS) $$<$ \n    $(C)⮑\t$(G)$(B)$$@$(T) \t\n"; \
 	fi
 endef
 

@@ -6,13 +6,13 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:01:07 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/16 16:08:35 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/18 21:57:52 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-void	close_window(void *param)
+void	hook_close(void *param)
 {
 	t_cubed	*game;
 
@@ -44,20 +44,10 @@ static void	clean_assets(t_texture **lst, t_cubed *game)
 
 static void	destruct_map(t_mapinfo *map, t_cubed *game)
 {
-	/* int	i; */
-
 	if (map->fd != -1)
 		close(map->fd);
 	if (map->tex != NULL)
 		clean_assets(&map->tex, game);
-	/* if (map->matrix != NULL) */
-	/* { */
-	/* 	i = 0; */
-	/* 	while (*map->matrix[i]) */
-	/* 		free(map->matrix[i++]); */
-	/* 	free(map->matrix); */
-	/* 	map->matrix = NULL; */
-	/* } */
 	free(map);
 	map = NULL;
 }
@@ -78,3 +68,13 @@ void	free_exit(t_cubed *game, int excode)
 		free(game->cam);
 	exit(excode);
 }
+
+	/* int	i; */
+	/* if (map->matrix != NULL) */
+	/* { */
+	/* 	i = 0; */
+	/* 	while (*map->matrix[i]) */
+	/* 		free(map->matrix[i++]); */
+	/* 	free(map->matrix); */
+	/* 	map->matrix = NULL; */
+	/* } */

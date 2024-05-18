@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 08:08:54 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/18 12:36:31 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/18 21:56:14 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,21 @@ static void	calculate_ray(t_vector *vec, t_camera *cam, t_mapinfo *map)
 
 void	calculate_rays(t_cubed *game)
 {
-	t_vector	vec;
+	float		min_view;
+	float		max_view;
+	t_vector	*vec;
 
-	calculate_ray(&vec, game->cam, game->map);
-	draw_walls(game, &vec);
+	min_view = game->cam->a;
+	max_view = game->cam->a;
+	update_rotation(&min_view, FOV / 2, ROTATE_LEFT);
+	update_rotation(&max_view, FOV / 2, ROTATE_RIGHT);
+	while (min_view < max_view)
+	{
+		update_rotation(&max_view, DEGREE, ROTATE_RIGHT);
+		vec = safe_calloc(sizeof(t_vector), game);
+		vec->a = min_view;
+		calculate_ray(vec, game->cam, game->map);
+		draw_walls(game, vec);
+		free(vec);
+	}
 }

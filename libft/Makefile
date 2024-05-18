@@ -6,7 +6,7 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/28 10:37:44 by jmertane          #+#    #+#              #
-#    Updated: 2024/05/07 21:32:13 by jmertane         ###   ########.fr        #
+#    Updated: 2024/05/18 16:04:23 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -88,7 +88,7 @@ Y			=	\033[33m
 
 vpath %.c $(SOURCEDIR)
 
-define cc_cmd
+define build_cmd
 $1/%.o: %.c | $(BUILDDIR) $(DEPENDDIR)
 	@if ! $(CC) $(CFLAGS) $(INCS) $(DEPFLAGS) $$< -o $$@ 2> $(ERRTXT); then \
 		printf "$(R)$(B)\nERROR!\n$(F)$(T)\n"; \
@@ -97,7 +97,7 @@ $1/%.o: %.c | $(BUILDDIR) $(DEPENDDIR)
 		printf "$(Y)\n"; sed '$$d' $(ERRTXT); \
 		printf "$(R)$(B)\n$(F)\nExiting...$(T)\n"; exit 1 ; \
 	else \
-		printf "$(C)$(B)☑$(T)$(V) $$<$ \n    $(C)⮑\t$(G)$(B)$$@$(T) \t\n"; \
+		printf "$(C)$(B)☑$(T)$(V) $(CC) $(CFLAGS) $$<$ \n    $(C)⮑\t$(G)$(B)$$@$(T) \t\n"; \
 	fi
 endef
 
@@ -136,6 +136,6 @@ $(BUILDDIR) $(DEPENDDIR):
 $(DEPS):
 	include $(wildcard $(DEPS))
 
-$(foreach build, $(BUILDDIR), $(eval $(call cc_cmd, $(build))))
+$(foreach build, $(BUILDDIR), $(eval $(call build_cmd, $(build))))
 
 .PHONY: all debug clean fclean re title finish

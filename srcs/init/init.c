@@ -6,26 +6,20 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:01:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/18 13:38:24 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/18 19:27:52 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
 char *test_map[] = { "11111111\n",
-				"10100001\n",
-				"10100001\n",
-				"10100001\n",
-				"10000001\n",
-				"10000101\n",
-				"10000001\n",
-				"11111111" };
-
-static void	init_hooks(t_cubed *game)
-{
-	mlx_close_hook(game->mlx, &close_window, game);
-	mlx_key_hook(game->mlx, &keyhooks, game);
-}
+					"10100001\n",
+					"10100001\n",
+					"10100001\n",
+					"10000001\n",
+					"10000101\n",
+					"10000001\n",
+					"11111111" };
 
 static void	init_map(t_mapinfo *map, t_camera *cam, char *file)
 {
@@ -49,5 +43,4 @@ void	init_game(t_cubed *game, char *file)
 	if (!game->mlx)
 		error_exit(ERR_MLX, MSG_MLX, game);
 	init_minimap(game);
-	init_hooks(game);
 }
