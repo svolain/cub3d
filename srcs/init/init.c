@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:01:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/16 16:18:32 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/18 10:54:23 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-char *map[] = { "11111111\n",
+char *mappi[] = { "11111111\n",
 				"10100001\n",
 				"10100001\n",
 				"10100001\n",
@@ -32,10 +32,13 @@ static void	init_hooks(t_cubed *game)
 
 static void	init_map(t_mapinfo *map, t_camera *cam, char *file)
 {
+	int	i;
+
+	i = 0;
 	map->fd = -1;
 	map->file = file;
 	// TODO: map parsing goes here
-	map->matrix = map; // gives compiling error...
+	map->matrix = mappi;
 	map->width = 8;
 	map->height = 8;
 	cam->x = 4 * CELLSIZE;
@@ -50,7 +53,10 @@ void	init_game(t_cubed *game, char *file)
 	game->cam = safe_calloc(sizeof(t_camera), game);
 	init_map(game->map, game->cam, file);
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, false);
+	
+	//start drawing minimap
 	if (!game->mlx)
 		error_exit(ERR_MLX, MSG_MLX, game);
+	init_minimap(game);
 	init_hooks(game);
 }

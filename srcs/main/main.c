@@ -15,9 +15,9 @@
 int	main(int argc, char **argv)
 {
 	t_cubed	game;
-
-	if (argc != 2)
-		error_exit(ERR_ARGC, MSG_ARGC, NULL);
+	(void)argc;
+	//if (argc != 2)
+	//	error_exit(ERR_ARGC, MSG_ARGC, NULL);
 	init_game(&game, argv[1]);
 	mlx_loop(game.mlx);
 	free_exit(&game);

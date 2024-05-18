@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
+#    By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/05/16 15:49:15 by jmertane         ###   ########.fr        #
+#    Updated: 2024/05/18 11:27:26 by vsavolai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,8 @@ MODULES		:=	main \
 				init \
 				hook \
 				calc \
-				utils
+				utils \
+				draw
 
 SOURCES 	= 	main.c \
 				init.c \
@@ -50,7 +51,8 @@ SOURCES 	= 	main.c \
 				rays.c \
 				error.c \
 				free.c \
-				safe.c
+				safe.c \
+				minimap.c
 
 SOURCEDIR	:=	$(addprefix $(SRCSDIR)/, $(MODULES))
 BUILDDIR	:=	$(addprefix $(OBJSDIR)/, $(MODULES))
