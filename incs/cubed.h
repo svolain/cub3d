@@ -84,6 +84,7 @@ typedef struct s_vector
 	float	x;
 	float	y;
 	float	a;
+	float	dist;
 }	t_vector;
 
 typedef struct s_texture
@@ -117,11 +118,14 @@ typedef struct s_cubed
 //		Init
 void	init_game(t_cubed *game, char *file);
 
+//		Hooks
+void	keyhooks(mlx_key_data_t keydata, void *param);
+
 //		Calculations
 void	calculate_rays(t_cubed *game);
 
-//		Hooks
-void	keyhooks(mlx_key_data_t keydata, void *param);
+//		Drawing
+void	draw_walls(t_cubed *game, t_vector *vec);
 
 //		Error handling
 void	error_exit(int errcode, char *errmsg, t_cubed *game);

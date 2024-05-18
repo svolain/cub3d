@@ -89,11 +89,13 @@ static void	calculate_ray(t_vector *vec, t_camera *cam, t_mapinfo *map)
 	{
 		vec->x = horizontal.x;
 		vec->y = horizontal.y;
+		vec->dist = distance[H];
 	}
 	else
 	{
 		vec->x = vertical.x;
 		vec->y = vertical.y;
+		vec->dist = distance[V];
 	}
 }
 
@@ -102,4 +104,5 @@ void	calculate_rays(t_cubed *game)
 	t_vector	vec;
 
 	calculate_ray(&vec, game->cam, game->map);
+	draw_walls(game, &vec);
 }
