@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 20:57:57 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/14 20:59:05 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/18 12:33:17 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ void	error_fatal(int errcode, char *errmsg, t_cubed *game)
 {
 	if (errmsg != NULL)
 		perror(errmsg);
-	free_exit(game);
-	exit(errcode);
+	free_exit(game, errcode);
 }
 
 void	error_exit(int errcode, char *errmsg, t_cubed *game)
@@ -44,8 +43,7 @@ void	error_exit(int errcode, char *errmsg, t_cubed *game)
 		else
 			error_log(errmsg, ": ", strerror(errno));
 	}
-	free_exit(game);
 	if (errcode == ERR_MLX)
-		exit(mlx_errno);
-	exit(errcode);
+		free_exit(game, mlx_errno);
+	free_exit(game, errcode);
 }

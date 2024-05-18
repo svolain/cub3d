@@ -12,26 +12,12 @@
 
 #include <cubed.h>
 
-void	escape_window(mlx_key_data_t keydata, void *param)
-{
-	t_cubed	*game;
-
-	game = param;
-	if (keydata.key == MLX_KEY_ESCAPE
-		&& keydata.action == MLX_PRESS)
-	{
-		free_exit(game);
-		exit (NOERROR);
-	}
-}
-
 void	close_window(void *param)
 {
 	t_cubed	*game;
 
 	game = param;
-	free_exit(game);
-	exit (NOERROR);
+	free_exit(game, NOERROR);
 }
 
 static void	clean_assets(t_texture **lst, t_cubed *game)
@@ -58,25 +44,25 @@ static void	clean_assets(t_texture **lst, t_cubed *game)
 
 static void	destruct_map(t_mapinfo *map, t_cubed *game)
 {
-	int	i;
+	/* int	i; */
 
 	if (map->fd != -1)
 		close(map->fd);
 	if (map->tex != NULL)
 		clean_assets(&map->tex, game);
-	if (map->matrix != NULL)
-	{
-		i = 0;
-		while (*map->matrix[i])
-			free(map->matrix[i++]);
-		free(map->matrix);
-		map->matrix = NULL;
-	}
+	/* if (map->matrix != NULL) */
+	/* { */
+	/* 	i = 0; */
+	/* 	while (*map->matrix[i]) */
+	/* 		free(map->matrix[i++]); */
+	/* 	free(map->matrix); */
+	/* 	map->matrix = NULL; */
+	/* } */
 	free(map);
 	map = NULL;
 }
 
-void	free_exit(t_cubed *game)
+void	free_exit(t_cubed *game, int excode)
 {
 	if (!game)
 		return ;
@@ -90,4 +76,5 @@ void	free_exit(t_cubed *game)
 		mlx_terminate(game->mlx);
 	if (game->cam != NULL)
 		free(game->cam);
+	exit(excode);
 }

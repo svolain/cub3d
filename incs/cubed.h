@@ -114,27 +114,26 @@ typedef struct s_cubed
 	mlx_t		*mlx;
 }	t_cubed;
 
-//		Initialization
+//		Init
 void	init_game(t_cubed *game, char *file);
 
 //		Calculations
 void	calculate_rays(t_cubed *game);
 
 //		Hooks
-void	move_hook(mlx_key_data_t keydata, void *param);
-void	rotate_hook(mlx_key_data_t keydata, void *param);
+void	keyhooks(mlx_key_data_t keydata, void *param);
 
 //		Error handling
 void	error_exit(int errcode, char *errmsg, t_cubed *game);
 void	error_fatal(int errcode, char *errmsg, t_cubed *game);
 
-//		Free functions
-void	escape_window(mlx_key_data_t keydata, void *param);
+//		Freeing
 void	close_window(void *param);
-void	free_exit(t_cubed *game);
+void	free_exit(t_cubed *game, int excode);
 
-//		Safety wrappers
-char	*safe_strjoin(char *s1, char *s2, char **free_on_err, t_cubed *game);
+//		Utilities
+float	degree_to_rad(float degree);
+void	check_rotation(float *angle, t_action action);
 void	*safe_calloc(size_t n, t_cubed *game);
 
 #endif

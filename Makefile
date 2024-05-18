@@ -6,7 +6,7 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/05/16 15:49:15 by jmertane         ###   ########.fr        #
+#    Updated: 2024/05/18 12:37:39 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,12 +45,11 @@ MODULES		:=	main \
 
 SOURCES 	= 	main.c \
 				init.c \
-				move.c \
-				rotate.c \
+				keyhook.c \
 				rays.c \
 				error.c \
 				free.c \
-				safe.c
+				utils.c
 
 SOURCEDIR	:=	$(addprefix $(SRCSDIR)/, $(MODULES))
 BUILDDIR	:=	$(addprefix $(OBJSDIR)/, $(MODULES))
