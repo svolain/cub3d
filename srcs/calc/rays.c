@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rays.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 08:08:54 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/20 16:44:55 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:59:56 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,24 +114,24 @@ void	calculate_rays(t_cubed *game)
 	draw_minimap(game);
 	angle = game->cam->a;
 	update_rotation(&angle, FOV / 2, ROTATE_LEFT);
+	vec = safe_calloc(sizeof(t_vector), game);
 	i = 0;
 	while (i < 66)
 	{
 		update_rotation(&angle, DEGREE, ROTATE_RIGHT);
-		vec = safe_calloc(sizeof(t_vector), game);
+		//vec = safe_calloc(sizeof(t_vector), game);
 		vec->a = angle;
 		calculate_ray(vec, game->cam, game->map);
-		printf("iter[%d] x = %f y = %f dist = %f angle = %f\n"
-			, i, vec->x, vec->y, vec->dist, angle);
+		/*printf("iter[%d] x = %f y = %f dist = %f angle = %f\n"
+			, i, vec->x, vec->y, vec->dist, angle);*/
 		draw_walls(game, vec);
-		free(vec);
+		game->map->endx = vec->x;
+		game->map->endy = vec->y;
+		draw_rays(game, vec->x, vec->y);
+		//free(vec);
 		i++;
 	}
-
-	// calculate_ray(&vec, game->cam, game->map);
-	// game->map->endx = vec.x;
-	// game->map->endy = vec.y;
-
+	free(vec);
 	/*mlx_image_t		*t;
 	t = mlx_new_image(game->mlx, 8, 8);
 	ft_memset(t->pixels, 166, t->width * t->height * BPP);

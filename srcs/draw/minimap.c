@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/20 16:44:45 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:45:29 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ void	draw_rays(t_cubed *game, int endx, int endy)
 	float	pixelX;
 	float	pixelY;
 
-	deltaX = endx / 2 - game->map->mplayer->instances[0].x;
-	deltaY = endy / 2 - game->map->mplayer->instances[0].y;
+	deltaX = (endx - game->cam->x) / 2;
+	deltaY = (endy - game->cam->y) / 2;
 	pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 	deltaX /= pixels;
 	deltaY /= pixels;
-	pixelX = game->map->mplayer->instances[0].x;
-	pixelY = game->map->mplayer->instances[0].y;
+	pixelX = game->cam->x / 2;
+	pixelY = game->cam->y / 2;
 	while(pixels)
 	{
 		mlx_put_pixel(game->map->mfloor, pixelX, pixelY, 200);
@@ -38,26 +38,46 @@ void	draw_rays(t_cubed *game, int endx, int endy)
 
 void	move_minimap(t_cubed *game, t_action action)
 {
+	mlx_image_t		*floor;
+	
 	if (action == MOVE_UP)
-		game->map->mplayer->instances[0].y -= STEP_MOVEMENT / 4;
+		game->map->mplayer->instances[0].y -= STEP_MOVEMENT / 2;
 	else if (action == MOVE_DOWN)
-		game->map->mplayer->instances[0].y += STEP_MOVEMENT / 4;
+		game->map->mplayer->instances[0].y += STEP_MOVEMENT / 2;
 	else if (action == MOVE_LEFT)
-		game->map->mplayer->instances[0].x -= STEP_MOVEMENT / 4;
+		game->map->mplayer->instances[0].x -= STEP_MOVEMENT / 2;
 	else if (action == MOVE_RIGHT)
-		game->map->mplayer->instances[0].x += STEP_MOVEMENT / 4;
-	draw_rays(game, game->map->endx, game->map->endy);
+		game->map->mplayer->instances[0].x += STEP_MOVEMENT / 2;
+	if (game->map->msfloor == NULL)
+	{
+		mlx_delete_image(game->mlx, game->map->mfloor);
+		game->map->mfloor = NULL;
+		floor = mlx_new_image(game->mlx, CELLSIZE * 4, CELLSIZE * 4);
+		game->map->msfloor = floor;
+	}
+	else
+	{
+		mlx_delete_image(game->mlx, game->map->msfloor);
+		game->map->msfloor = NULL;
+		floor = mlx_new_image(game->mlx, CELLSIZE * 4, CELLSIZE * 4);
+		game->map->mfloor = floor;
+	}
+	draw_minimap(game);
+	//draw_rays(game, game->map->endx, game->map->endy);
 }
 
 void	draw_minimap(t_cubed *game)
 {
-	//int py;
-	int	i;
-	int	j;
+	int				i;
+	int				j;
+	mlx_image_t 	*floor;
 
 	i = 0;
-	//py = SCREEN_HEIGHT - game->cam->y / 2;
-	mlx_image_to_window(game->mlx, game->map->mfloor, 0, 0);
+	if (game->map->msfloor == NULL)
+		floor = game->map->mfloor;
+	else
+		floor = game->map->msfloor;
+	mlx_image_to_window(game->mlx, floor, 0, 0);
 	while (i < MINIMAP_MAX && i < game->map->height)
 	{
 		j = 0;
@@ -77,7 +97,9 @@ void	init_minimap(t_cubed *game)
 	mlx_image_t 	*player;
 	mlx_image_t 	*wall;
 	mlx_image_t		*floor;
+	mlx_image_t 	*sfloor;
 
+	sfloor = NULL;
 	player = mlx_new_image(game->mlx, 8, 8);
 	ft_memset(player->pixels, 255, player->width * player->height * BPP);
 	wall = mlx_new_image(game->mlx, CELLSIZE / 2 - 2, CELLSIZE / 2 - 2);
@@ -87,6 +109,7 @@ void	init_minimap(t_cubed *game)
 	game->map->mplayer = player;
 	game->map->mwall = wall;
 	game->map->mfloor = floor;
+	game->map->msfloor = sfloor;
 	// draw_minimap(game);
 }
 

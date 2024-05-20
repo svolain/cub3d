@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubed.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/20 16:45:55 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:23:46 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ typedef struct s_mapinfo
 	mlx_image_t	*mplayer;
 	mlx_image_t	*mwall;
 	mlx_image_t	*mfloor;
+	mlx_image_t	*msfloor;
 	int			endx;
 	int			endy;
 }	t_mapinfo;
@@ -144,6 +145,7 @@ void	draw_walls(t_cubed *game, t_vector *vec);
 void	init_minimap(t_cubed *game);
 void	draw_minimap(t_cubed *game);
 void	move_minimap(t_cubed *game, t_action action);
+void	draw_rays(t_cubed *game, int endx, int endy);
 
 //		Error handling
 void	error_exit(int errcode, char *errmsg, t_cubed *game);
