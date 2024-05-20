@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/18 22:02:26 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:33:18 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,8 @@ void	free_exit(t_cubed *game, int excode);
 //		Coloring
 void	color_image(mlx_image_t *image, int32_t r, int32_t g, int32_t b);
 void	alpha_blend(mlx_image_t *image, int32_t alpha, uint32_t x, uint32_t y);
-int32_t	get_rgba(int r, int g, int b, int a);
-int32_t	get_pixel(int rgba, t_action action);
+int32_t	get_rgba(int32_t r, int32_t g, int32_t b, int32_t a);
+int32_t	get_pixel(int32_t rgba, t_action action);
 
 //		Utilities
 float	degree_to_radian(float degree);
