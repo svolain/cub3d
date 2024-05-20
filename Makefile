@@ -6,7 +6,7 @@
 #    By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/05/18 11:27:26 by vsavolai         ###   ########.fr        #
+#    Updated: 2024/05/18 13:07:42 by vsavolai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,12 +46,11 @@ MODULES		:=	main \
 
 SOURCES 	= 	main.c \
 				init.c \
-				move.c \
-				rotate.c \
+				keyhook.c \
 				rays.c \
 				error.c \
 				free.c \
-				safe.c \
+				utils.c \
 				minimap.c
 
 SOURCEDIR	:=	$(addprefix $(SRCSDIR)/, $(MODULES))

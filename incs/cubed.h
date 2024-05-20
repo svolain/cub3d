@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/18 10:57:57 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:20:49 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@
 # define SCREEN_TITLE "cub3d"
 # define PI 3.1415926535898
 # define DEGREE PI / 360
+# define MINIMAP_MAX 10
+# define MINIMAP_Y SCREEN_HEIGHT - CELLSIZE * 4
+
 
 # define EAST 0
 # define NORTH PI / 2
@@ -104,6 +107,11 @@ typedef struct s_mapinfo
 	int			height;
 	t_texture	*tex;
 	int			fd;
+	mlx_image_t	*mplayer;
+	mlx_image_t	*mwall;
+	mlx_image_t	*mfloor;
+	int			endx;
+	int			endy;
 }	t_mapinfo;
 
 typedef struct s_cubed
@@ -114,7 +122,7 @@ typedef struct s_cubed
 	mlx_t		*mlx;
 }	t_cubed;
 
-//		Initialization
+//		Init
 void	init_game(t_cubed *game, char *file);
 void 	init_minimap(t_cubed *game);
 
@@ -122,20 +130,20 @@ void 	init_minimap(t_cubed *game);
 void	calculate_rays(t_cubed *game);
 
 //		Hooks
-void	move_hook(mlx_key_data_t keydata, void *param);
-void	rotate_hook(mlx_key_data_t keydata, void *param);
+void	keyhooks(mlx_key_data_t keydata, void *param);
+void	move_minimap(t_cubed *game, t_action action);
 
 //		Error handling
 void	error_exit(int errcode, char *errmsg, t_cubed *game);
 void	error_fatal(int errcode, char *errmsg, t_cubed *game);
 
-//		Free functions
-void	escape_window(mlx_key_data_t keydata, void *param);
+//		Freeing
 void	close_window(void *param);
-void	free_exit(t_cubed *game);
+void	free_exit(t_cubed *game, int excode);
 
-//		Safety wrappers
-char	*safe_strjoin(char *s1, char *s2, char **free_on_err, t_cubed *game);
+//		Utilities
+float	degree_to_rad(float degree);
+void	check_rotation(float *angle, t_action action);
 void	*safe_calloc(size_t n, t_cubed *game);
 
 #endif

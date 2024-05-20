@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rays.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 08:08:54 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/16 15:25:17 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:29:47 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,23 +92,16 @@ static void	calculate_ray(t_vector *vec, t_camera *cam, t_mapinfo *map)
 	}
 	else
 	{
-		vec->x = vertical.x;
-		vec->y = vertical.y;
+		vec->x = vertical.x / 2;
+		vec->y = SCREEN_HEIGHT - vertical.y / 2;
 	}
 }
 
 void	calculate_rays(t_cubed *game)
 {
-	t_texture	*tex;
-	float		offset;
-	int			i;
+	t_vector	vec;
 
-	i = 0;
-	offset = game->cam->a - FOV / 2;
-	while (i < 90)
-	{
-		tex = game->tex + i++;
-		tex->vec->a = offset + DEGREE;
-		calculate_ray(tex->vec, game->cam, game->map);
-	}
+	calculate_ray(&vec, game->cam, game->map);
+	game->map->endx = vec.x;
+	game->map->endy = vec.y;
 }

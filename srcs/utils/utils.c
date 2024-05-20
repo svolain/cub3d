@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   safe.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/14 21:48:30 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/16 16:13:40 by jmertane         ###   ########.fr       */
+/*   Created: 2024/05/18 12:32:56 by jmertane          #+#    #+#             */
+/*   Updated: 2024/05/18 12:32:59 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-char	*safe_strjoin(char *s1, char *s2, char **free_on_err, t_cubed *game)
+void	check_rotation(float *angle, t_action action)
 {
-	char	*s;
+	if (action == ROTATE_LEFT && *angle < 0)
+		*angle += 2 * PI;
+	else if (action == ROTATE_RIGHT && *angle > 2 * PI)
+		*angle -= 2 * PI;
+}
 
-	if (!s1 || !s2)
-		return (NULL);
-	s = ft_strjoin(s1, s2);
-	if (!s)
-	{
-		if (*free_on_err != NULL)
-			free(*free_on_err);
-		error_fatal(ENOMEM, MSG_MEM, game);
-	}
-	return (s);
+float	degree_to_rad(float degree)
+{
+	return (degree * PI / 180);
 }
 
 void	*safe_calloc(size_t n, t_cubed *game)

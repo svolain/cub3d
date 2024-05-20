@@ -15,11 +15,12 @@
 int	main(int argc, char **argv)
 {
 	t_cubed	game;
-	(void)argc;
-	//if (argc != 2)
-	//	error_exit(ERR_ARGC, MSG_ARGC, NULL);
+
+	argc = 0;
+	// if (argc != 2)
+	// 	error_exit(ERR_ARGC, MSG_ARGC, NULL);
 	init_game(&game, argv[1]);
 	mlx_loop(game.mlx);
-	free_exit(&game);
-	return (NOERROR);
+	free_exit(&game, NOERROR);
+	/* return (NOERROR); */
 }

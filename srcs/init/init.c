@@ -6,13 +6,13 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:01:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/18 10:54:23 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/18 13:05:52 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-char *mappi[] = { "11111111\n",
+char *test_map[] = { "11111111\n",
 				"10100001\n",
 				"10100001\n",
 				"10100001\n",
@@ -24,10 +24,7 @@ char *mappi[] = { "11111111\n",
 static void	init_hooks(t_cubed *game)
 {
 	mlx_close_hook(game->mlx, &close_window, game);
-	mlx_key_hook(game->mlx, &escape_window, game);
-	mlx_key_hook(game->mlx, &move_hook, game);
-	mlx_key_hook(game->mlx, &rotate_hook, game);
-	// TODO: mlx_mouse_hook(game->mlx, &rotate_hook, game);
+	mlx_key_hook(game->mlx, &keyhooks, game);
 }
 
 static void	init_map(t_mapinfo *map, t_camera *cam, char *file)
@@ -37,8 +34,7 @@ static void	init_map(t_mapinfo *map, t_camera *cam, char *file)
 	i = 0;
 	map->fd = -1;
 	map->file = file;
-	// TODO: map parsing goes here
-	map->matrix = mappi;
+	map->matrix = test_map;
 	map->width = 8;
 	map->height = 8;
 	cam->x = 4 * CELLSIZE;
