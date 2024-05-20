@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 08:08:54 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/18 21:56:14 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:44:55 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,22 +85,22 @@ static void	calculate_ray(t_vector *vec, t_camera *cam, t_mapinfo *map)
 
 	distance[H] = horizontal_collosion(&horizontal, cam, map);
 	distance[V] = vertical_collosion(&vertical, cam, map);
-	printf("disth = %f distv = %f\n", distance[H], distance[V]);
+	// printf("disth = %f distv = %f\n", distance[H], distance[V]);
 	if (distance[H] < distance[V])
 	{
 		vec->x = horizontal.x;
 		vec->y = horizontal.y;
 		vec->dist = distance[H];
-		printf("camx = %f camy = %f vecx = %f vecy = %f angle = %f dist = %f\n"
-			, cam->x, cam->y, vec->x, vec->y, vec->a, vec->dist);
+		// printf("camx = %f camy = %f vecx = %f vecy = %f angle = %f dist = %f\n"
+		// 	, cam->x, cam->y, vec->x, vec->y, vec->a, vec->dist);
 	}
 	else
 	{
 		vec->x = vertical.x;
 		vec->y = vertical.y;
 		vec->dist = distance[V];
-		printf("camx = %f camy = %f vecx = %f vecy = %f angle = %f dist = %f\n"
-			, cam->x, cam->y, vec->x, vec->y, vec->a, vec->dist);
+		// printf("camx = %f camy = %f vecx = %f vecy = %f angle = %f dist = %f\n"
+		// 	, cam->x, cam->y, vec->x, vec->y, vec->a, vec->dist);
 	}
 }
 
@@ -111,6 +111,7 @@ void	calculate_rays(t_cubed *game)
 	int			i;
 
 	draw_floor(game);
+	draw_minimap(game);
 	angle = game->cam->a;
 	update_rotation(&angle, FOV / 2, ROTATE_LEFT);
 	i = 0;
@@ -126,4 +127,13 @@ void	calculate_rays(t_cubed *game)
 		free(vec);
 		i++;
 	}
+
+	// calculate_ray(&vec, game->cam, game->map);
+	// game->map->endx = vec.x;
+	// game->map->endy = vec.y;
+
+	/*mlx_image_t		*t;
+	t = mlx_new_image(game->mlx, 8, 8);
+	ft_memset(t->pixels, 166, t->width * t->height * BPP);
+	mlx_image_to_window(game->mlx, t, vec.x, vec.y); */
 }

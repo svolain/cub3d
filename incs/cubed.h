@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/20 16:33:18 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:45:55 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define DEGREE degree_to_radian(1)
 # define FOV degree_to_radian(66)
 # define BPP sizeof(int)
+# define MINIMAP_MAX 10
 
 # define FMT_BOLD_RED	"\033[1;31m"
 # define FMT_YELLOW		"\033[0;33m"
@@ -109,6 +110,11 @@ typedef struct s_mapinfo
 	int			height;
 	t_texture	*tex;
 	int			fd;
+	mlx_image_t	*mplayer;
+	mlx_image_t	*mwall;
+	mlx_image_t	*mfloor;
+	int			endx;
+	int			endy;
 }	t_mapinfo;
 
 typedef struct s_cubed
@@ -121,7 +127,6 @@ typedef struct s_cubed
 
 //		Init
 void	init_game(t_cubed *game, char *file);
-void	init_minimap(t_cubed *game);
 
 //		Hooks
 void	hook_close(void *param);
@@ -134,6 +139,11 @@ void	calculate_rays(t_cubed *game);
 //		Drawing
 void	draw_floor(t_cubed *game);
 void	draw_walls(t_cubed *game, t_vector *vec);
+
+//		Minimap
+void	init_minimap(t_cubed *game);
+void	draw_minimap(t_cubed *game);
+void	move_minimap(t_cubed *game, t_action action);
 
 //		Error handling
 void	error_exit(int errcode, char *errmsg, t_cubed *game);

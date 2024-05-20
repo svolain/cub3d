@@ -6,10 +6,9 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/05/18 21:00:46 by jmertane         ###   ########.fr        #
+#    Updated: 2024/05/20 16:42:16 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
 
 NAME 		:=	cub3d
 ERRTXT		:=	error.txt

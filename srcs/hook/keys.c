@@ -6,16 +6,11 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:30:49 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/18 21:49:41 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:38:48 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
-
-static void	update_scene(t_cubed *game)
-{
-	calculate_rays(game);
-}
 
 static void	rotate_camera(t_cubed *game, t_action action)
 {
@@ -23,7 +18,8 @@ static void	rotate_camera(t_cubed *game, t_action action)
 		update_rotation(&game->cam->a, STEP_ANGLE, ROTATE_LEFT);
 	else if (action == ROTATE_RIGHT)
 		update_rotation(&game->cam->a, STEP_ANGLE, ROTATE_RIGHT);
-	update_scene(game);
+	calculate_rays(game);
+	move_minimap(game, action);
 }
 
 static void	move_camera(t_cubed *game, t_action action)
@@ -36,12 +32,13 @@ static void	move_camera(t_cubed *game, t_action action)
 		game->cam->x -= STEP_MOVEMENT;
 	else if (action == MOVE_RIGHT)
 		game->cam->x += STEP_MOVEMENT;
-	update_scene(game);
+	calculate_rays(game);
+	move_minimap(game, action);
 }
 
 void	hook_keys(mlx_key_data_t keydata, void *param)
 {
-	t_cubed	*game;
+	t_cubed		*game;
 
 	game = param;
 	if (keydata.action == MLX_PRESS)
