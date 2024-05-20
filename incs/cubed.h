@@ -138,7 +138,7 @@ void	calculate_rays(t_cubed *game);
 
 //		Drawing
 void	draw_floor(t_cubed *game);
-void	draw_walls(t_cubed *game, t_vector *vec);
+void	draw_walls(t_cubed *game, t_vector *vec, int i);
 
 //		Minimap
 void	init_minimap(t_cubed *game);
