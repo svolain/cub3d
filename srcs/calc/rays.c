@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 08:08:54 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/20 15:29:47 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:11:33 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ static void	calculate_ray(t_vector *vec, t_camera *cam, t_mapinfo *map)
 	}
 	else
 	{
-		vec->x = vertical.x / 2;
-		vec->y = SCREEN_HEIGHT - vertical.y / 2;
+		vec->x = vertical.x;
+		vec->y = vertical.y;
 	}
 }
 
@@ -104,4 +104,9 @@ void	calculate_rays(t_cubed *game)
 	calculate_ray(&vec, game->cam, game->map);
 	game->map->endx = vec.x;
 	game->map->endy = vec.y;
+
+	/*mlx_image_t		*t;
+	t = mlx_new_image(game->mlx, 8, 8);
+	ft_memset(t->pixels, 166, t->width * t->height * BPP);
+	mlx_image_to_window(game->mlx, t, vec.x, vec.y); */
 }

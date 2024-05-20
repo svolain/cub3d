@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:30:49 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/18 15:31:39 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:04:07 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	rotate_camera(t_cubed *game, t_action action)
 		check_rotation(&game->cam->a, ROTATE_RIGHT);
 	}
 	calculate_rays(game);
+	move_minimap(game, action);
 }
 
 static void	move_camera(t_cubed *game, t_action action)

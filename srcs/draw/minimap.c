@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/20 15:29:03 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:08:20 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	draw_rays(t_cubed *game, int endx, int endy)
 	float	pixelX;
 	float	pixelY;
 	
-	deltaX = endx - game->map->mplayer->instances[0].x;
-	deltaY = endy - game->map->mplayer->instances[0].y;
+	deltaX = endx / 2 - game->map->mplayer->instances[0].x;
+	deltaY = endy / 2 - game->map->mplayer->instances[0].y;
 	pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 	deltaX /= pixels;
 	deltaY /= pixels;
@@ -51,25 +51,25 @@ void	move_minimap(t_cubed *game, t_action action)
 
 void	draw_minimap(t_cubed *game)
 {
-	int py;
+	//int py;
 	int	i;
 	int	j;
 
 	i = 0;
-	py = SCREEN_HEIGHT - game->cam->y / 2;
-	mlx_image_to_window(game->mlx, game->map->mfloor, 0, MINIMAP_Y);
+	//py = SCREEN_HEIGHT - game->cam->y / 2;
+	mlx_image_to_window(game->mlx, game->map->mfloor, 0, 0);
 	while (i < MINIMAP_MAX && i < game->map->height)
 	{
 		j = 0;
 		while(j < MINIMAP_MAX && j < game->map->width)
 		{
 			if(game->map->matrix[i][j] == '1')
-				mlx_image_to_window(game->mlx, game->map->mwall, j * CELLSIZE / 2, MINIMAP_Y + i * CELLSIZE / 2);
+				mlx_image_to_window(game->mlx, game->map->mwall, j * CELLSIZE / 2, i * CELLSIZE / 2);
 			j++;
 		}
 		i++;
 	}
-	mlx_image_to_window(game->mlx, game->map->mplayer, game->cam->x / 2, py);
+	mlx_image_to_window(game->mlx, game->map->mplayer, game->cam->x / 2, game->cam->y / 2);
 }
 
 void	init_minimap(t_cubed *game)
