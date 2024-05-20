@@ -30,11 +30,11 @@ void	draw_walls(t_cubed *game, t_vector *vec)
 	mlx_image_t	*walld;
 	float		height;
 
-	draw_floor(game);
+	/* draw_floor(game); */
 	height = CELLSIZE * SCREEN_HEIGHT / vec->dist;
 	if (height > SCREEN_HEIGHT)
 		height = SCREEN_HEIGHT;
-	walld = mlx_new_image(game->mlx, 8, height);
+	walld = mlx_new_image(game->mlx, 2, height);
 	color_image(walld, 0, 100, 200);
 	mlx_image_to_window(game->mlx, walld, vec->x, vec->y);
 }

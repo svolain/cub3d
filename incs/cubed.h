@@ -125,12 +125,14 @@ void	init_minimap(t_cubed *game);
 
 //		Hooks
 void	hook_close(void *param);
-void	hook_keys(void *param);
+void	hook_keys(mlx_key_data_t keydata, void *param);
+/* void	hook_keys(void *param); */
 
 //		Calculations
 void	calculate_rays(t_cubed *game);
 
 //		Drawing
+void	draw_floor(t_cubed *game);
 void	draw_walls(t_cubed *game, t_vector *vec);
 
 //		Error handling

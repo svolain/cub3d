@@ -30,7 +30,7 @@ static void	init_map(t_mapinfo *map, t_camera *cam, char *file)
 	map->height = 8;
 	cam->x = 4 * CELLSIZE;
 	cam->y = 4 * CELLSIZE;
-	cam->a = NORTH - 0.0001f;
+	cam->a = NORTH - 0.1;
 }
 
 void	init_game(t_cubed *game, char *file)

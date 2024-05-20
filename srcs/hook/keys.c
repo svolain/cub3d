@@ -39,23 +39,47 @@ static void	move_camera(t_cubed *game, t_action action)
 	update_scene(game);
 }
 
-void	hook_keys(void *param)
+void	hook_keys(mlx_key_data_t keydata, void *param)
 {
 	t_cubed	*game;
 
 	game = param;
-	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
-		hook_close(game);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
-		move_camera(game, MOVE_UP);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
-		move_camera(game, MOVE_DOWN);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_A))
-		move_camera(game, MOVE_LEFT);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
-		move_camera(game, MOVE_RIGHT);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
-		rotate_camera(game, ROTATE_RIGHT);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
-		rotate_camera(game, ROTATE_LEFT);
+	if (keydata.action == MLX_PRESS)
+	{
+		if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
+			free_exit(game, NOERROR);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_W))
+			move_camera(game, MOVE_UP);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_S))
+			move_camera(game, MOVE_DOWN);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_A))
+			move_camera(game, MOVE_LEFT);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_D))
+			move_camera(game, MOVE_RIGHT);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
+			rotate_camera(game, ROTATE_RIGHT);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
+			rotate_camera(game, ROTATE_LEFT);
+	}
 }
+
+/* void	hook_keys(void *param) */
+/* { */
+/* 	t_cubed	*game; */
+/**/
+/* 	game = param; */
+/* 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE)) */
+/* 		hook_close(game); */
+/* 	if (mlx_is_key_down(game->mlx, MLX_KEY_W)) */
+/* 		move_camera(game, MOVE_UP); */
+/* 	if (mlx_is_key_down(game->mlx, MLX_KEY_S)) */
+/* 		move_camera(game, MOVE_DOWN); */
+/* 	if (mlx_is_key_down(game->mlx, MLX_KEY_A)) */
+/* 		move_camera(game, MOVE_LEFT); */
+/* 	if (mlx_is_key_down(game->mlx, MLX_KEY_D)) */
+/* 		move_camera(game, MOVE_RIGHT); */
+/* 	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT)) */
+/* 		rotate_camera(game, ROTATE_RIGHT); */
+/* 	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT)) */
+/* 		rotate_camera(game, ROTATE_LEFT); */
+/* } */
