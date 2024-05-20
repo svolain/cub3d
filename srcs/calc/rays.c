@@ -91,34 +91,37 @@ static void	calculate_ray(t_vector *vec, t_camera *cam, t_mapinfo *map)
 		vec->x = horizontal.x;
 		vec->y = horizontal.y;
 		vec->dist = distance[H];
-		printf("camx = %f camy = %f vecx = %f vecy = %f angle = %f dist = %f\n", cam->x, cam->y, vec->x, vec->y, vec->a, vec->dist);
+		printf("camx = %f camy = %f vecx = %f vecy = %f angle = %f dist = %f\n"
+			, cam->x, cam->y, vec->x, vec->y, vec->a, vec->dist);
 	}
 	else
 	{
 		vec->x = vertical.x;
 		vec->y = vertical.y;
 		vec->dist = distance[V];
-		printf("camx = %f camy = %f vecx = %f vecy = %f angle = %f dist = %f\n", cam->x, cam->y, vec->x, vec->y, vec->a, vec->dist);
+		printf("camx = %f camy = %f vecx = %f vecy = %f angle = %f dist = %f\n"
+			, cam->x, cam->y, vec->x, vec->y, vec->a, vec->dist);
 	}
 }
 
 void	calculate_rays(t_cubed *game)
 {
-	float		min_view;
+	float		angle;
 	t_vector	*vec;
 	int			i;
 
 	draw_floor(game);
-	min_view = game->cam->a;
-	update_rotation(&min_view, FOV / 2, ROTATE_LEFT);
+	angle = game->cam->a;
+	update_rotation(&angle, FOV / 2, ROTATE_LEFT);
 	i = 0;
 	while (i < 66)
 	{
-		update_rotation(&min_view, DEGREE, ROTATE_RIGHT);
+		update_rotation(&angle, DEGREE, ROTATE_RIGHT);
 		vec = safe_calloc(sizeof(t_vector), game);
-		vec->a = min_view;
+		vec->a = angle;
 		calculate_ray(vec, game->cam, game->map);
-		/* printf("iter[%d] x = %f y = %f dist = %f angle = %f\n", i, vec->x, vec->y, vec->dist, min_view); */
+		printf("iter[%d] x = %f y = %f dist = %f angle = %f\n"
+			, i, vec->x, vec->y, vec->dist, angle);
 		draw_walls(game, vec);
 		free(vec);
 		i++;

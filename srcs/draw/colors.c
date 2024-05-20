@@ -12,7 +12,7 @@
 
 #include <cubed.h>
 
-int32_t	set_pixel(int r, int g, int b, int a)
+int32_t	get_rgba(int r, int g, int b, int a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
 }
@@ -43,7 +43,7 @@ void	color_image(mlx_image_t *image, int32_t r, int32_t g, int32_t b)
 		y = 0;
 		while (y < image->height)
 		{
-			color = set_pixel(r, g, b, 255);
+			color = get_rgba(r, g, b, 255);
 			mlx_put_pixel(image, x, y, color);
 			y++;
 		}
@@ -51,7 +51,7 @@ void	color_image(mlx_image_t *image, int32_t r, int32_t g, int32_t b)
 	}
 }
 
-void	alpha_blend(mlx_image_t *image, int32_t alpha, uint32_t x, uint32_t y)
+void	blend_alpha(mlx_image_t *image, int32_t alpha, uint32_t x, uint32_t y)
 {
 	int32_t	color;
 	int32_t	r;
@@ -66,7 +66,7 @@ void	alpha_blend(mlx_image_t *image, int32_t alpha, uint32_t x, uint32_t y)
 		y = 0;
 		while (y < image->height)
 		{
-			color = set_pixel(r, g, b, alpha);
+			color = get_rgba(r, g, b, alpha);
 			mlx_put_pixel(image, x, y, color);
 			y++;
 		}

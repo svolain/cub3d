@@ -69,12 +69,12 @@ void	free_exit(t_cubed *game, int excode)
 	exit(excode);
 }
 
-	/* int	i; */
-	/* if (map->matrix != NULL) */
-	/* { */
-	/* 	i = 0; */
-	/* 	while (*map->matrix[i]) */
-	/* 		free(map->matrix[i++]); */
-	/* 	free(map->matrix); */
-	/* 	map->matrix = NULL; */
-	/* } */
+/* int	i; */
+/* if (map->matrix != NULL) */
+/* { */
+/* 	i = 0; */
+/* 	while (*map->matrix[i]) */
+/* 		free(map->matrix[i++]); */
+/* 	free(map->matrix); */
+/* 	map->matrix = NULL; */
+/* } */
