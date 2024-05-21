@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:01:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/20 16:36:24 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:46:03 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
-
+/*
 char *test_map[] = { "11111111\n",
 					"10100001\n",
 					"10100001\n",
@@ -19,15 +19,15 @@ char *test_map[] = { "11111111\n",
 					"10000001\n",
 					"10000101\n",
 					"10000001\n",
-					"11111111" };
+					"11111111" };*/
 
 static void	init_map(t_mapinfo *map, t_camera *cam, char *file)
 {
 	map->fd = -1;
 	map->file = file;
-	map->matrix = test_map;
-	map->width = 8;
-	map->height = 8;
+	map->matrix = NULL;
+	map->width = 0;
+	map->height = 0;
 	cam->x = 4 * CELLSIZE;
 	cam->y = 4 * CELLSIZE;
 	cam->a = NORTH - 0.1;
@@ -42,5 +42,6 @@ void	init_game(t_cubed *game, char *file)
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, false);
 	if (!game->mlx)
 		error_exit(ERR_MLX, MSG_MLX, game);
+	parse_map(game);
 	init_minimap(game);
 }

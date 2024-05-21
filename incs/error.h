@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:28:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/18 15:33:51 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:39:34 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # define MSG_ARGC		"./cub3d maps/<filename>.cub"
 # define MSG_EXTN		"Incorrect file extension <cub>"
+# define MSG_FNM		"Invalid filename"
 # define MSG_FILE		"No such file or directory"
 # define MSG_FLDR		"Is a directory"
 # define MSG_PERM		"Permission denied"

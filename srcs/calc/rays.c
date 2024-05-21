@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 08:08:54 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/20 17:59:56 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:41:02 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,75 +32,78 @@ static void	find_collosion_point(
 }
 
 static float	horizontal_collosion(
-	t_vector *vec, t_camera *cam, t_mapinfo *map)
+	t_vector *horizon, t_vector *vec, t_mapinfo *map)
 {
 	float	offset[2];
 	float	atan;
 
 	atan = 1 / -tan(vec->a);
+	/* printf("atan is: %f veca is: %f\n", atan, vec->a); */
 	if (vec->a > WEST)
 	{
-		vec->y = (int)cam->y / CELLSIZE * CELLSIZE - 0.0001f;
+		horizon->y = (int)vec->y / CELLSIZE * CELLSIZE - 0.0001f;
 		offset[Y] = -CELLSIZE;
 	}
 	else
 	{
-		vec->y = (int)cam->y / CELLSIZE * CELLSIZE + CELLSIZE;
+		horizon->y = (int)vec->y / CELLSIZE * CELLSIZE + CELLSIZE;
 		offset[Y] = CELLSIZE;
 	}
-	vec->x = (cam->y - vec->y) * atan + cam->x;
+	horizon->x = (vec->y - horizon->y) * atan + vec->x;
 	offset[X] = -offset[Y] * atan;
-	find_collosion_point(vec, offset, map);
-	return (sqrtf(powf((vec->x - cam->x), 2) + powf((vec->y - cam->y), 2)));
+	find_collosion_point(horizon, offset, map);
+	return (sqrtf(powf((horizon->x - vec->x), 2) + powf((horizon->y - vec->y), 2)));
 }
 
 static float	vertical_collosion(
-	t_vector *vec, t_camera *cam, t_mapinfo *map)
+	t_vector *vertical, t_vector *vec, t_mapinfo *map)
 {
 	float	offset[2];
 	float	ntan;
 
 	ntan = -tan(vec->a);
+	/* printf("ntan is: %f veca is: %f\n", ntan, vec->a); */
 	if (vec->a > NORTH && vec->a < SOUTH)
 	{
-		vec->x = (int)cam->x / CELLSIZE * CELLSIZE - 0.0001f;
+		vertical->x = (int)vec->x / CELLSIZE * CELLSIZE - 0.0001f;
 		offset[X] = -CELLSIZE;
 	}
 	else
 	{
-		vec->x = (int)cam->x / CELLSIZE * CELLSIZE + CELLSIZE;
+		vertical->x = (int)vec->x / CELLSIZE * CELLSIZE + CELLSIZE;
 		offset[X] = CELLSIZE;
 	}
-	vec->y = (cam->x - vec->x) * ntan + cam->y;
+	vertical->y = (vec->x - vertical->x) * ntan + vec->y;
 	offset[Y] = -offset[X] * ntan;
-	find_collosion_point(vec, offset, map);
-	return (sqrtf(powf((vec->x - cam->x), 2) + powf((vec->y - cam->y), 2)));
+	find_collosion_point(vertical, offset, map);
+	return (sqrtf(powf((vertical->x - vec->x), 2) + powf((vertical->y - vec->y), 2)));
 }
 
-static void	calculate_ray(t_vector *vec, t_camera *cam, t_mapinfo *map)
+static void	calculate_ray(t_vector *vec, t_mapinfo *map)
 {
 	t_vector	horizontal;
 	t_vector	vertical;
 	float		distance[2];
 
-	distance[H] = horizontal_collosion(&horizontal, cam, map);
-	distance[V] = vertical_collosion(&vertical, cam, map);
-	// printf("disth = %f distv = %f\n", distance[H], distance[V]);
+	/* printf("veca in calculate_ray is: %f\n", vec->a); */
+	distance[H] = horizontal_collosion(&horizontal, vec, map);
+	distance[V] = vertical_collosion(&vertical, vec, map);
+	/* printf("disth = %f distv = %f\n", distance[H], distance[V]); */
 	if (distance[H] < distance[V])
 	{
 		vec->x = horizontal.x;
 		vec->y = horizontal.y;
 		vec->dist = distance[H];
-		// printf("camx = %f camy = %f vecx = %f vecy = %f angle = %f dist = %f\n"
-		// 	, cam->x, cam->y, vec->x, vec->y, vec->a, vec->dist);
+		/* printf("camx = %f camy = %f vecx = %f vecy = %f angle = %f dist = %f\n" */
+		/*  	, cam->x, cam->y, vec->x, vec->y, vec->a, vec->dist); */
 	}
 	else
 	{
 		vec->x = vertical.x;
 		vec->y = vertical.y;
 		vec->dist = distance[V];
-		// printf("camx = %f camy = %f vecx = %f vecy = %f angle = %f dist = %f\n"
-		// 	, cam->x, cam->y, vec->x, vec->y, vec->a, vec->dist);
+		/* printf("camx = %f camy = %f vecx = %f vecy = %f angle = %f dist = %f\n" */
+		/*  	, cam->x, cam->y, vec->x, vec->y, vec->a, vec->dist); */
 	}
 }
 
@@ -116,24 +119,24 @@ void	calculate_rays(t_cubed *game)
 	update_rotation(&angle, FOV / 2, ROTATE_LEFT);
 	vec = safe_calloc(sizeof(t_vector), game);
 	i = 0;
+	mlx_image_t		*t;
 	while (i < 66)
 	{
 		update_rotation(&angle, DEGREE, ROTATE_RIGHT);
 		//vec = safe_calloc(sizeof(t_vector), game);
 		vec->a = angle;
-		calculate_ray(vec, game->cam, game->map);
+		calculate_ray(vec, game->map);
 		/*printf("iter[%d] x = %f y = %f dist = %f angle = %f\n"
 			, i, vec->x, vec->y, vec->dist, angle);*/
-		draw_walls(game, vec);
+		draw_walls(game, vec, i);
 		game->map->endx = vec->x;
 		game->map->endy = vec->y;
+		t = mlx_new_image(game->mlx, 8, 8);
+		ft_memset(t->pixels, 166, t->width * t->height * BPP);
+		mlx_image_to_window(game->mlx, t, vec->x, vec->y);
 		draw_rays(game, vec->x, vec->y);
 		//free(vec);
 		i++;
 	}
 	free(vec);
-	/*mlx_image_t		*t;
-	t = mlx_new_image(game->mlx, 8, 8);
-	ft_memset(t->pixels, 166, t->width * t->height * BPP);
-	mlx_image_to_window(game->mlx, t, vec.x, vec.y); */
 }

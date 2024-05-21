@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/20 18:23:46 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:15:13 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void	calculate_rays(t_cubed *game);
 
 //		Drawing
 void	draw_floor(t_cubed *game);
-void	draw_walls(t_cubed *game, t_vector *vec);
+void	draw_walls(t_cubed *game, t_vector *vec, int i);
 
 //		Minimap
 void	init_minimap(t_cubed *game);
@@ -164,5 +164,8 @@ int32_t	get_pixel(int32_t rgba, t_action action);
 float	degree_to_radian(float degree);
 void	update_rotation(float *target, float angle, t_action action);
 void	*safe_calloc(size_t n, t_cubed *game);
+
+//parsing
+void	parse_map(t_cubed *game);
 
 #endif

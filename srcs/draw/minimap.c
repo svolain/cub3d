@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/20 18:45:29 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:35:06 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,21 @@ void	draw_rays(t_cubed *game, int endx, int endy)
 	float	pixelX;
 	float	pixelY;
 
-	deltaX = (endx - game->cam->x) / 2;
-	deltaY = (endy - game->cam->y) / 2;
+	deltaX = endx / 2 - game->map->mplayer->instances[0].x;
+	deltaY = endy / 2 - game->map->mplayer->instances[0].x;
 	pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 	deltaX /= pixels;
 	deltaY /= pixels;
-	pixelX = game->cam->x / 2;
-	pixelY = game->cam->y / 2;
+	pixelX = game->map->mplayer->instances[0].x;
+	pixelY = game->map->mplayer->instances[0].x;
+	//printf("%d %d\n", (int)pixelX, (int)pixelY);
 	while(pixels)
 	{
-		mlx_put_pixel(game->map->mfloor, pixelX, pixelY, 200);
+		if (game->map->msfloor == NULL)
+			mlx_put_pixel(game->map->mfloor, (int)pixelX, (int)pixelY, 160);
+		else
+			mlx_put_pixel(game->map->msfloor, (int)pixelX, (int)pixelY, 160);
+		//printf("%d %d\n", (int)pixelX, (int)pixelY);
 		pixelX += deltaX;
     	pixelY += deltaY;
     	--pixels;
@@ -53,6 +58,7 @@ void	move_minimap(t_cubed *game, t_action action)
 		mlx_delete_image(game->mlx, game->map->mfloor);
 		game->map->mfloor = NULL;
 		floor = mlx_new_image(game->mlx, CELLSIZE * 4, CELLSIZE * 4);
+		ft_memset(floor->pixels, 200, floor->width * floor->height * BPP);
 		game->map->msfloor = floor;
 	}
 	else
@@ -60,10 +66,10 @@ void	move_minimap(t_cubed *game, t_action action)
 		mlx_delete_image(game->mlx, game->map->msfloor);
 		game->map->msfloor = NULL;
 		floor = mlx_new_image(game->mlx, CELLSIZE * 4, CELLSIZE * 4);
+		ft_memset(floor->pixels, 200, floor->width * floor->height * BPP);
 		game->map->mfloor = floor;
 	}
 	draw_minimap(game);
-	//draw_rays(game, game->map->endx, game->map->endy);
 }
 
 void	draw_minimap(t_cubed *game)
