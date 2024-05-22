@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:01:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/21 16:46:03 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/22 12:20:02 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	init_map(t_mapinfo *map, t_camera *cam, char *file)
 	map->matrix = NULL;
 	map->width = 0;
 	map->height = 0;
+	map->tex = NULL;
 	cam->x = 4 * CELLSIZE;
 	cam->y = 4 * CELLSIZE;
 	cam->a = NORTH - 0.1;

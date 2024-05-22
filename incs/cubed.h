@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/21 16:15:13 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/22 12:14:22 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ int32_t	get_pixel(int32_t rgba, t_action action);
 float	degree_to_radian(float degree);
 void	update_rotation(float *target, float angle, t_action action);
 void	*safe_calloc(size_t n, t_cubed *game);
+char	*ft_skip_whitespace(char *str);
 
 //parsing
 void	parse_map(t_cubed *game);

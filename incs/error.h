@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:28:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/21 15:39:34 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/22 14:41:00 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define MSG_FILE		"No such file or directory"
 # define MSG_FLDR		"Is a directory"
 # define MSG_PERM		"Permission denied"
+# define MSG_MPEL		"Incorrect map element"
 # define MSG_VOID		"Map provided is empty file"
 # define MSG_PLAY		"Map has no or more than one player(s)"
 # define MSG_CHAR		"Map has invalid character(s)"

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:32:56 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/18 21:47:06 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/22 12:13:46 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,12 @@ void	*safe_calloc(size_t n, t_cubed *game)
 	if (!p)
 		error_fatal(ENOMEM, MSG_MEM, game);
 	return (p);
+}
+
+char	*ft_skip_whitespace(char *str)
+{
+	while (*str != 0 && (*str == ' ' || *str == '\n' || *str == '\t'
+			|| *str == '\v' || *str == '\f' || *str == '\r'))
+		str++;
+	return (str);
 }
