@@ -19,7 +19,7 @@ static void	rotate_camera(t_cubed *game, t_action action)
 	else if (action == ROTATE_RIGHT)
 		update_rotation(&game->cam->a, STEP_ANGLE, ROTATE_RIGHT);
 	calculate_rays(game);
-	move_minimap(game, action);
+	/* move_minimap(game, action); */
 }
 
 static void	move_camera(t_cubed *game, t_action action)
@@ -33,7 +33,7 @@ static void	move_camera(t_cubed *game, t_action action)
 	else if (action == MOVE_RIGHT)
 		game->cam->x += STEP_MOVEMENT;
 	calculate_rays(game);
-	move_minimap(game, action);
+	/* move_minimap(game, action); */
 }
 
 void	hook_keys(mlx_key_data_t keydata, void *param)
@@ -41,7 +41,7 @@ void	hook_keys(mlx_key_data_t keydata, void *param)
 	t_cubed		*game;
 
 	game = param;
-	if (keydata.action == MLX_PRESS)
+	if (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT)
 	{
 		if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 			free_exit(game, NOERROR);

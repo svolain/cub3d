@@ -77,13 +77,6 @@ typedef enum e_element
 	WALL
 }	t_element;
 
-typedef struct s_camera
-{
-	float	x;
-	float	y;
-	float	a;
-}	t_camera;
-
 typedef struct s_vector
 {
 	float	x;
@@ -119,7 +112,7 @@ typedef struct s_mapinfo
 
 typedef struct s_cubed
 {
-	t_camera	*cam;
+	t_vector	*cam;
 	t_mapinfo	*map;
 	t_texture	*tex;
 	mlx_t		*mlx;
