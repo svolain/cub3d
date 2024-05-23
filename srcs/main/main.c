@@ -16,7 +16,7 @@ int	main(int argc, char **argv)
 {
 	t_cubed	game;
 
-
+	(void)argc;
 	// if (argc != 2)
 	// 	error_exit(ERR_ARGC, MSG_ARGC, NULL);
 	init_game(&game, argv[1]);

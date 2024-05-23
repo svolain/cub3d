@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/22 12:14:22 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/23 13:55:20 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,6 @@ typedef enum e_element
 	WALL
 }	t_element;
 
-typedef struct s_camera
-{
-	float	x;
-	float	y;
-	float	a;
-}	t_camera;
-
 typedef struct s_vector
 {
 	float	x;
@@ -120,7 +113,7 @@ typedef struct s_mapinfo
 
 typedef struct s_cubed
 {
-	t_camera	*cam;
+	t_vector	*cam;
 	t_mapinfo	*map;
 	t_texture	*tex;
 	mlx_t		*mlx;
@@ -143,9 +136,10 @@ void	draw_walls(t_cubed *game, t_vector *vec, int i);
 
 //		Minimap
 void	init_minimap(t_cubed *game);
-void	draw_minimap(t_cubed *game);
+void	draw_minimap(t_cubed *game, int flag);
 void	move_minimap(t_cubed *game, t_action action);
 void	draw_rays(t_cubed *game, int endx, int endy);
+void	change_mini_foor(t_cubed *game);
 
 //		Error handling
 void	error_exit(int errcode, char *errmsg, t_cubed *game);

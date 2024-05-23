@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:30:49 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/20 16:38:48 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/23 14:30:27 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static void	rotate_camera(t_cubed *game, t_action action)
 		update_rotation(&game->cam->a, STEP_ANGLE, ROTATE_LEFT);
 	else if (action == ROTATE_RIGHT)
 		update_rotation(&game->cam->a, STEP_ANGLE, ROTATE_RIGHT);
-	calculate_rays(game);
 	move_minimap(game, action);
+	calculate_rays(game);
 }
 
 static void	move_camera(t_cubed *game, t_action action)
@@ -32,8 +32,8 @@ static void	move_camera(t_cubed *game, t_action action)
 		game->cam->x -= STEP_MOVEMENT;
 	else if (action == MOVE_RIGHT)
 		game->cam->x += STEP_MOVEMENT;
-	calculate_rays(game);
 	move_minimap(game, action);
+	calculate_rays(game);
 }
 
 void	hook_keys(mlx_key_data_t keydata, void *param)
@@ -41,7 +41,7 @@ void	hook_keys(mlx_key_data_t keydata, void *param)
 	t_cubed		*game;
 
 	game = param;
-	if (keydata.action == MLX_PRESS)
+	if (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT)
 	{
 		if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 			free_exit(game, NOERROR);
