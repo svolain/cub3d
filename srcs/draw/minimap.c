@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/23 14:45:11 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:06:01 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,12 @@ void	draw_rays(t_cubed *game, int endx, int endy)
 	float	pixelY;
 
 	deltaX = endx / 2 - game->map->mplayer->instances[0].x;
-	deltaY = endy / 2 - game->map->mplayer->instances[0].x;
+	deltaY = endy / 2 - game->map->mplayer->instances[0].y;
 	pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 	deltaX /= pixels;
 	deltaY /= pixels;
 	pixelX = game->map->mplayer->instances[0].x;
 	pixelY = game->map->mplayer->instances[0].y;
-	printf("%d %d\n", (int)pixelX, (int)pixelY);
 	while(pixels)
 	{
 		if (pixelY >= 255)
@@ -42,7 +41,6 @@ void	draw_rays(t_cubed *game, int endx, int endy)
 			mlx_put_pixel(game->map->mfloor, (int)pixelX, (int)pixelY, 160);
 		else
 			mlx_put_pixel(game->map->msfloor, (int)pixelX, (int)pixelY, 160);
-		printf("x: %d y: %d\n", (int)pixelX, (int)pixelY);
 		pixelX += deltaX;
     	pixelY += deltaY;
     	--pixels;
@@ -81,7 +79,6 @@ void	move_minimap(t_cubed *game, t_action action)
 		game->map->mplayer->instances[0].x -= STEP_MOVEMENT / 2;
 	else if (action == MOVE_RIGHT)
 		game->map->mplayer->instances[0].x += STEP_MOVEMENT / 2;
-	//draw_minimap(game, 1);
 }
 
 void	draw_minimap(t_cubed *game, int flag)
@@ -91,15 +88,11 @@ void	draw_minimap(t_cubed *game, int flag)
 	mlx_image_t 	*floor;
 
 	i = 0;
-	//write(1, "1\n", 2);
 	if (game->map->msfloor == NULL)
 		floor = game->map->mfloor;
 	else
 		floor = game->map->msfloor;
-	//write(1, "2\n", 2);
 	mlx_image_to_window(game->mlx, floor, 0, 0);
-	//write(1, "3\n", 2);
-	//write(1, "4\n", 2);
 	while (i < MINIMAP_MAX && i < game->map->height)
 	{
 		j = 0;
