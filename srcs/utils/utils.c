@@ -12,7 +12,7 @@
 
 #include <cubed.h>
 
-void	update_rotation(float *target, float angle, t_action action)
+void	ft_rotate(float *target, float angle, t_action action)
 {
 	if (action == ROTATE_LEFT)
 	{
@@ -28,7 +28,7 @@ void	update_rotation(float *target, float angle, t_action action)
 	}
 }
 
-float	degree_to_radian(float degree)
+float	ft_degtorad(float degree)
 {
 	return (degree * PI / 180);
 }

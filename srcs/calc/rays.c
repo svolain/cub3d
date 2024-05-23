@@ -72,20 +72,20 @@ static float	calc_vertical(t_vector *ray, float angle, t_cubed *game)
 		ray->x = (int)cam->x / CELLSIZE * CELLSIZE + CELLSIZE;
 		offset[X] = CELLSIZE;
 	}
-	ray->y = (cam->x - ray->x) * ntan +cam->y;
+	ray->y = (cam->x - ray->x) * ntan + cam->y;
 	offset[Y] = -offset[X] * ntan;
 	calc_collosion(ray, offset, game->map);
 	return (sqrtf(powf((ray->x - cam->x), 2) + powf((ray->y - cam->y), 2)));
 }
 
-static void	calculate_ray(t_vector *ray, float angle, t_cubed *game)
+void	calculate_ray(t_vector *ray, t_cubed *game)
 {
 	t_vector	horizontal;
 	t_vector	vertical;
 	float		distance[2];
 
-	distance[H] = calc_horizontal(&horizontal, angle, game);
-	distance[V] = calc_vertical(&vertical, angle, game);
+	distance[H] = calc_horizontal(&horizontal, ray->a, game);
+	distance[V] = calc_vertical(&vertical, ray->a, game);
 	if (distance[H] < distance[V])
 	{
 		ray->x = horizontal.x;
@@ -106,22 +106,17 @@ void	calculate_rays(t_cubed *game)
 	float		angle;
 	int			i;
 
-	/* draw_floor(game); */
-	/* draw_minimap(game); */
-	/* draw_walls(game, ray, i); */
 	change_mini_foor(game);
 	draw_minimap(game, 1);
 	angle = game->cam->a;
-	update_rotation(&angle, FOV / 2, ROTATE_LEFT);
+	ft_rotate(&angle, FOV / 2, ROTATE_LEFT);
 	ray = safe_calloc(sizeof(t_vector), game);
 	i = 0;
 	while (i < 66)
 	{
 		ray->a = angle;
-		calculate_ray(ray, ray->a, game);
-		update_rotation(&angle, DEGREE, ROTATE_RIGHT);
-		/*printf("Debug print[%d] x = %f y = %f dist = %f angle = %f\n"
-		, i, ray->x, ray->y, ray->dist, ray->a);*/
+		calculate_ray(ray, game);
+		ft_rotate(&angle, DEGREE, ROTATE_RIGHT);
 		draw_rays(game, ray->x, ray->y);
 		i++;
 	}

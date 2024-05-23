@@ -15,9 +15,10 @@
 static void	rotate_camera(t_cubed *game, t_action action)
 {
 	if (action == ROTATE_LEFT)
-		update_rotation(&game->cam->a, STEP_ANGLE, ROTATE_LEFT);
+		ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_LEFT);
 	else if (action == ROTATE_RIGHT)
-		update_rotation(&game->cam->a, STEP_ANGLE, ROTATE_RIGHT);
+		ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_RIGHT);
+	draw_walls(game);
 	move_minimap(game, action);
 	calculate_rays(game);
 }
@@ -32,6 +33,7 @@ static void	move_camera(t_cubed *game, t_action action)
 		game->cam->x -= STEP_MOVEMENT;
 	else if (action == MOVE_RIGHT)
 		game->cam->x += STEP_MOVEMENT;
+	draw_walls(game);
 	move_minimap(game, action);
 	calculate_rays(game);
 }

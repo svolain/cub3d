@@ -20,21 +20,17 @@ void	hook_close(void *param)
 	free_exit(game, NOERROR);
 }
 
-static void	clean_assets(t_texture **lst, t_cubed *game)
+static void	clean_assets(t_sprite **lst, t_cubed *game)
 {
-	t_texture	*temp;
+	t_sprite	*temp;
 
 	while (*lst)
 	{
 		temp = (*lst)->next;
-		if ((*lst)->fd != -1)
-			close((*lst)->fd);
 		if ((*lst)->img != NULL)
 			mlx_delete_image(game->mlx, (*lst)->img);
 		if ((*lst)->tex != NULL)
 			mlx_delete_texture((*lst)->tex);
-		if ((*lst)->vec != NULL)
-			free((*lst)->vec);
 		free(*lst);
 		*lst = temp;
 	}
@@ -46,8 +42,8 @@ static void	destruct_map(t_mapinfo *map, t_cubed *game)
 {
 	if (map->fd != -1)
 		close(map->fd);
-	if (map->tex != NULL)
-		clean_assets(&map->tex, game);
+	if (map->img != NULL)
+		clean_assets(&map->img, game);
 	free(map);
 	map = NULL;
 }
@@ -60,8 +56,8 @@ void	free_exit(t_cubed *game, int excode)
 		mlx_close_window(game->mlx);
 	if (game->map != NULL)
 		destruct_map(game->map, game);
-	if (game->tex != NULL)
-		clean_assets(&game->tex, game);
+	if (game->img != NULL)
+		clean_assets(&game->img, game);
 	if (game->mlx != NULL)
 		mlx_terminate(game->mlx);
 	if (game->cam != NULL)

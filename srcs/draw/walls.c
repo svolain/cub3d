@@ -12,28 +12,55 @@
 
 #include <cubed.h>
 
-void	draw_floor(t_cubed *game)
+static void	draw_segment(int height, int x, mlx_image_t *walld)
 {
-	mlx_image_t	*floord;
-	mlx_image_t	*roofd;
+	int	a;
+	int	b;
 
-	floord = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT / 2);
-	color_image(floord, 200, 100, 0);
-	mlx_image_to_window(game->mlx, floord, 0, SCREEN_HEIGHT / 2);
-	roofd = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT / 2);
-	color_image(roofd, 100, 200, 0);
-	mlx_image_to_window(game->mlx, roofd, 0, 0);
+	a = SCREEN_HEIGHT / 2 - height / 2;
+	b = SCREEN_HEIGHT / 2 + height / 2;
+	while (a < b)
+	{
+		mlx_put_pixel(walld, x, a++, 255);
+	}
 }
 
-void	draw_walls(t_cubed *game, t_vector *vec, int i)
+static void	fix_fisheye(t_vector *ray, t_cubed *game)
+{
+	float	angle;
+
+	angle = game->cam->a;
+	ft_rotate(&angle, ray->a, ROTATE_LEFT);
+	ray->dist *= cos(angle);
+}
+
+void	draw_walls(t_cubed *game)
 {
 	mlx_image_t	*walld;
-	float		height;
-
-	height = CELLSIZE * SCREEN_HEIGHT / vec->dist;
-	if (height > SCREEN_HEIGHT)
-		height = SCREEN_HEIGHT;
-	walld = mlx_new_image(game->mlx, 28, height);
+	walld = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	color_image(walld, 0, 100, 200);
-	mlx_image_to_window(game->mlx, walld, vec->x + (i * 28), vec->y);
+	mlx_image_to_window(game->mlx, walld, 0, 0);
+
+	t_vector	*ray;
+	float		angle;
+	int			height;
+	int			x;
+
+	x = 0;
+	angle = game->cam->a;
+	ft_rotate(&angle, FOV / 2, ROTATE_LEFT);
+	ray = safe_calloc(sizeof(t_vector), game);
+	while (x < SCREEN_WIDTH)
+	{
+		ray->a = angle;
+		calculate_ray(ray, game);
+		fix_fisheye(ray, game);
+		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
+		height = CELLSIZE * SCREEN_HEIGHT / ray->dist;
+		if (height > SCREEN_HEIGHT)
+			height = SCREEN_HEIGHT;
+		draw_segment(height, x, walld);
+		x++;
+	}
+	free(ray);
 }

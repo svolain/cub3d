@@ -36,10 +36,12 @@
 # define WEST PI
 # define SOUTH 3 * PI / 2
 
+# define FOV ft_degtorad(66)
+# define DEGREE ft_degtorad(1)
+
 # define STEP_ANGLE 0.05
 # define STEP_MOVEMENT CELLSIZE / 8
-# define DEGREE degree_to_radian(1)
-# define FOV degree_to_radian(66)
+# define STEP_WINDOW FOV / SCREEN_WIDTH
 # define BPP sizeof(int)
 # define MINIMAP_MAX 10
 
@@ -85,24 +87,21 @@ typedef struct s_vector
 	float	dist;
 }	t_vector;
 
-typedef struct s_texture
+typedef struct s_sprite
 {
-	t_vector			*vec;
-	float				scale;
-	mlx_texture_t		*tex;
-	mlx_image_t			*img;
-	int					fd;
-	struct s_texture	*next;
-}	t_texture;
+	mlx_texture_t	*tex;
+	mlx_image_t		*img;
+	struct s_sprite	*next;
+}	t_sprite;
 
 typedef struct s_mapinfo
 {
 	char		**matrix;
-	char		*file;
 	int			width;
 	int			height;
-	t_texture	*tex;
+	char		*file;
 	int			fd;
+	t_sprite	*img;
 	mlx_image_t	*mplayer;
 	mlx_image_t	*mwall;
 	mlx_image_t	*mfloor;
@@ -115,7 +114,7 @@ typedef struct s_cubed
 {
 	t_vector	*cam;
 	t_mapinfo	*map;
-	t_texture	*tex;
+	t_sprite	*img;
 	mlx_t		*mlx;
 }	t_cubed;
 
@@ -127,40 +126,40 @@ void	hook_close(void *param);
 void	hook_keys(mlx_key_data_t keydata, void *param);
 /* void	hook_keys(void *param); */
 
-//		Calculations
+//		Calc
 void	calculate_rays(t_cubed *game);
+void	calculate_ray(t_vector *ray, t_cubed *game);
 
-//		Drawing
-void	draw_floor(t_cubed *game);
-void	draw_walls(t_cubed *game, t_vector *vec, int i);
+//		Draw
+void	draw_walls(t_cubed *game);
 
-//		Minimap
+//		Map
 void	init_minimap(t_cubed *game);
 void	draw_minimap(t_cubed *game, int flag);
 void	move_minimap(t_cubed *game, t_action action);
 void	draw_rays(t_cubed *game, int endx, int endy);
 void	change_mini_foor(t_cubed *game);
 
-//		Error handling
+//		Error
 void	error_exit(int errcode, char *errmsg, t_cubed *game);
 void	error_fatal(int errcode, char *errmsg, t_cubed *game);
 
-//		Freeing
+//		Free
 void	free_exit(t_cubed *game, int excode);
 
-//		Coloring
+//		Colors
 void	color_image(mlx_image_t *image, int32_t r, int32_t g, int32_t b);
 void	alpha_blend(mlx_image_t *image, int32_t alpha, uint32_t x, uint32_t y);
 int32_t	get_rgba(int32_t r, int32_t g, int32_t b, int32_t a);
 int32_t	get_pixel(int32_t rgba, t_action action);
 
-//		Utilities
-float	degree_to_radian(float degree);
-void	update_rotation(float *target, float angle, t_action action);
+//		Utils
+float	ft_degtorad(float degree);
+void	ft_rotate(float *target, float angle, t_action action);
 void	*safe_calloc(size_t n, t_cubed *game);
 char	*ft_skip_whitespace(char *str);
 
-//parsing
+//		Parsing
 void	parse_map(t_cubed *game);
 
 #endif
