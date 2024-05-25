@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 14:36:25 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/25 15:11:36 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,6 @@ typedef struct s_mapinfo
 	int			height;
 	char		*filename;
 	int			filefd;
-	int			endx;
-	int			endy;
 }	t_mapinfo;
 
 typedef struct s_cubed

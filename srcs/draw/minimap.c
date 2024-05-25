@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 14:35:45 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/25 15:10:06 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,19 @@ mlx_image_t	*mwall;
 mlx_image_t	*mfloor;
 mlx_image_t	*msfloor;
 
-static	void	draw_rays(int endx, int endy)
+void	check_pixel_limits(float *pixelX, float *pixelY)
+{
+	if (*pixelY >= 255)
+			*pixelY = 255;
+		if (*pixelY < 0)
+			*pixelY = 0;
+		if (*pixelX >= 255)
+			*pixelX = 255;
+		if (*pixelX < 0)
+			*pixelX = 0;
+}
+
+static	void	draw_rays(t_vector	*ray)
 {
 	float	deltaX;
 	float	deltaY;
@@ -25,8 +37,8 @@ static	void	draw_rays(int endx, int endy)
 	float	pixelX;
 	float	pixelY;
 
-	deltaX = endx / 2 - mplayer->instances[0].x;
-	deltaY = endy / 2 - mplayer->instances[0].y;
+	deltaX = ray->x / 2 - mplayer->instances[0].x;
+	deltaY = ray->y / 2 - mplayer->instances[0].y;
 	pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 	deltaX /= pixels;
 	deltaY /= pixels;
@@ -34,14 +46,7 @@ static	void	draw_rays(int endx, int endy)
 	pixelY = mplayer->instances[0].y;
 	while(pixels)
 	{
-		if (pixelY >= 255)
-			pixelY = 255;
-		if (pixelY < 0)
-			pixelY = 0;
-		if (pixelX >= 255)
-			pixelX = 255;
-		if (pixelX < 0)
-			pixelX = 0;
+		check_pixel_limits(&pixelX, &pixelY);
 		if (msfloor == NULL)
 			mlx_put_pixel(mfloor, (int)pixelX, (int)pixelY, 160);
 		else
@@ -69,7 +74,7 @@ void	calculate_rays(t_cubed *game)
 		ray->a = angle;
 		calculate_ray(ray, game);
 		ft_rotate(&angle, DEGREE, ROTATE_RIGHT);
-		draw_rays(ray->x, ray->y);
+		draw_rays(ray);
 		i++;
 	}
 	free(ray);
