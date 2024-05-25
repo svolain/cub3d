@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubed.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 13:03:37 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/25 14:36:25 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <errno.h>
 # include <math.h>
 # include <stdio.h>
+#include <sys/_types/_id_t.h>
 
 # define GAME_ASSETS 5
 
@@ -77,8 +78,8 @@ typedef enum e_action
 
 typedef enum e_minimap
 {
-	FLOOR = 48,
-	WALL = 49
+	MAP_FLOOR = 48,
+	MAP_WALL = 49
 }	t_minimap;
 
 typedef enum e_element
@@ -100,25 +101,20 @@ typedef struct s_vector
 	float	d;
 }	t_vector;
 
-/* typedef struct s_sprite */
-/* { */
-/* 	mlx_texture_t	*tex; */
-/* 	mlx_image_t		*img; */
-/* 	struct s_sprite	*next; */
-/* }	t_sprite; */
+typedef struct s_checker
+{
+	char	*gnl;
+	char	*file;
+	int		fd;
+}	t_checker;
 
 typedef struct s_mapinfo
 {
 	char		**matrix;
 	int			width;
 	int			height;
-	char		*file;
-	int			fd;
-	/* t_sprite	*img; */
-	/* mlx_image_t	*mplayer; */
-	/* mlx_image_t	*mwall; */
-	/* mlx_image_t	*mfloor; */
-	/* mlx_image_t	*msfloor; */
+	char		*filename;
+	int			filefd;
 	int			endx;
 	int			endy;
 }	t_mapinfo;
@@ -127,8 +123,10 @@ typedef struct s_cubed
 {
 	t_vector	*cam;
 	t_mapinfo	*map;
-	/* t_sprite	*img; */
+	t_checker	*aid;
 	mlx_image_t	*imgs;
+	int32_t		floor;
+	int32_t		roof;
 	mlx_t		*mlx;
 }	t_cubed;
 
@@ -158,6 +156,7 @@ void	error_fatal(int errcode, char *errmsg, t_cubed *game);
 
 //		Free
 void	free_exit(t_cubed *game, int excode);
+void	free_single(char **str);
 
 //		Colors
 void	color_image(mlx_image_t *image, int32_t r, int32_t g, int32_t b);

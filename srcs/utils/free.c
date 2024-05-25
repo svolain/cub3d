@@ -20,30 +20,43 @@ void	hook_close(void *param)
 	free_exit(game, NOERROR);
 }
 
-static void	clean_assets(t_sprite **lst, t_cubed *game)
+void	free_single(char **str)
 {
-	t_sprite	*temp;
-
-	while (*lst)
-	{
-		temp = (*lst)->next;
-		if ((*lst)->img != NULL)
-			mlx_delete_image(game->mlx, (*lst)->img);
-		if ((*lst)->tex != NULL)
-			mlx_delete_texture((*lst)->tex);
-		free(*lst);
-		*lst = temp;
-	}
-	free(*lst);
-	*lst = NULL;
+	if (!str || !*str)
+		return ;
+	free(*str);
+	*str = NULL;
 }
 
-static void	destruct_map(t_mapinfo *map, t_cubed *game)
+/* static void	free_double(char ***arr) */
+/* { */
+/* 	int	i; */
+/**/
+/* 	if (!arr || !*arr) */
+/* 		return ; */
+/* 	i = 0; */
+/* 	while ((*arr)[i]) */
+/* 		free_single(&(*arr)[i++]); */
+/* 	free(*arr); */
+/* 	*arr = NULL; */
+/* } */
+
+static void	clean_assets(t_cubed *game)
 {
-	if (map->fd != -1)
-		close(map->fd);
-	if (map->img != NULL)
-		clean_assets(&map->img, game);
+	int	i;
+
+	i = 0;
+	while (i < GAME_ASSETS)
+	{
+		mlx_delete_image(game->mlx, &game->imgs[i]);
+		i++;
+	}
+}
+
+static void	destruct_map(t_mapinfo *map)
+{
+	/* if (map->matrix != NULL) */
+	/* 	free_double(&map->matrix); */
 	free(map);
 	map = NULL;
 }
@@ -55,22 +68,12 @@ void	free_exit(t_cubed *game, int excode)
 	if (game->mlx != NULL)
 		mlx_close_window(game->mlx);
 	if (game->map != NULL)
-		destruct_map(game->map, game);
-	if (game->img != NULL)
-		clean_assets(&game->img, game);
+		destruct_map(game->map);
+	if (game->imgs != NULL)
+		clean_assets(game);
 	if (game->mlx != NULL)
 		mlx_terminate(game->mlx);
 	if (game->cam != NULL)
 		free(game->cam);
 	exit(excode);
 }
-
-/* int	i; */
-/* if (map->matrix != NULL) */
-/* { */
-/* 	i = 0; */
-/* 	while (*map->matrix[i]) */
-/* 		free(map->matrix[i++]); */
-/* 	free(map->matrix); */
-/* 	map->matrix = NULL; */
-/* } */

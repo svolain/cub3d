@@ -23,8 +23,8 @@ char *test_map[] = { "11111111\n",
 
 static void	init_map(t_mapinfo *map, t_vector *cam, char *file)
 {
-	map->fd = -1;
-	map->file = file;
+	map->filename = file;
+	map->filefd = -1;
 	map->matrix = test_map;
 	map->width = 8;
 	map->height = 8;
