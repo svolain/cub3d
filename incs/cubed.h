@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/23 13:55:20 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/25 13:03:37 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,6 @@ void	hook_keys(mlx_key_data_t keydata, void *param);
 /* void	hook_keys(void *param); */
 
 //		Calc
-void	calculate_rays(t_cubed *game);
 void	calculate_ray(t_vector *ray, t_cubed *game);
 
 //		Draw
@@ -137,7 +136,6 @@ void	draw_walls(t_cubed *game);
 void	init_minimap(t_cubed *game);
 void	draw_minimap(t_cubed *game, int flag);
 void	move_minimap(t_cubed *game, t_action action);
-void	draw_rays(t_cubed *game, int endx, int endy);
 void	change_mini_foor(t_cubed *game);
 
 //		Error

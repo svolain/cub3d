@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 14:45:33 by vsavolai          #+#    #+#             */
-/*   Updated: 2024/05/22 15:05:20 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/25 13:00:43 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ int	check_elements(t_cubed *game, char *line, bool **elements)
 
 	i = -1;
 	temp = ft_skip_whitespace(line);
-	if (elements[0] == 0 || ft_strncmp(temp, "NO", 2) == 0)
+	if (elements[0] == 0 && ft_strncmp(temp, "NO", 2) == 0)
 		get_element(game, line, temp, &elements[0]);
-	else if (elements[1] == 0 || ft_strncmp(temp, "SO", 2) == 0)
+	else if (elements[1] == 0 && ft_strncmp(temp, "SO", 2) == 0)
 		get_element(game, line, temp, &elements[1]);
 	else if (elements[2] == 0 || ft_strncmp(temp, "WE", 2) == 0)
 		get_element(game, line,  temp, &elements[2]);
@@ -94,7 +94,6 @@ static	void	read_elements(t_cubed *game, int *map_start)
 
 void	read_map_info(t_cubed *game, int *map_start)
 {
-	char	*line;
 	char	**grid;
 	int		i;
 	int		j;
@@ -102,17 +101,14 @@ void	read_map_info(t_cubed *game, int *map_start)
 	i = 0;
 	j = 0;
 	grid = safe_calloc(sizeof(char *) * game->map->height + 1, game);
-	ft_bzero(grid, game->map->height + 1);
 	while(1)
 	{
 		if (i++ < *map_start)
 			continue ;
-		line = get_next_line(game->map->fd);
-		if (line == NULL)
+		grid[j] = get_next_line(game->map->fd);
+		if (grid[j] == NULL)
 			break ;
-		grid[j] = line;
 		j++;
-		free(line);
 	}
 	if (i < *map_start + 3)
 		error_exit(ERR_MAP, MSG_MPEL, game);

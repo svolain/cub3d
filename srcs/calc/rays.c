@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 08:08:54 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/23 14:27:43 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/25 12:59:11 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,27 +98,4 @@ void	calculate_ray(t_vector *ray, t_cubed *game)
 		ray->y = vertical.y;
 		ray->dist = distance[V];
 	}
-}
-
-void	calculate_rays(t_cubed *game)
-{
-	t_vector	*ray;
-	float		angle;
-	int			i;
-
-	change_mini_foor(game);
-	draw_minimap(game, 1);
-	angle = game->cam->a;
-	ft_rotate(&angle, FOV / 2, ROTATE_LEFT);
-	ray = safe_calloc(sizeof(t_vector), game);
-	i = 0;
-	while (i < 66)
-	{
-		ray->a = angle;
-		calculate_ray(ray, game);
-		ft_rotate(&angle, DEGREE, ROTATE_RIGHT);
-		draw_rays(game, ray->x, ray->y);
-		i++;
-	}
-	free(ray);
 }

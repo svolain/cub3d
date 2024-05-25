@@ -6,13 +6,13 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/23 15:06:01 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/25 13:04:04 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-void	draw_rays(t_cubed *game, int endx, int endy)
+static	void	draw_rays(t_cubed *game, int endx, int endy)
 {
 	float	deltaX;
 	float	deltaY;
@@ -47,6 +47,29 @@ void	draw_rays(t_cubed *game, int endx, int endy)
 	}
 }
 
+void	calculate_rays(t_cubed *game)
+{
+	t_vector	*ray;
+	float		angle;
+	int			i;
+
+	change_mini_foor(game);
+	draw_minimap(game, 1);
+	angle = game->cam->a;
+	ft_rotate(&angle, FOV / 2, ROTATE_LEFT);
+	ray = safe_calloc(sizeof(t_vector), game);
+	i = 0;
+	while (i < 66)
+	{
+		ray->a = angle;
+		calculate_ray(ray, game);
+		ft_rotate(&angle, DEGREE, ROTATE_RIGHT);
+		draw_rays(game, ray->x, ray->y);
+		i++;
+	}
+	free(ray);
+}
+
 void	change_mini_foor(t_cubed *game)
 {
 	mlx_image_t		*floor;
@@ -56,7 +79,7 @@ void	change_mini_foor(t_cubed *game)
 		mlx_delete_image(game->mlx, game->map->mfloor);
 		game->map->mfloor = NULL;
 		floor = mlx_new_image(game->mlx, CELLSIZE * 4, CELLSIZE * 4);
-		ft_memset(floor->pixels, 200, floor->width * floor->height * BPP);
+		ft_memset(floor->pixels, 220, floor->width * floor->height * BPP);
 		game->map->msfloor = floor;
 	}
 	else
@@ -64,13 +87,15 @@ void	change_mini_foor(t_cubed *game)
 		mlx_delete_image(game->mlx, game->map->msfloor);
 		game->map->msfloor = NULL;
 		floor = mlx_new_image(game->mlx, CELLSIZE * 4, CELLSIZE * 4);
-		ft_memset(floor->pixels, 200, floor->width * floor->height * BPP);
+		ft_memset(floor->pixels, 220, floor->width * floor->height * BPP);
 		game->map->mfloor = floor;
 	}
 }
 
 void	move_minimap(t_cubed *game, t_action action)
 {
+	calculate_rays(game);
+
 	if (action == MOVE_UP)
 		game->map->mplayer->instances[0].y -= STEP_MOVEMENT / 2;
 	else if (action == MOVE_DOWN)
@@ -121,7 +146,7 @@ void	init_minimap(t_cubed *game)
 	wall = mlx_new_image(game->mlx, CELLSIZE / 2 - 2, CELLSIZE / 2 - 2);
 	ft_memset(wall->pixels, 255, wall->width * wall->height * BPP);
 	floor = mlx_new_image(game->mlx, CELLSIZE * 4, CELLSIZE * 4);
-	ft_memset(floor->pixels, 200, floor->width * floor->height * BPP);
+	ft_memset(floor->pixels, 220, floor->width * floor->height * BPP);
 	game->map->mplayer = player;
 	game->map->mwall = wall;
 	game->map->mfloor = floor;
