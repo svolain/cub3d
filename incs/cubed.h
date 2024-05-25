@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 13:03:37 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/25 14:28:19 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,12 @@ typedef enum e_element
 	WALL
 }	t_element;
 
+typedef struct s_sprite
+{
+	char		*key;
+	mlx_image_t	*value;
+}			t_sprite;
+
 typedef struct s_vector
 {
 	float	x;
@@ -86,13 +92,6 @@ typedef struct s_vector
 	float	a;
 	float	dist;
 }	t_vector;
-
-typedef struct s_sprite
-{
-	mlx_texture_t	*tex;
-	mlx_image_t		*img;
-	struct s_sprite	*next;
-}	t_sprite;
 
 typedef struct s_mapinfo
 {
@@ -102,10 +101,6 @@ typedef struct s_mapinfo
 	char		*file;
 	int			fd;
 	t_sprite	*img;
-	mlx_image_t	*mplayer;
-	mlx_image_t	*mwall;
-	mlx_image_t	*mfloor;
-	mlx_image_t	*msfloor;
 	int			endx;
 	int			endy;
 }	t_mapinfo;
