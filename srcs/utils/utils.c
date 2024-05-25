@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:32:56 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/22 12:13:46 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/25 19:54:21 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,6 @@ void	ft_rotate(float *target, float angle, t_action action)
 float	ft_degtorad(float degree)
 {
 	return (degree * PI / 180);
-}
-
-void	*safe_calloc(size_t n, t_cubed *game)
-{
-	void	*p;
-
-	p = ft_calloc(1, n);
-	if (!p)
-		error_fatal(ENOMEM, MSG_MEM, game);
-	return (p);
 }
 
 char	*ft_skip_whitespace(char *str)

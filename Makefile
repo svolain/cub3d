@@ -6,7 +6,7 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/05/20 16:42:16 by jmertane         ###   ########.fr        #
+#    Updated: 2024/05/25 19:59:54 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ ifeq ($(shell uname), Darwin)
 endif
 
 MODULES		:=	main \
-				init \
+				parse \
 				hook \
 				calc \
 				draw \
@@ -46,11 +46,16 @@ MODULES		:=	main \
 
 SOURCES 	:= 	main.c \
 				init.c \
+				element.c \
+				mapinfo.c \
+				load.c \
+				close.c \
 				keys.c \
 				rays.c \
 				walls.c \
 				colors.c \
 				error.c \
+				safe.c \
 				free.c \
 				utils.c \
 				minimap.c

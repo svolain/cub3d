@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 20:57:57 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 15:13:10 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/25 20:01:43 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	error_log(char *msg1, char *msg2, char *msg3)
 {
 	ft_putstr_fd(FMT_BOLD_RED, STDERR_FILENO);
+	ft_putendl_fd("Error", STDERR_FILENO);
 	ft_putstr_fd(msg1, STDERR_FILENO);
 	ft_putstr_fd(msg2, STDERR_FILENO);
 	ft_putstr_fd(FMT_RESET, STDERR_FILENO);
@@ -40,6 +41,8 @@ void	error_exit(int errcode, char *errmsg, t_cubed *game)
 			error_log (errmsg, ": ", (char *)mlx_strerror(mlx_errno));
 		else if (errcode == ERR_MAP)
 			error_log(game->map->filename, ": ", errmsg);
+		else if (errcode == ERR_ELEM)
+			error_log(game->gnl, ": ", errmsg);
 		else
 			error_log(errmsg, ": ", strerror(errno));
 	}

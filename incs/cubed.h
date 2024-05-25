@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 15:11:36 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/25 20:04:44 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <errno.h>
 # include <math.h>
 # include <stdio.h>
-#include <sys/_types/_id_t.h>
 
 # define GAME_ASSETS 5
 
@@ -101,13 +100,6 @@ typedef struct s_vector
 	float	d;
 }	t_vector;
 
-typedef struct s_checker
-{
-	char	*gnl;
-	char	*file;
-	int		fd;
-}	t_checker;
-
 typedef struct s_mapinfo
 {
 	char		**matrix;
@@ -121,15 +113,24 @@ typedef struct s_cubed
 {
 	t_vector	*cam;
 	t_mapinfo	*map;
-	t_checker	*aid;
-	mlx_image_t	*imgs;
+	mlx_image_t	*img;
 	int32_t		floor;
 	int32_t		roof;
 	mlx_t		*mlx;
+	char		*gnl;
 }	t_cubed;
 
 //		Init
 void	init_game(t_cubed *game, char *file);
+
+//		Parse
+void	parse_elements(t_cubed *game);
+void	parse_mapinfo(t_cubed *game);
+
+//		Load
+void	load_sprite(t_element index, char *start, bool *loaded, t_cubed *game);
+void	load_image(void);
+void	load_color(void);
 
 //		Hooks
 void	hook_close(void *param);
@@ -166,9 +167,7 @@ int32_t	get_pixel(int32_t rgba, t_action action);
 float	ft_degtorad(float degree);
 void	ft_rotate(float *target, float angle, t_action action);
 void	*safe_calloc(size_t n, t_cubed *game);
+char	*safe_substr(char *stt, char *end, t_cubed *game);
 char	*ft_skip_whitespace(char *str);
-
-//		Parsing
-void	parse_map(t_cubed *game);
 
 #endif
