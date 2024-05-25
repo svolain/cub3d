@@ -38,6 +38,7 @@ void	init_game(t_cubed *game, char *file)
 	ft_bzero(game, sizeof(t_cubed));
 	game->map = safe_calloc(sizeof(t_mapinfo), game);
 	game->cam = safe_calloc(sizeof(t_vector), game);
+	game->imgs = safe_calloc(sizeof(mlx_image_t) * (GAME_ASSETS + 1), game);
 	init_map(game->map, game->cam, file);
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, false);
 	if (!game->mlx)

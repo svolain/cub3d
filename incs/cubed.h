@@ -24,6 +24,8 @@
 # include <math.h>
 # include <stdio.h>
 
+# define GAME_ASSETS 5
+
 # define CELLSIZE 64
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
@@ -49,15 +51,15 @@
 # define FMT_YELLOW		"\033[0;33m"
 # define FMT_RESET		"\033[0m"
 
-typedef enum e_checker
+typedef enum e_check
 {
 	FAILURE = -1,
 	SUCCESS = 0,
-	X = 0,
-	Y = 1,
-	H = 0,
-	V = 1
-}	t_checker;
+	X_COOR = 0,
+	Y_COOR = 1,
+	H_DIST = 0,
+	V_DIST = 1
+}	t_check;
 
 typedef enum e_action
 {
@@ -73,10 +75,21 @@ typedef enum e_action
 	GET_ALPHA
 }	t_action;
 
-typedef enum e_element
+typedef enum e_minimap
 {
 	FLOOR = 48,
-	WALL
+	WALL = 49
+}	t_minimap;
+
+typedef enum e_element
+{
+	ELEM_NO,
+	ELEM_SO,
+	ELEM_WE,
+	ELEM_EA,
+	ELEM_BG = 4,
+	ELEM_F = 4,
+	ELEM_C
 }	t_element;
 
 typedef struct s_vector
@@ -84,15 +97,15 @@ typedef struct s_vector
 	float	x;
 	float	y;
 	float	a;
-	float	dist;
+	float	d;
 }	t_vector;
 
-typedef struct s_sprite
-{
-	mlx_texture_t	*tex;
-	mlx_image_t		*img;
-	struct s_sprite	*next;
-}	t_sprite;
+/* typedef struct s_sprite */
+/* { */
+/* 	mlx_texture_t	*tex; */
+/* 	mlx_image_t		*img; */
+/* 	struct s_sprite	*next; */
+/* }	t_sprite; */
 
 typedef struct s_mapinfo
 {
@@ -101,11 +114,11 @@ typedef struct s_mapinfo
 	int			height;
 	char		*file;
 	int			fd;
-	t_sprite	*img;
-	mlx_image_t	*mplayer;
-	mlx_image_t	*mwall;
-	mlx_image_t	*mfloor;
-	mlx_image_t	*msfloor;
+	/* t_sprite	*img; */
+	/* mlx_image_t	*mplayer; */
+	/* mlx_image_t	*mwall; */
+	/* mlx_image_t	*mfloor; */
+	/* mlx_image_t	*msfloor; */
 	int			endx;
 	int			endy;
 }	t_mapinfo;
@@ -114,7 +127,8 @@ typedef struct s_cubed
 {
 	t_vector	*cam;
 	t_mapinfo	*map;
-	t_sprite	*img;
+	/* t_sprite	*img; */
+	mlx_image_t	*imgs;
 	mlx_t		*mlx;
 }	t_cubed;
 

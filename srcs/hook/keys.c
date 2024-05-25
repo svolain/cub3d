@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:30:49 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/23 14:30:27 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/25 13:23:50 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	rotate_camera(t_cubed *game, t_action action)
 		ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_RIGHT);
 	draw_walls(game);
 	move_minimap(game, action);
-	calculate_rays(game);
 }
 
 static void	move_camera(t_cubed *game, t_action action)
@@ -35,7 +34,6 @@ static void	move_camera(t_cubed *game, t_action action)
 		game->cam->x += STEP_MOVEMENT;
 	draw_walls(game);
 	move_minimap(game, action);
-	calculate_rays(game);
 }
 
 void	hook_keys(mlx_key_data_t keydata, void *param)

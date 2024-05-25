@@ -12,6 +12,11 @@
 
 #include <cubed.h>
 
+mlx_image_t	*mplayer;
+mlx_image_t	*mwall;
+mlx_image_t	*mfloor;
+mlx_image_t	*msfloor;
+
 static	void	draw_rays(t_cubed *game, int endx, int endy)
 {
 	float	deltaX;

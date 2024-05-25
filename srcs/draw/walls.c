@@ -31,7 +31,7 @@ static void	fix_fisheye(t_vector *ray, t_cubed *game)
 
 	angle = game->cam->a;
 	ft_rotate(&angle, ray->a, ROTATE_LEFT);
-	ray->dist *= cos(angle);
+	ray->d *= cos(angle);
 }
 
 void	draw_walls(t_cubed *game)
@@ -56,7 +56,7 @@ void	draw_walls(t_cubed *game)
 		calculate_ray(ray, game);
 		fix_fisheye(ray, game);
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
-		height = CELLSIZE * SCREEN_HEIGHT / ray->dist;
+		height = CELLSIZE * SCREEN_HEIGHT / ray->d;
 		if (height > SCREEN_HEIGHT)
 			height = SCREEN_HEIGHT;
 		draw_segment(height, x, walld);

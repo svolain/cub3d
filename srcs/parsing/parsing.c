@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 14:45:33 by vsavolai          #+#    #+#             */
-/*   Updated: 2024/05/25 13:00:43 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/25 14:24:33 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	get_element(t_cubed *game, char *line, char *temp, bool *element)
 	while(*temp == ' ')
 		*temp++;
 	temp = ft_skip_whitespace(temp);
-	
+
 
 }
 
@@ -41,17 +41,17 @@ int	check_elements(t_cubed *game, char *line, bool **elements)
 
 	i = -1;
 	temp = ft_skip_whitespace(line);
-	if (elements[0] == 0 && ft_strncmp(temp, "NO", 2) == 0)
+	if (elements[NO] == 0 && ft_strncmp(temp, "NO", 2) == 0)
 		get_element(game, line, temp, &elements[0]);
-	else if (elements[1] == 0 && ft_strncmp(temp, "SO", 2) == 0)
+	else if (elements[SO] == 0 && ft_strncmp(temp, "SO", 2) == 0)
 		get_element(game, line, temp, &elements[1]);
-	else if (elements[2] == 0 || ft_strncmp(temp, "WE", 2) == 0)
+	else if (elements[WE] == 0 && ft_strncmp(temp, "WE", 2) == 0)
 		get_element(game, line,  temp, &elements[2]);
-	else if (elements[3] == 0 || ft_strncmp(temp, "EA", 1) == 0)
+	else if (elements[EA] == 0 && ft_strncmp(temp, "EA", 2) == 0)
 		get_element(game, line, temp, &elements[3]);
-	else if (elements[4] == 0 || ft_strncmp(temp, "F ", 2) == 0)
+	else if (elements[F] == 0 && ft_strncmp(temp, "F ", 1) == 0)
 		get_color(game, line, temp, &elements[4]);
-	else if (elements[6] == 0 || ft_strncmp(temp, "C ", 2) == 0)
+	else if (elements[C] == 0 && ft_strncmp(temp, "C ", 1) == 0)
 		get_color(game, line, temp, &elements[6]);
 	else
 		error_exit(ERR_MAP, MSG_MPEL, game);
@@ -92,27 +92,27 @@ static	void	read_elements(t_cubed *game, int *map_start)
 	close(game->map->fd);
 }
 
-void	read_map_info(t_cubed *game, int *map_start)
-{
-	char	**grid;
-	int		i;
-	int		j;
+// void	read_map_info(t_cubed *game, int *map_start)
+// {
+// 	char	**grid;
+// 	int		i;
+// 	int		j;
 
-	i = 0;
-	j = 0;
-	grid = safe_calloc(sizeof(char *) * game->map->height + 1, game);
-	while(1)
-	{
-		if (i++ < *map_start)
-			continue ;
-		grid[j] = get_next_line(game->map->fd);
-		if (grid[j] == NULL)
-			break ;
-		j++;
-	}
-	if (i < *map_start + 3)
-		error_exit(ERR_MAP, MSG_MPEL, game);
-}
+// 	i = 0;
+// 	j = 0;
+// 	grid = safe_calloc(sizeof(char *) * game->map->height + 1, game);
+// 	while(1)
+// 	{
+// 		if (i++ < *map_start)
+// 			continue ;
+// 		grid[j] = get_next_line(game->map->fd);
+// 		if (grid[j] == NULL)
+// 			break ;
+// 		j++;
+// 	}
+// 	if (i < *map_start + 3)
+// 		error_exit(ERR_MAP, MSG_MPEL, game);
+// }
 
 void	parse_map(t_cubed *game)
 {
@@ -129,5 +129,5 @@ void	parse_map(t_cubed *game)
 	game->map->fd = open(game->map->file, O_RDONLY);
 	if(game->map->fd == -1)
 		error_exit(ERR_MAP, MSG_FILE, game);
-	read_map_info(game, &map_start);
+	// read_map_info(game, &map_start);
 }
