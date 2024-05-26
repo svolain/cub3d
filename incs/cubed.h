@@ -144,7 +144,7 @@ void	parse_mapinfo(t_cubed *game);
 
 //		Load
 void	load_sprite(t_element index, char *start, bool *loaded, t_cubed *game);
-void	load_color(t_element index, char *start, bool *loaded, t_cubed *game);
+void	load_color(t_color index, char *start, bool *loaded, t_cubed *game);
 
 //		Hooks
 void	hook_close(void *param);

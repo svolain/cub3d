@@ -49,10 +49,10 @@ static char	*skip_spaces(char *start, t_cubed *game)
 	return (start);
 }
 
-void	load_color(t_element index, char *start, bool *loaded, t_cubed *game)
+void	load_color(t_color index, char *start, bool *loaded, t_cubed *game)
 {
 	int32_t	rgba[4];
-	char	**arr;
+	char	**colors;
 	char	*values;
 	char	*end;
 	int		i;
@@ -60,13 +60,13 @@ void	load_color(t_element index, char *start, bool *loaded, t_cubed *game)
 	start = skip_spaces(start, game);
 	end = ft_strchr(start, '\n');
 	values = safe_substr(start, end, game);
-	arr = safe_split(values, ',', game);
+	colors = safe_split(values, ',', game);
 	i = 0;
-	while (arr[i])
+	while (colors[i])
 	{
-		rgba[i] = parse_color(arr[i], i);
+		rgba[i] = parse_color(colors[i], i);
 		if (rgba[i] == FAILURE)
-			error_occured(values, arr, game);
+			error_occured(values, colors, game);
 		i++;
 	}
 	game->col[index] = create_rgba_color(rgba[0], rgba[1], rgba[2], 255);
