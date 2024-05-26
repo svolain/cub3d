@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   element.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 19:48:31 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 20:03:55 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/26 12:47:45 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 static int	load_element(bool *elements, char *id, t_cubed *game)
 {
-	if (!elements[ELEM_NO] && !ft_strncmp(id, "NO", 2))
+	if (!elements[ELEM_NO] && !ft_strncmp(id, "NO ", 3))
 		load_sprite(ELEM_NO, id + 2, &elements[ELEM_NO], game);
-	else if (!elements[ELEM_SO] && !ft_strncmp(id, "SO", 2))
+	else if (!elements[ELEM_SO] && !ft_strncmp(id, "SO ", 3))
 		load_sprite(ELEM_SO, id + 2, &elements[ELEM_SO], game);
-	else if (!elements[ELEM_WE] && !ft_strncmp(id, "WE", 2))
+	else if (!elements[ELEM_WE] && !ft_strncmp(id, "WE ", 3))
 		load_sprite(ELEM_WE, id + 2, &elements[ELEM_WE], game);
-	else if (!elements[ELEM_EA] && !ft_strncmp(id, "EA", 2))
+	else if (!elements[ELEM_EA] && !ft_strncmp(id, "EA ", 3))
 		load_sprite(ELEM_EA, id + 2, &elements[ELEM_EA], game);
-	else if (!elements[ELEM_F] && !ft_strncmp(id, "F", 1))
+	else if (!elements[ELEM_F] && !ft_strncmp(id, "F ", 2))
 		load_color(ELEM_F, id + 1, &elements[ELEM_F], game);
-	else if (!elements[ELEM_C] && !ft_strncmp(id, "C", 1))
+	else if (!elements[ELEM_C] && !ft_strncmp(id, "C ", 2))
 		load_color(ELEM_C, id + 1, &elements[ELEM_C], game);
 	else
 		error_exit(ERR_ELEM, MSG_ELEM, game);
