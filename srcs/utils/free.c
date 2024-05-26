@@ -28,7 +28,10 @@ void	free_double(char ***arr)
 		return ;
 	i = 0;
 	while ((*arr)[i])
-		free_single(&(*arr)[i++]);
+	{
+		free_single(&(*arr)[i]);
+		i++;
+	}
 	free(*arr);
 	*arr = NULL;
 }
@@ -41,7 +44,7 @@ static void	destruct_map(t_mapinfo *map)
 	map = NULL;
 }
 
-static void	clean_assets(t_cubed *game)
+static void	clean_images(t_cubed *game)
 {
 	int	i;
 
@@ -59,14 +62,13 @@ void	free_exit(t_cubed *game, int excode)
 	if (!game)
 		exit(excode);
 	if (game->mlx != NULL)
-		mlx_close_window(game->mlx);
-	if (game->map != NULL)
-		destruct_map(game->map);
-	if (game->mlx != NULL)
 	{
-		clean_assets(game);
+		mlx_close_window(game->mlx);
+		clean_images(game);
 		mlx_terminate(game->mlx);
 	}
+	if (game->map != NULL)
+		destruct_map(game->map);
 	if (game->cam != NULL)
 		free(game->cam);
 	if (game->gnl != NULL)

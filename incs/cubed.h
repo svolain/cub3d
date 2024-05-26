@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 20:04:44 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/26 22:20:49 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,10 +137,9 @@ typedef struct s_cubed
 	mlx_image_t	*img[GAME_ASSETS];
 }	t_cubed;
 
-//		Init
-void	init_game(t_cubed *game, char *file);
-
 //		Parse
+void	parse_filename(t_cubed *game);
+void	open_infile(t_cubed *game);
 void	parse_elements(t_cubed *game);
 void	parse_mapinfo(t_cubed *game);
 
@@ -148,16 +147,18 @@ void	parse_mapinfo(t_cubed *game);
 void	load_sprite(t_element index, char *start, bool *loaded, t_cubed *game);
 void	load_color(t_color index, char *start, bool *loaded, t_cubed *game);
 
-//		Hooks
+//		Hook
 void	hook_close(void *param);
 void	hook_keys(mlx_key_data_t keydata, void *param);
 /* void	hook_keys(void *param); */
 
-//		Calc
-void	calculate_ray(t_vector *ray, t_cubed *game);
-
 //		Draw
 void	draw_walls(t_cubed *game);
+void	calculate_ray(t_vector *ray, t_cubed *game);
+void	ft_putpixel(int x, int y, int32_t color, t_cubed *game);
+int32_t	ft_getrgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+void	ft_rotate(float *target, float angle, t_action action);
+float	ft_degtorad(float degree);
 
 //		Map
 void	init_minimap(t_cubed *game);
@@ -174,15 +175,7 @@ void	free_exit(t_cubed *game, int excode);
 void	free_single(char **str);
 void	free_double(char ***str);
 
-//		Colors
-void	color_image(mlx_image_t *image, int32_t r, int32_t g, int32_t b);
-void	alpha_blend(mlx_image_t *image, int32_t alpha, uint32_t x, uint32_t y);
-int32_t	create_rgba_color(int32_t r, int32_t g, int32_t b, int32_t a);
-int32_t	get_channel_color(int32_t rgba, t_action action);
-
-//		Utils
-float	ft_degtorad(float degree);
-void	ft_rotate(float *target, float angle, t_action action);
+//		Util
 void	*safe_calloc(size_t n, t_cubed *game);
 char	*safe_substr(char *stt, char *end, t_cubed *game);
 char	**safe_split(char * str, char c, t_cubed *game);

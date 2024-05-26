@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 19:46:50 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 19:47:07 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/26 22:34:07 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ mlx_texture_t	*safe_texture(char * file, t_cubed *game)
 	return (t);
 }
 
-char	**safe_split(char * str, char c, t_cubed *game)
+char	**safe_split(char *str, char c, t_cubed *game)
 {
 	char	**s;
 

@@ -6,7 +6,7 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/05/25 19:59:54 by jmertane         ###   ########.fr        #
+#    Updated: 2024/05/26 22:37:00 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,25 +40,25 @@ endif
 MODULES		:=	main \
 				parse \
 				hook \
-				calc \
 				draw \
 				utils
 
 SOURCES 	:= 	main.c \
-				init.c \
+				infile.c \
 				element.c \
 				mapinfo.c \
 				load.c \
 				close.c \
 				keys.c \
 				rays.c \
+				minimap.c \
 				walls.c \
-				colors.c \
+				pixel.c \
+				rotate.c \
 				error.c \
 				safe.c \
 				free.c \
-				utils.c \
-				minimap.c
+				utils.c
 
 SOURCEDIR	:=	$(addprefix $(SRCSDIR)/, $(MODULES))
 BUILDDIR	:=	$(addprefix $(OBJSDIR)/, $(MODULES))

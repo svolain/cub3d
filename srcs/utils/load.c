@@ -69,7 +69,7 @@ void	load_color(t_color index, char *start, bool *loaded, t_cubed *game)
 			error_occured(values, colors, game);
 		i++;
 	}
-	game->col[index] = create_rgba_color(rgba[0], rgba[1], rgba[2], 255);
+	game->col[index] = ft_getrgba(rgba[0], rgba[1], rgba[2], 255);
 	free_double(&colors);
 	free_single(&values);
 	*loaded = true;

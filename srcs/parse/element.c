@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   element.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 19:48:31 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/26 12:47:45 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/26 22:48:14 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,19 @@ static int	ft_isspace(char c)
 	return ((c >= 9 && c <= 13) || c == 32);
 }
 
+static bool	ft_isempty(char *str)
+{
+	while (*str && ft_isspace(*str))
+		str++;
+	if (!*str)
+		return (true);
+	return (false);
+}
+
 void	parse_elements(t_cubed *game)
 {
 	static int	loaded = 0;
 	static bool	elements[6];
-	char		*temp;
 
 	while (true)
 	{
@@ -50,11 +58,8 @@ void	parse_elements(t_cubed *game)
 		game->gnl = get_next_line(game->map->filefd);
 		if (!game->gnl)
 			break ;
-		temp = game->gnl;
-		while (*temp && ft_isspace(*temp))
-			temp++;
-		if (!*temp)
+		if (ft_isempty(game->gnl))
 			continue ;
-		loaded += load_element(elements, temp, game);
+		loaded += load_element(elements, game->gnl, game);
 	}
 }
