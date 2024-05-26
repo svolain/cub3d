@@ -40,6 +40,15 @@ static int32_t	parse_color(char *color, int iteration)
 	return (ft_atoi(color));
 }
 
+static char	*skip_spaces(char *start, t_cubed *game)
+{
+	while (*start && *start == ' ')
+		start++;
+	if (!*start || *start == '\n')
+		error_exit(ERR_ELEM, MSG_ELEM, game);
+	return (start);
+}
+
 void	load_color(t_element index, char *start, bool *loaded, t_cubed *game)
 {
 	int32_t	rgba[4];
@@ -48,10 +57,7 @@ void	load_color(t_element index, char *start, bool *loaded, t_cubed *game)
 	char	*end;
 	int		i;
 
-	while (*start && *start == ' ')
-		start++;
-	if (!*start || *start == '\n')
-		error_exit(ERR_ELEM, MSG_ELEM, game);
+	start = skip_spaces(start, game);
 	end = ft_strchr(start, '\n');
 	values = safe_substr(start, end, game);
 	arr = safe_split(values, ',', game);
@@ -61,31 +67,24 @@ void	load_color(t_element index, char *start, bool *loaded, t_cubed *game)
 		rgba[i] = parse_color(arr[i], i);
 		if (rgba[i] == FAILURE)
 			error_occured(values, arr, game);
+		i++;
 	}
-	if (index == ELEM_F)
-		game->floor = get_rgba(rgba[0], rgba[1], rgba[2], 255);
-	else if (index == ELEM_C)
-		game->roof = get_rgba(rgba[0], rgba[1], rgba[2], 255);
+	game->col[index] = get_rgba(rgba[0], rgba[1], rgba[2], 255);
 	*loaded = true;
 }
 
 void	load_sprite(t_element index, char *start, bool *loaded, t_cubed *game)
 {
-	mlx_texture_t	*texture;
-	mlx_image_t		*image;
+	mlx_texture_t	*tex;
 	char			*file;
 	char			*end;
 
-	while (*start && *start == ' ')
-		start++;
-	if (!*start || *start == '\n')
-		error_exit(ERR_ELEM, MSG_ELEM, game);
+	start = skip_spaces(start, game);
 	end = ft_strchr(start, '\n');
 	file = safe_substr(start, end, game);
-	texture = safe_texture(file, game);
-	image = game->img + index;
-	image = safe_image(0, 0, texture, game);
-	mlx_delete_texture(texture);
+	tex = safe_texture(file, game);
+	game->img[index] = safe_image(0, 0, tex, game);
+	mlx_delete_texture(tex);
 	free_single(&file);
 	*loaded = true;
 }

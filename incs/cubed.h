@@ -129,12 +129,10 @@ typedef struct s_cubed
 {
 	t_vector	*cam;
 	t_mapinfo	*map;
-	mlx_image_t	*img;
-	int32_t		col[5];
-	int32_t		floor;
-	int32_t		roof;
-	mlx_t		*mlx;
 	char		*gnl;
+	mlx_t		*mlx;
+	int32_t		col[GAME_COLORS];
+	mlx_image_t	*img[GAME_ASSETS];
 }	t_cubed;
 
 //		Init

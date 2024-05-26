@@ -20,18 +20,18 @@ void	free_single(char **str)
 	*str = NULL;
 }
 
-/* static void	free_double(char ***arr) */
-/* { */
-/* 	int	i; */
-/**/
-/* 	if (!arr || !*arr) */
-/* 		return ; */
-/* 	i = 0; */
-/* 	while ((*arr)[i]) */
-/* 		free_single(&(*arr)[i++]); */
-/* 	free(*arr); */
-/* 	*arr = NULL; */
-/* } */
+void	free_double(char ***arr)
+{
+	int	i;
+
+	if (!arr || !*arr)
+		return ;
+	i = 0;
+	while ((*arr)[i])
+		free_single(&(*arr)[i++]);
+	free(*arr);
+	*arr = NULL;
+}
 
 static void	destruct_map(t_mapinfo *map)
 {
@@ -43,15 +43,13 @@ static void	destruct_map(t_mapinfo *map)
 
 static void	clean_assets(t_cubed *game)
 {
-	mlx_image_t	*image;
-	int			i;
+	int	i;
 
 	i = 0;
 	while (i < GAME_ASSETS)
 	{
-		image = game->img + i;
-		if (image != NULL)
-			mlx_delete_image(game->mlx, image);
+		if (game->img[i] != NULL)
+			mlx_delete_image(game->mlx, game->img[i]);
 		i++;
 	}
 }
@@ -64,10 +62,11 @@ void	free_exit(t_cubed *game, int excode)
 		mlx_close_window(game->mlx);
 	if (game->map != NULL)
 		destruct_map(game->map);
-	if (game->img != NULL)
-		clean_assets(game);
 	if (game->mlx != NULL)
+	{
+		clean_assets(game);
 		mlx_terminate(game->mlx);
+	}
 	if (game->cam != NULL)
 		free(game->cam);
 	if (game->gnl != NULL)
