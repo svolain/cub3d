@@ -19,7 +19,7 @@ static void	rotate_camera(t_cubed *game, t_action action)
 	else if (action == ROTATE_RIGHT)
 		ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_RIGHT);
 	draw_walls(game);
-	move_minimap(game, action);
+	/* move_minimap(game, action); */
 }
 
 static void	move_camera(t_cubed *game, t_action action)
@@ -33,7 +33,7 @@ static void	move_camera(t_cubed *game, t_action action)
 	else if (action == MOVE_RIGHT)
 		game->cam->x += STEP_MOVEMENT;
 	draw_walls(game);
-	move_minimap(game, action);
+	/* move_minimap(game, action); */
 }
 
 void	hook_keys(mlx_key_data_t keydata, void *param)

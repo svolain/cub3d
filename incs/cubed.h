@@ -33,7 +33,7 @@
 
 # define CELLSIZE 64
 # define SCALE_FACTOR 2
-# define MINIMAP_MAX 10
+# define MAPGRID 10
 
 # define PI 3.1415926535898
 
@@ -175,8 +175,8 @@ void	free_double(char ***str);
 //		Colors
 void	color_image(mlx_image_t *image, int32_t r, int32_t g, int32_t b);
 void	alpha_blend(mlx_image_t *image, int32_t alpha, uint32_t x, uint32_t y);
-int32_t	get_rgba(int32_t r, int32_t g, int32_t b, int32_t a);
-int32_t	get_pixel(int32_t rgba, t_action action);
+int32_t	create_rgba_color(int32_t r, int32_t g, int32_t b, int32_t a);
+int32_t	get_channel_color(int32_t rgba, t_action action);
 
 //		Utils
 float	ft_degtorad(float degree);

@@ -12,6 +12,35 @@
 
 #include <cubed.h>
 
+char *test_map[] = { "11111111\n",
+					"10100001\n",
+					"10100001\n",
+					"10100001\n",
+					"10000001\n",
+					"10000101\n",
+					"10000001\n",
+					"11111111" };
+
+static void	init_scene(t_cubed *game)
+{
+	game->img[ELEM_BG] = safe_image(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
+	// TODO: set the rest of colors and images here
+	if (mlx_image_to_window(game->mlx, game->img[ELEM_BG], 0, 0) == FAILURE)
+		error_exit(ERR_MLX, MSG_MLX, game);
+	/* draw_walls(game); */
+	/* init_minimap(game); */
+}
+
+static void	init_map(t_cubed *game)
+{
+	game->map->matrix = test_map;
+	game->map->width = 8;
+	game->map->height = 8;
+	game->cam->x = 4 * CELLSIZE;
+	game->cam->y = 4 * CELLSIZE;
+	game->cam->a = NORTH - 0.1;
+}
+
 static void	open_infile(t_cubed *game)
 {
 	t_mapinfo	*map;
@@ -62,5 +91,6 @@ void	init_game(t_cubed *game, char *file)
 	open_infile(game);
 	parse_elements(game);
 	/* parse_mapinfo(game); */
-	/* init_minimap(game); */
+	init_map(game); // delete this
+	init_scene(game);
 }

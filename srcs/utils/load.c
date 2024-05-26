@@ -69,7 +69,7 @@ void	load_color(t_element index, char *start, bool *loaded, t_cubed *game)
 			error_occured(values, arr, game);
 		i++;
 	}
-	game->col[index] = get_rgba(rgba[0], rgba[1], rgba[2], 255);
+	game->col[index] = create_rgba_color(rgba[0], rgba[1], rgba[2], 255);
 	*loaded = true;
 }
 

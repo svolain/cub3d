@@ -12,16 +12,37 @@
 
 #include <cubed.h>
 
-static void	draw_segment(int height, int x, mlx_image_t *walld)
+static void	draw_space(int start_point, int end_point, int x, t_cubed *game)
 {
-	int	a;
-	int	b;
+	int	floor;
+	int	roof;
 
-	a = SCREEN_HEIGHT / 2 - height / 2;
-	b = SCREEN_HEIGHT / 2 + height / 2;
-	while (a < b)
+	roof = -1;
+	floor = SCREEN_HEIGHT + 1;
+	while (roof++ < start_point)
 	{
-		mlx_put_pixel(walld, x, a++, 255);
+		mlx_put_pixel(game->img[ELEM_BG], x, roof, game->col[COL_C]);
+	}
+	while (floor-- > end_point)
+	{
+		mlx_put_pixel(game->img[ELEM_BG], x, floor, game->col[COL_F]);
+	}
+}
+
+static void	draw_segment(int height, int x, t_cubed *game)
+{
+	int	start_point;
+	int	end_point;
+
+	start_point = SCREEN_HEIGHT / 2 - height / 2 - 1;
+	end_point = SCREEN_HEIGHT / 2 + height / 2;
+	draw_space(start_point, end_point, x, game);
+	while (start_point++ < end_point)
+	{
+		if (x < MAPCELL * MAPGRID
+			&& start_point < MAPCELL * MAPGRID)
+			continue ;
+		mlx_put_pixel(game->img[ELEM_BG], x, start_point, 255);
 	}
 }
 
@@ -36,12 +57,7 @@ static void	fix_fisheye(t_vector *ray, t_cubed *game)
 
 void	draw_walls(t_cubed *game)
 {
-	mlx_image_t	*walld;
-	walld = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-	color_image(walld, 0, 100, 200);
-	mlx_image_to_window(game->mlx, walld, 0, 0);
-
-	t_vector	*ray;
+	t_vector	ray;
 	float		angle;
 	int			height;
 	int			x;
@@ -49,18 +65,16 @@ void	draw_walls(t_cubed *game)
 	x = 0;
 	angle = game->cam->a;
 	ft_rotate(&angle, FOV / 2, ROTATE_LEFT);
-	ray = safe_calloc(sizeof(t_vector), game);
 	while (x < SCREEN_WIDTH)
 	{
-		ray->a = angle;
-		calculate_ray(ray, game);
-		fix_fisheye(ray, game);
+		ray.a = angle;
+		calculate_ray(&ray, game);
+		fix_fisheye(&ray, game);
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
-		height = CELLSIZE * SCREEN_HEIGHT / ray->d;
+		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
 		if (height > SCREEN_HEIGHT)
 			height = SCREEN_HEIGHT;
-		draw_segment(height, x, walld);
+		draw_segment(height, x, game);
 		x++;
 	}
-	free(ray);
 }

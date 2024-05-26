@@ -12,12 +12,12 @@
 
 #include <cubed.h>
 
-int32_t	get_rgba(int32_t r, int32_t g, int32_t b, int32_t a)
+int32_t	create_rgba_color(int32_t r, int32_t g, int32_t b, int32_t a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-int32_t	get_pixel(int32_t rgba, t_action action)
+int32_t	get_channel_color(int32_t rgba, t_action action)
 {
 	if (action == GET_RED)
 		return ((rgba >> 24) & 0xFF);
@@ -41,7 +41,7 @@ void	color_image(mlx_image_t *image, int32_t r, int32_t g, int32_t b)
 		y = 0;
 		while (y < image->height)
 		{
-			color = get_rgba(r, g, b, 255);
+			color = create_rgba_color(r, g, b, 255);
 			mlx_put_pixel(image, x, y, color);
 			y++;
 		}
@@ -56,15 +56,15 @@ void	blend_alpha(mlx_image_t *image, int32_t alpha, uint32_t x, uint32_t y)
 	int32_t	g;
 	int32_t	b;
 
-	r = get_pixel(*image->pixels, GET_RED);
-	g = get_pixel(*image->pixels, GET_GREEN);
-	b = get_pixel(*image->pixels, GET_BLUE);
+	r = get_channel_color(*image->pixels, GET_RED);
+	g = get_channel_color(*image->pixels, GET_GREEN);
+	b = get_channel_color(*image->pixels, GET_BLUE);
 	while (x < image->width)
 	{
 		y = 0;
 		while (y < image->height)
 		{
-			color = get_rgba(r, g, b, alpha);
+			color = create_rgba_color(r, g, b, alpha);
 			mlx_put_pixel(image, x, y, color);
 			y++;
 		}

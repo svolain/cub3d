@@ -128,10 +128,10 @@ void	draw_minimap(t_cubed *game, int flag)
 	else
 		floor = msfloor;
 	mlx_image_to_window(game->mlx, floor, 0, 0);
-	while (i < MINIMAP_MAX && i < game->map->height)
+	while (i < MAPGRID && i < game->map->height)
 	{
 		j = 0;
-		while(j < MINIMAP_MAX && j < game->map->width)
+		while(j < MAPGRID && j < game->map->width)
 		{
 			if(game->map->matrix[i][j] == '1')
 				mlx_image_to_window(game->mlx, mwall, j * CELLSIZE / 2, i * CELLSIZE / 2);
