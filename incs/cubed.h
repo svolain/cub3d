@@ -25,11 +25,15 @@
 # include <stdio.h>
 
 # define GAME_ASSETS 5
+# define GAME_COLORS 5
 
-# define CELLSIZE 64
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
 # define SCREEN_TITLE "cub3d"
+
+# define CELLSIZE 64
+# define SCALE_FACTOR 2
+# define MINIMAP_MAX 10
 
 # define PI 3.1415926535898
 
@@ -44,8 +48,11 @@
 # define STEP_ANGLE 0.05
 # define STEP_MOVEMENT CELLSIZE / 8
 # define STEP_WINDOW FOV / SCREEN_WIDTH
+
+# define MAPSTEP STEP_MOVEMENT / SCALE_FACTOR
+# define MAPCELL CELLSIZE / SCALE_FACTOR
+
 # define BPP sizeof(int)
-# define MINIMAP_MAX 10
 
 # define FMT_BOLD_RED	"\033[1;31m"
 # define FMT_YELLOW		"\033[0;33m"
@@ -92,6 +99,15 @@ typedef enum e_element
 	ELEM_C
 }	t_element;
 
+typedef enum e_color
+{
+	COL_F,
+	COL_C,
+	COL_MP,
+	COL_MF,
+	COL_MW
+}	t_color;
+
 typedef struct s_vector
 {
 	float	x;
@@ -114,6 +130,7 @@ typedef struct s_cubed
 	t_vector	*cam;
 	t_mapinfo	*map;
 	mlx_image_t	*img;
+	int32_t		col[5];
 	int32_t		floor;
 	int32_t		roof;
 	mlx_t		*mlx;
@@ -129,8 +146,7 @@ void	parse_mapinfo(t_cubed *game);
 
 //		Load
 void	load_sprite(t_element index, char *start, bool *loaded, t_cubed *game);
-void	load_image(void);
-void	load_color(void);
+void	load_color(t_element index, char *start, bool *loaded, t_cubed *game);
 
 //		Hooks
 void	hook_close(void *param);
@@ -156,6 +172,7 @@ void	error_fatal(int errcode, char *errmsg, t_cubed *game);
 //		Free
 void	free_exit(t_cubed *game, int excode);
 void	free_single(char **str);
+void	free_double(char ***str);
 
 //		Colors
 void	color_image(mlx_image_t *image, int32_t r, int32_t g, int32_t b);
@@ -168,6 +185,10 @@ float	ft_degtorad(float degree);
 void	ft_rotate(float *target, float angle, t_action action);
 void	*safe_calloc(size_t n, t_cubed *game);
 char	*safe_substr(char *stt, char *end, t_cubed *game);
+char	**safe_split(char * str, char c, t_cubed *game);
+mlx_texture_t	*safe_texture(char * file, t_cubed *game);
+mlx_image_t	*safe_image(uint32_t width, uint32_t height
+	,mlx_texture_t *texture, t_cubed *game);
 char	*ft_skip_whitespace(char *str);
 
 #endif
