@@ -65,7 +65,9 @@ typedef enum e_check
 	X_COOR = 0,
 	Y_COOR = 1,
 	H_DIST = 0,
-	V_DIST = 1
+	V_DIST = 1,
+	Y_START = 0,
+	Y_END = 1
 }	t_check;
 
 typedef enum e_action

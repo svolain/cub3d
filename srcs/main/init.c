@@ -24,9 +24,9 @@ char *test_map[] = { "11111111\n",
 static void	init_scene(t_cubed *game)
 {
 	game->img[ELEM_BG] = safe_image(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
-	// TODO: set the rest of colors and images here
 	if (mlx_image_to_window(game->mlx, game->img[ELEM_BG], 0, 0) == FAILURE)
 		error_exit(ERR_MLX, MSG_MLX, game);
+	mlx_image_to_window(game->mlx, game->img[ELEM_NO], 0, 0);
 	/* draw_walls(game); */
 	/* init_minimap(game); */
 }
