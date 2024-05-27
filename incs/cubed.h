@@ -66,7 +66,7 @@ typedef enum e_check
 	Y_COOR = 1,
 	H_DIST = 0,
 	V_DIST = 1,
-	Y_START = 0,
+	Y_BEGIN = 0,
 	Y_END = 1
 }	t_check;
 
@@ -96,9 +96,9 @@ typedef enum e_element
 	ELEM_SO,
 	ELEM_WE,
 	ELEM_EA,
+	ELEM_F,
+	ELEM_C,
 	ELEM_BG = 4,
-	ELEM_F = 4,
-	ELEM_C
 }	t_element;
 
 typedef enum e_color
@@ -112,10 +112,11 @@ typedef enum e_color
 
 typedef struct s_vector
 {
-	float	x;
-	float	y;
-	float	a;
-	float	d;
+	float		x;
+	float		y;
+	float		a;
+	float		d;
+	t_element	key;
 }	t_vector;
 
 typedef struct s_mapinfo
@@ -156,9 +157,10 @@ void	hook_keys(mlx_key_data_t keydata, void *param);
 void	draw_walls(t_cubed *game);
 void	calculate_ray(t_vector *ray, t_cubed *game);
 void	ft_putpixel(int x, int y, int32_t color, t_cubed *game);
-int32_t	ft_getrgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 void	ft_rotate(float *target, float angle, t_action action);
 float	ft_degtorad(float degree);
+int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y);
+int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 //		Map
 void	init_minimap(t_cubed *game);

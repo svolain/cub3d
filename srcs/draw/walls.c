@@ -25,31 +25,23 @@ static void	draw_space(int start_point, int end_point, int x, t_cubed *game)
 		ft_putpixel(x, floor, game->col[COL_F], game);
 }
 
-static void	draw_column(int height, int x, t_cubed *game)
+static void	draw_column(int height, int x, t_vector *ray, t_cubed *game)
 {
 	int32_t	color;
-	int		endpoint;
-	int		startpoint;
-	int		repeatpixel;
-	int		i;
+	int		point[2];
 
-	endpoint = SCREEN_HEIGHT / 2 + height / 2;
-	startpoint = SCREEN_HEIGHT / 2 - height / 2;
-	if (startpoint < MAPCELL * MAPGRID
-		&& x < MAPCELL * MAPGRID)
-		startpoint = MAPCELL * MAPGRID;
-	draw_space(startpoint, endpoint, x, game);
-	repeatpixel = height / CELLSIZE;
-	while (startpoint < endpoint)
+	point[Y_END] = SCREEN_HEIGHT / 2 + height / 2;
+	point[Y_BEGIN] = SCREEN_HEIGHT / 2 - height / 2;
+	draw_space(point[Y_BEGIN], point[Y_END], x, game);
+	while (point[Y_BEGIN] < point[Y_END])
 	{
-		i = 0;
-		color = 255; // get texture color instead
-		while (i < repeatpixel && startpoint < endpoint)
-		{
-			ft_putpixel(x, startpoint, color, game);
-			startpoint++;
-			i++;
-		}
+		color = get_color(game->img[ELEM_NO], ray->x, ray->y);
+		ray->y += ray->d;
+		point[Y_BEGIN]++;
+		if (point[Y_BEGIN] < MAPCELL * MAPGRID
+			&& x < MAPCELL * MAPGRID)
+			continue ;
+		ft_putpixel(x, point[Y_BEGIN], color, game);
 	}
 }
 
@@ -80,8 +72,10 @@ void	draw_walls(t_cubed *game)
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
 		if (height > SCREEN_HEIGHT)
 			height = SCREEN_HEIGHT;
-		draw_column(height, column, game);
+		ray.y = 0;
+		ray.x = (int)(ray.x / 2.0) % CELLSIZE;
+		ray.d = (float)CELLSIZE / (float)height;
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
-		column++;
+		draw_column(height, column++, &ray, game);
 	}
 }
