@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubed.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 20:04:44 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/26 17:52:22 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ void	init_game(t_cubed *game, char *file);
 //		Parse
 void	parse_elements(t_cubed *game);
 void	parse_mapinfo(t_cubed *game);
+int		ft_isspace(char c);
 
 //		Load
 void	load_sprite(t_element index, char *start, bool *loaded, t_cubed *game);
@@ -184,9 +185,11 @@ void	ft_rotate(float *target, float angle, t_action action);
 void	*safe_calloc(size_t n, t_cubed *game);
 char	*safe_substr(char *stt, char *end, t_cubed *game);
 char	**safe_split(char * str, char c, t_cubed *game);
+char	*safe_strjoin(char *s1, char *s2, t_cubed *game);
 mlx_texture_t	*safe_texture(char * file, t_cubed *game);
 mlx_image_t	*safe_image(uint32_t width, uint32_t height
 	,mlx_texture_t *texture, t_cubed *game);
 char	*ft_skip_whitespace(char *str);
+int		ft_arrlen(char **arr);
 
 #endif

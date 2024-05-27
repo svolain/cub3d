@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:01:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 20:03:44 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/26 18:49:48 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ void	init_game(t_cubed *game, char *file)
 	parse_filename(game);
 	open_infile(game);
 	parse_elements(game);
-	/* parse_mapinfo(game); */
-	/* init_minimap(game); */
+	parse_mapinfo(game);
+	//int i = 0;
+	/*while(game->map->matrix[i])
+		printf("%s", game->map->matrix[i]);*/
+	/*  init_minimap(game); */
 }

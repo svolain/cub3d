@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:32:56 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 19:54:21 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/27 12:01:38 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,13 @@ char	*ft_skip_whitespace(char *str)
 			|| *str == '\v' || *str == '\f' || *str == '\r'))
 		str++;
 	return (str);
+}
+
+int	ft_arrlen(char **arr)
+{
+	int i = 0;
+
+	while(arr[i] != 0)
+		i++;
+	return (i);
 }
