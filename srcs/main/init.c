@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:01:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/27 18:39:48 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/27 19:07:00 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,5 @@ void	init_game(t_cubed *game, char *file)
 	open_infile(game);
 	parse_elements(game);
 	parse_mapinfo(game);
-
-	printf("player y: %f palyer x: %f player a: %f \n\n\n", game->cam->y, game->cam->x, game->cam->a);
-	int i = 0;
-	while(game->map->matrix[i] != 0)
-		printf("%s\n", game->map->matrix[i++]);
-	//int i = 0;
-	/*while(game->map->matrix[i])
-		printf("%s", game->map->matrix[i]);*/
 	/*  init_minimap(game); */
 }
