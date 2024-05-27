@@ -34,8 +34,7 @@ static int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y)
 
 void	ft_putpixel(int x, int y, int32_t color, t_cubed *game)
 {
-	if ((x < MAPCELL * MAPGRID && y < MAPCELL * MAPGRID)
-		|| !valid_pixel(game->img[ELEM_BG], x, y)
+	if (!valid_pixel(game->img[ELEM_BG], x, y)
 		|| get_color(game->img[ELEM_BG], x, y) == color)
 		return ;
 	mlx_put_pixel(game->img[ELEM_BG], x, y, color);

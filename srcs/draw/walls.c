@@ -28,23 +28,26 @@ static void	draw_space(int start_point, int end_point, int x, t_cubed *game)
 static void	draw_column(int height, int x, t_cubed *game)
 {
 	int32_t	color;
-	int		point[2];
-	int		repeat;
+	int		endpoint;
+	int		startpoint;
+	int		repeatpixel;
 	int		i;
 
-	point[Y_START] = SCREEN_HEIGHT / 2 - height / 2 - 1;
-	point[Y_END] = SCREEN_HEIGHT / 2 + height / 2;
-	draw_space(point[Y_START], point[Y_END], x, game);
-	repeat = height / CELLSIZE;
-	while (point[Y_START] < point[Y_END])
+	endpoint = SCREEN_HEIGHT / 2 + height / 2;
+	startpoint = SCREEN_HEIGHT / 2 - height / 2;
+	if (startpoint < MAPCELL * MAPGRID
+		&& x < MAPCELL * MAPGRID)
+		startpoint = MAPCELL * MAPGRID;
+	draw_space(startpoint, endpoint, x, game);
+	repeatpixel = height / CELLSIZE;
+	while (startpoint < endpoint)
 	{
-		i = -1;
-		color = 255;
-		/* color = get_texture_color(game); */
-		while (i < repeat && point[Y_START] < point[Y_END])
+		i = 0;
+		color = 255; // get texture color instead
+		while (i < repeatpixel && startpoint < endpoint)
 		{
-			ft_putpixel(x, point[Y_START], color, game);
-			point[Y_START]++;
+			ft_putpixel(x, startpoint, color, game);
+			startpoint++;
 			i++;
 		}
 	}
@@ -74,26 +77,11 @@ void	draw_walls(t_cubed *game)
 		ray.a = angle;
 		calculate_ray(&ray, game);
 		fix_fisheye(&ray, game);
-		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
 		if (height > SCREEN_HEIGHT)
 			height = SCREEN_HEIGHT;
 		draw_column(height, column, game);
+		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
 		column++;
 	}
 }
-
-/* static int32_t	get_texture_color(t_cubed *game) */
-/* { */
-/* 	static int	y = 0; */
-/* 	static int	x = 0; */
-/**/
-/* 	y++; */
-/* 	if (y++ != 0 && y % CELLSIZE == 0) */
-/* 		y = 0; */
-/* 	x++; */
-/* 	if (x != 0 && x % CELLSIZE == 0) */
-/* 		x = 0; */
-/* 	printf("%d , %d", x, y); */
-/* 	return (get_pixel_color(game->img[ELEM_NO], x, y)); */
-/* } */

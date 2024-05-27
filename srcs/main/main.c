@@ -47,7 +47,7 @@ static void	start_scene(t_cubed *game)
 	if (mlx_image_to_window(game->mlx, game->img[ELEM_BG], 0, 0) == FAILURE)
 		error_exit(ERR_MLX, MSG_MLX, game);
 	mlx_image_to_window(game->mlx, game->img[ELEM_NO], 0, 0); // delete this
-	/* draw_walls(game); */
+	draw_walls(game);
 	/* init_minimap(game); */
 }
 

@@ -51,8 +51,8 @@ SOURCES 	:= 	main.c \
 				close.c \
 				keys.c \
 				rays.c \
-				minimap.c \
 				walls.c \
+				minimap.c \
 				pixel.c \
 				rotate.c \
 				error.c \
@@ -115,8 +115,8 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(INCS) $^ $(LIBFTBIN) $(MLXLIB) $(MLXFLAGS) -o $@
 	@make finish
 
-debug: CFLAGS += $(DEBUGFLAGS)
-debug: all
+db: CFLAGS += $(DEBUGFLAGS)
+db: re
 
 clean:
 	@make --quiet -C $(LIBFTDIR) clean
@@ -154,4 +154,4 @@ $(DEPS):
 
 $(foreach build, $(BUILDDIR), $(eval $(call build_cmd, $(build))))
 
-.PHONY: all debug clean fclean re nm title finish
+.PHONY: all clean fclean re db nm title finish
