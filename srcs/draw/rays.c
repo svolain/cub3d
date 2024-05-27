@@ -91,11 +91,13 @@ void	calculate_ray(t_vector *ray, t_cubed *game)
 		ray->x = horizontal.x;
 		ray->y = horizontal.y;
 		ray->d = distance[H_DIST];
+		ray->key = ELEM_WE;
 	}
 	else
 	{
 		ray->x = vertical.x;
 		ray->y = vertical.y;
 		ray->d = distance[V_DIST];
+		ray->key = ELEM_NO;
 	}
 }

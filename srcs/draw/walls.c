@@ -35,7 +35,7 @@ static void	draw_column(int height, int x, t_vector *ray, t_cubed *game)
 	draw_space(point[Y_BEGIN], point[Y_END], x, game);
 	while (point[Y_BEGIN] < point[Y_END])
 	{
-		color = get_color(game->img[ELEM_NO], ray->x, ray->y);
+		color = get_color(game->img[ray->key], ray->x, ray->y);
 		ray->y += ray->d;
 		point[Y_BEGIN]++;
 		if (point[Y_BEGIN] < MAPCELL * MAPGRID
