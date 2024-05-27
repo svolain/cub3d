@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:01:07 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 19:51:24 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/27 19:00:23 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void	free_double(char ***arr)
 
 static void	destruct_map(t_mapinfo *map)
 {
-	/* if (map->matrix != NULL) */
-	/* 	free_double(&map->matrix); */
+	if (map->matrix != NULL)
+	 	free_double(&map->matrix);
 	free(map);
 	map = NULL;
 }

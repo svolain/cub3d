@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:28:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 19:48:01 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:56:56 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define MSG_NAME		"Invalid filename"
 # define MSG_FLDR		"Is a directory"
 # define MSG_ELEM		"Invalid map element"
+# define MSG_NOMP		"No map found"
 # define MSG_VOID		"Map is an empty file"
 # define MSG_PLAY		"Map has no or more than one player(s)"
 # define MSG_CHAR		"Map has invalid character(s)"

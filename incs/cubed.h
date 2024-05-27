@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/26 22:20:49 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/27 19:14:36 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@
 # define CELLSIZE 64
 # define SCALE_FACTOR 2
 # define MAPGRID 10
+
+# define MAP_CHARSET "012NSEW "
+# define PLAYER_SET "NSEW"
 
 # define PI 3.1415926535898
 
@@ -143,6 +146,7 @@ void	parse_filename(t_cubed *game);
 void	open_infile(t_cubed *game);
 void	parse_elements(t_cubed *game);
 void	parse_mapinfo(t_cubed *game);
+int		ft_isspace(char c);
 
 //		Load
 void	load_sprite(t_element index, char *start, bool *loaded, t_cubed *game);
@@ -181,9 +185,12 @@ void	free_double(char ***str);
 void	*safe_calloc(size_t n, t_cubed *game);
 char	*safe_substr(char *stt, char *end, t_cubed *game);
 char	**safe_split(char * str, char c, t_cubed *game);
+char	*safe_strjoin(char *s1, char *s2, t_cubed *game);
 mlx_texture_t	*safe_texture(char * file, t_cubed *game);
 mlx_image_t	*safe_image(uint32_t width, uint32_t height
 	,mlx_texture_t *texture, t_cubed *game);
 char	*ft_skip_whitespace(char *str);
+int		ft_arrlen(char **arr);
+char	**dup_arr(char **arr, int height, t_cubed *game);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 19:48:31 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/26 22:48:14 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/27 19:15:16 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	load_element(bool *elements, char *id, t_cubed *game)
 	return (1);
 }
 
-static int	ft_isspace(char c)
+int	ft_isspace(char c)
 {
 	return ((c >= 9 && c <= 13) || c == 32);
 }

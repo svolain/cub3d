@@ -12,28 +12,7 @@
 
 #include <cubed.h>
 
-// delete this
-char *test_map[] = { "11111111\n",
-					"10100001\n",
-					"10100001\n",
-					"10100001\n",
-					"10000001\n",
-					"10000101\n",
-					"10000001\n",
-					"11111111" };
-
-// delete this
-static void	init_map(t_cubed *game)
-{
-	game->map->matrix = test_map;
-	game->map->width = 8;
-	game->map->height = 8;
-	game->cam->x = 4 * CELLSIZE;
-	game->cam->y = 4 * CELLSIZE;
-	game->cam->a = NORTH - 0.1;
-}
-
-static void	launch_hooks(t_cubed *game)
+static void	run_game(t_cubed *game)
 {
 	mlx_close_hook(game->mlx, hook_close, game);
 	mlx_key_hook(game->mlx, hook_keys, game);
@@ -46,7 +25,6 @@ static void	start_scene(t_cubed *game)
 	game->img[ELEM_BG] = safe_image(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
 	if (mlx_image_to_window(game->mlx, game->img[ELEM_BG], 0, 0) == FAILURE)
 		error_exit(ERR_MLX, MSG_MLX, game);
-	mlx_image_to_window(game->mlx, game->img[ELEM_NO], 0, 0); // delete this
 	draw_walls(game);
 	/* init_minimap(game); */
 }
@@ -56,8 +34,7 @@ static void	parse_infile(t_cubed *game)
 	parse_filename(game);
 	open_infile(game);
 	parse_elements(game);
-	/* parse_mapinfo(game); */// use this
-	init_map(game); // delete this
+	parse_mapinfo(game);
 }
 
 static void	init_game(t_cubed *game, char *file)
@@ -81,6 +58,6 @@ int	main(int argc, char **argv)
 	init_game(&game, argv[1]);
 	parse_infile(&game);
 	start_scene(&game);
-	launch_hooks(&game);
+	run_game(&game);
 	free_exit(&game, NOERROR);
 }
