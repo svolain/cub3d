@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/26 17:52:22 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:37:30 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@
 # define CELLSIZE 64
 # define SCALE_FACTOR 2
 # define MINIMAP_MAX 10
+
+# define MAP_CHARSET "012NSEW "
+# define PLAYER_SET "NSEW"
 
 # define PI 3.1415926535898
 
@@ -191,5 +194,6 @@ mlx_image_t	*safe_image(uint32_t width, uint32_t height
 	,mlx_texture_t *texture, t_cubed *game);
 char	*ft_skip_whitespace(char *str);
 int		ft_arrlen(char **arr);
+char	**dup_arr(char **arr, int height, t_cubed *game);
 
 #endif

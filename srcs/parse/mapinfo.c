@@ -6,138 +6,91 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 19:50:03 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/27 16:49:54 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:59:30 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-/*
-static	void	check_if_closed(t_cubed *g, int *i, int *j, int *start_end)
+void	update_player_data(t_cubed *game, char c, int i, int j)
 {
-	int	next_len;
-	int	prev_len;
+	static bool loaded = false;
 
-	prev_len = start_end[0];
-	next_len = ft_strlen(g->map->matrix[*i + 1]);
-	if (j > prev_len)
-		return ;
-	if (g->map->matrix[*i - 1][*j] != '1' && g->map->matrix[*i - 1][*j] != ' ')
-		error_exit(ERR_MAP, MSG_WALL, g);
-	if ( j > next_len)
-		return ;
-	if (g->map->matrix[*i + 1][*j] != '1' && g->map->matrix[*i + 1][*j] != ' ')
-		error_exit(ERR_MAP, MSG_WALL, g);
-	if (g->map->matrix[*i][*j - 1] != '1' && g->map->matrix[*i][*j - 1] != ' ')
-		error_exit(ERR_MAP, MSG_WALL, g);
-	if (g->map->matrix[*i][*j + 1] != '1' &&
-		g->map->matrix[*i][*j + 1] != ' ' && g->map->matrix[*i][*j + 1] != '\0')
-		error_exit(ERR_MAP, MSG_WALL, g);
+	if (loaded)
+		error_exit(ERR_MAP, MSG_PLAY, game);
+	game->cam->x = j;
+	game->cam->y = i;
+	if (c == 'N')
+		game->cam->a = NORTH;
+	else if (c == 'S')
+		game->cam->a = SOUTH;
+	else if (c == 'E')
+		game->cam->a = EAST;
+	else if (c == 'W')
+		game->cam->a = WEST;
+	loaded = true;
 }
 
-static	void	validate_edge_line(t_cubed *g, int *i, int *j, int *start_end)
+void	check_map_characters(t_cubed *game, char **map)
 {
-	while(g->map->matrix[*i][*j])
+	int		i;
+	int		j;
+
+	i = 0;
+	while(map[i])
 	{
-		if (g->map->matrix[*i + 1] == 0)
+		j = 0;
+		while(map[i][j])
 		{
-			if (start_end[0] > start_end[1] - 2)
-				error_exit(ERR_MAP, MSG_WALL, g);
-			if (g->map->matrix[*i][*j] != '1' && g->map->matrix[*i][*j] != ' ')
-				error_exit(ERR_MAP, MSG_WALL, g);
-			if (g->map->matrix[*i][*j] == ' ' && j <= start_end[1])
-				if (g->map->matrix[*i - 1][*j] != '1' &&
-					g->map->matrix[*i - 1][*j] != ' ')
-					error_exit(ERR_MAP, MSG_WALL, g);
+			if (map[i][j] == ' ')
+				map[i][j] = '0';
+			if (!ft_strchr(MAP_CHARSET, map[i][j]))
+				error_exit(ERR_MAP, MSG_CHAR, game);
+			else if (ft_strchr(PLAYER_SET, map[i][j]))
+				update_player_data(game, map[i][j], i, j);
+			j++;
 		}
-		else if (*i == 0)
-		{
-			if (g->map->matrix[*i][*j] != '1' && g->map->matrix[*i][*j] != ' ')
-				error_exit(ERR_MAP, MSG_WALL, g);
-			if (g->map->matrix[*i][*j] == ' ' && )
-				if (g->map->matrix[*i + 1][*j] != '1' &&
-					g->map->matrix[*i + 1][*j] != ' ')
-		}
-		*j++;
+		i++;
 	}
 }
 
-static	void	validate_middle_line(t_cubed *g, int *i, int *j, int *start_end)
+int	check_wall(char **map, int i, int j)
 {
-	if (start_end[0] > start_end[1] - 2)
-		error_exit(ERR_MAP, MSG_WALL, g);
-	if (g->map->matrix[*i][*j] != '1')
-		error_exit(ERR_MAP, MSG_WALL, g);
-	*j++;
-	while(g->map->matrix[*i][*j])
-	{
-		if (j >= start_end[1] && g->map->matrix[*i][*j] != '1')
-			error_exit(ERR_MAP, MSG_WALL, g);
-		if (g->map->matrix[*i][*j] != '0' && g->map->matrix[*i][*j] != '2' &&
-			g->map->matrix[*i][*j] != '1' && g->map->matrix[*i][*j] != ' ')
-			error_exit(ERR_MAP, MSG_WALL, g);
-		if (g->map->matrix[*i][*j] == ' ')
-			check_if_closed(g, &i, &j, start_end);
-		*j++;
-	}
+	int	r;
 
+	r = 0;
+	if (i < 0 || j < 0 || (map[i] && !map[i][j]))
+		return (1);
+	else if (map[i][j] == '1')
+		return (0);
+	map[i][j] = '1';
+	r += check_wall(map, i - 1, j);
+	r += check_wall(map, i + 1, j);
+	r += check_wall(map, i, j - 1);
+	r += check_wall(map, i, j + 1);
+	return (r);
 }
-static	void	validate_map(t_cubed *game)
+
+void	validate_walls(t_cubed *game, char **map)
 {
-	int	start_end[2];
 	int	i;
 	int	j;
 
-	i = -1;
-	while(game->map->matrix[++i])
+	i = 0;
+	while(map[i])
 	{
-		j = -1;
-		start_end[0] = 0;
-		while(game->map->matrix[i][j])
+		j = 0;
+		while(map[i][j])
 		{
-			if (ft_isspace(game->map->matrix[i][++j]))
+			if (map[i][j] == '0' && check_wall(map, i, j))
 			{
-				if (i > 0 && game->map->matrix[i - 1][j] != '1' &&
-					game->map->matrix[i - 1][j] != ' ')
-						error_exit(ERR_MAP, MSG_WALL, game);
-				start_end[0] = j + 1;
+				free_double(&map);
+				error_exit(ERR_MAP, MSG_WALL, game);
 			}
+			j++;
 		}
-		if (i == 0 || game->map->matrix[i + 1] == 0)
-			validate_edge_line(game, &i, &j, start_end);
-		else
-			validate_middle_line(game, &i, &j, start_end);
-		start_end[1] = j;
+		i++;
 	}
-}
-*/
-
-void	validate_walls(t_cubed *game, int x, int y)
-{
-	int		len;
-	char	**temp;
-
-	temp = game->map->matrix;
-	len = ft_strlen(temp[x]);
-	int i = 0;
-	if (temp[x][y] == ' ')
-		validate_walls(game, x, y + 1);
-	if (temp[x][y] == '1')
-		temp[x][y] = 'o';
-	while(temp[i])
-		printf("%s\n", temp[i++]);
-	printf("\n\n");
-	printf("y: %d x: %d mh: %d\n", y, x, game->map->height);
-	
-	if (y < len - 1 && temp[x][y + 1] == '1')
-		validate_walls(game, x, y + 1);
-	else if (x < game->map->height - 1 && temp[x + 1][y] == '1')
-		validate_walls(game, x + 1, y);
-	else if (y > 0 && temp[x][y - 1] == '1')
-		validate_walls(game, x, y - 1);
-	else if (x > 0 && temp[x - 1][y] == '1')
-		validate_walls(game, x - 1, y);
-	return ;
 }
 
 char	*prefilter(t_cubed *game)
@@ -151,7 +104,7 @@ char	*prefilter(t_cubed *game)
 		if (!game->gnl)
 			error_exit(ERR_MAP, MSG_NOMP, game);
 		temp = game->gnl;
-		while (*temp && ft_isspace(*temp))
+		while(*temp && ft_isspace(*temp))
 			temp++;
 		if (!*temp)
 			continue ;
@@ -166,9 +119,10 @@ void	parse_mapinfo(t_cubed *game)
 {
 	char	*buffer;
 	char	*join;
+	char	**map_dup;
 
 	buffer = prefilter(game);
-	while (true)
+	while(true)
 	{
 		game->gnl = get_next_line(game->map->filefd);
 		if (!game->gnl)
@@ -181,5 +135,8 @@ void	parse_mapinfo(t_cubed *game)
 	game->map->matrix = safe_split(join, '\n', game);
 	free(join);
 	game->map->height = ft_arrlen(game->map->matrix);
-	validate_walls(game, 0, 0);
+	map_dup = dup_arr(game->map->matrix, game->map->height, game);
+	validate_walls(game, map_dup);
+	free_double(&map_dup);
+	check_map_characters(game, game->map->matrix);
 }
