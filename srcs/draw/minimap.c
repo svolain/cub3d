@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/28 15:27:08 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:57:18 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,17 +123,18 @@ void	draw_minimap(t_cubed *game)
 	int				j;
 
 	i = 0;
-	while (i < MAPGRID && i < game->map->height)
+	while (i < game->map->height)
 	{
 		j = 0;
-		while(j < MAPGRID && j < game->map->width)
+		while(j < game->map->width)
 		{
-			
+			j++;
 		}
+		i++;
 	}
 
-}
-*/
+}*/
+
 void	init_minimap(t_cubed *game)
 {
 	mlx_image_t	*floor;
