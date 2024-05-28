@@ -20,9 +20,17 @@ static void	draw_space(int start_point, int end_point, int x, t_cubed *game)
 	roof = -1;
 	floor = SCREEN_HEIGHT + 1;
 	while (roof++ < start_point)
+	{
+		if (roof < MAPCELL * MAPGRID && x < MAPCELL * MAPGRID)
+			continue ;
 		ft_putpixel(x, roof, game->col[COL_C], game);
+	}
 	while (floor-- > end_point)
+	{
+		if (floor < MAPCELL * MAPGRID && x < MAPCELL * MAPGRID)
+			continue ;
 		ft_putpixel(x, floor, game->col[COL_F], game);
+	}
 }
 
 static void	draw_column(int height, int x, t_vector *ray, t_cubed *game)
@@ -30,16 +38,14 @@ static void	draw_column(int height, int x, t_vector *ray, t_cubed *game)
 	int32_t	color;
 	int		point[2];
 
-	point[Y_BEGIN] = SCREEN_HEIGHT / 2 - height / 2;
+	point[Y_BEGIN] = SCREEN_HEIGHT / 2 - height / 2 - 1;
 	point[Y_END] = SCREEN_HEIGHT / 2 + height / 2;
 	draw_space(point[Y_BEGIN], point[Y_END], x, game);
-	while (point[Y_BEGIN] < point[Y_END])
+	while (point[Y_BEGIN]++ < point[Y_END])
 	{
 		color = get_color(game->img[ray->key], ray->x, ray->y);
 		ray->y += ray->d;
-		point[Y_BEGIN]++;
-		if (point[Y_BEGIN] < MAPCELL * MAPGRID
-			&& x < MAPCELL * MAPGRID)
+		if (point[Y_BEGIN] < MAPCELL * MAPGRID && x < MAPCELL * MAPGRID)
 			continue ;
 		ft_putpixel(x, point[Y_BEGIN], color, game);
 	}
