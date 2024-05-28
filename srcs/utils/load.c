@@ -58,7 +58,7 @@ void	load_color(t_color index, char *start, bool *loaded, t_cubed *game)
 	int		i;
 
 	start = skip_spaces(start, game);
-	end = ft_strchr(start, '\n');
+	end = ft_strrchr(start, '\n');
 	values = safe_substr(start, end, game);
 	colors = safe_split(values, ',', game);
 	i = 0;
@@ -82,7 +82,7 @@ void	load_sprite(t_element index, char *start, bool *loaded, t_cubed *game)
 	char			*end;
 
 	start = skip_spaces(start, game);
-	end = ft_strchr(start, '\n');
+	end = ft_strrchr(start, '\n');
 	file = safe_substr(start, end, game);
 	tex = safe_texture(file, game);
 	game->img[index] = safe_image(0, 0, tex, game);
