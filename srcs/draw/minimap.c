@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 15:10:06 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:27:08 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-mlx_image_t	*mplayer;
+/*mlx_image_t	*mplayer;
 mlx_image_t	*mwall;
 mlx_image_t	*mfloor;
-mlx_image_t	*msfloor;
+mlx_image_t	*msfloor;*/
 
-void	check_pixel_limits(float *pixelX, float *pixelY)
+/*void	check_pixel_limits(float *pixelX, float *pixelY)
 {
 	if (*pixelY >= 255)
 			*pixelY = 255;
@@ -115,44 +115,35 @@ void	move_minimap(t_cubed *game, t_action action)
 	else if (action == MOVE_RIGHT)
 		mplayer->instances[0].x += STEP_MOVEMENT / 2;
 }
-
-void	draw_minimap(t_cubed *game, int flag)
+*/
+/*
+void	draw_minimap(t_cubed *game)
 {
 	int				i;
 	int				j;
-	mlx_image_t 	*floor;
 
 	i = 0;
-	if (msfloor == NULL)
-		floor = mfloor;
-	else
-		floor = msfloor;
-	mlx_image_to_window(game->mlx, floor, 0, 0);
 	while (i < MAPGRID && i < game->map->height)
 	{
 		j = 0;
 		while(j < MAPGRID && j < game->map->width)
 		{
-			if(game->map->matrix[i][j] == '1')
-				mlx_image_to_window(game->mlx, mwall, j * CELLSIZE / 2, i * CELLSIZE / 2);
-			j++;
+			
 		}
-		i++;
 	}
-	if (flag == 0)
-		mlx_image_to_window(game->mlx, mplayer, game->cam->x / 2, game->cam->y / 2);
-}
 
+}
+*/
 void	init_minimap(t_cubed *game)
 {
-	msfloor = NULL;
-	mplayer = mlx_new_image(game->mlx, 8, 8);
-	ft_memset(mplayer->pixels, 255, mplayer->width * mplayer->height * BPP);
-	mwall = mlx_new_image(game->mlx, CELLSIZE / 2 - 2, CELLSIZE / 2 - 2);
-	ft_memset(mwall->pixels, 255, mwall->width * mwall->height * BPP);
-	mfloor = mlx_new_image(game->mlx, CELLSIZE * 4, CELLSIZE * 4);
-	ft_memset(mfloor->pixels, 220, mfloor->width * mfloor->height * BPP);
-	draw_minimap(game, 0);
+	mlx_image_t	*floor;
+
+	floor = mlx_new_image(game->mlx, CELLSIZE * 5, CELLSIZE * 5);
+	ft_memset(floor->pixels, 220, floor->width * floor->height * BPP);
+	game->map->minimap = floor;
+	mlx_image_to_window(game->mlx, floor, 0, 0);
+	//draw_minimap(game);
+
 }
 
 

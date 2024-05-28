@@ -26,7 +26,7 @@ static void	start_scene(t_cubed *game)
 	if (mlx_image_to_window(game->mlx, game->img[ELEM_BG], 0, 0) == FAILURE)
 		error_exit(ERR_MLX, MSG_MLX, game);
 	draw_walls(game);
-	/* init_minimap(game); */
+	init_minimap(game);
 }
 
 static void	parse_infile(t_cubed *game)

@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:32:56 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/27 17:01:58 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/28 12:37:42 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,26 @@ char	**dup_arr(char **arr, int height, t_cubed *game)
 {
 	char	**temp;
 	int		i;
+	int		len;
+	int		map_width;
 
+	len = 0;
+	map_width = 0;
 	temp = malloc(sizeof(char *) * (height + 1));
 	if (!temp)
 		error_fatal(ENOMEM, MSG_MEM, game);
 	i = 0;
 	while(i < height)
 	{
+		if (len >= map_width)
+			map_width = len;
 		temp[i] = ft_strdup(arr[i]);
 		if (temp[i] == NULL)
 			error_fatal(ENOMEM, MSG_MEM, game);
+		len = ft_strlen(arr[i]);
 		i++;
 	}
+	game->map->width = map_width;
 	temp[i] = 0;
 	return (temp);
 }

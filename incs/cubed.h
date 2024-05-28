@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubed.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/27 19:14:36 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:21:14 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ typedef struct s_mapinfo
 	int			height;
 	char		*filename;
 	int			filefd;
+	mlx_image_t	*minimap;
 }	t_mapinfo;
 
 typedef struct s_cubed
@@ -168,7 +169,7 @@ int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 //		Map
 void	init_minimap(t_cubed *game);
-void	draw_minimap(t_cubed *game, int flag);
+void	draw_minimap(t_cubed *game);
 void	move_minimap(t_cubed *game, t_action action);
 void	change_mini_foor(t_cubed *game);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mapinfo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 19:50:03 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/27 19:44:44 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/28 13:30:34 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	update_player_data(t_cubed *game, char c, int i, int j)
 
 	if (loaded)
 		error_exit(ERR_MAP, MSG_PLAY, game);
-	game->cam->x = j;
-	game->cam->y = i;
+	game->cam->x = j * CELLSIZE;
+	game->cam->y = i * CELLSIZE;
 	if (c == 'N')
 		game->cam->a = NORTH - 0.001;
 	else if (c == 'S')
@@ -28,6 +28,7 @@ void	update_player_data(t_cubed *game, char c, int i, int j)
 		game->cam->a = EAST - 0.001;
 	else if (c == 'W')
 		game->cam->a = WEST - 0.001;
+	game->map->matrix[i][j] = '0';
 	loaded = true;
 }
 
@@ -108,7 +109,7 @@ char	*prefilter(t_cubed *game)
 			temp++;
 		if (!*temp)
 			continue ;
-		else if (*temp != '1')
+		else if (*temp != '1' && *temp != ' ')
 			error_exit(ERR_MAP, MSG_WALL, game);
 		break ;
 	}
@@ -139,9 +140,10 @@ void	parse_mapinfo(t_cubed *game)
 	validate_walls(game, map_dup);
 	free_double(&map_dup);
 	check_map_characters(game, game->map->matrix);
-	game->cam->x = 4 * CELLSIZE; // delete this
-	game->cam->y = 4 * CELLSIZE; // delete this
-	game->cam->a = NORTH - 0.1; // delete this
-	game->map->width = 8;		 // delete this
-	printf("x %f | y %f | a %f", game->cam->x, game->cam->y, game->cam->a);
+	//game->cam->x = 4 * CELLSIZE; // delete this
+	//game->cam->y = 4 * CELLSIZE; // delete this
+	//game->cam->a = NORTH - 0.1; // delete this
+	//game->map->width = 8;		 // delete this
+	printf("x %f | y %f | a %f \n", game->cam->x, game->cam->y, game->cam->a);
+	printf("h %d | w %d", game->map->height, game->map->width);
 }
