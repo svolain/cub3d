@@ -30,8 +30,8 @@ static void	draw_column(int height, int x, t_vector *ray, t_cubed *game)
 	int32_t	color;
 	int		point[2];
 
-	point[Y_END] = SCREEN_HEIGHT / 2 + height / 2;
 	point[Y_BEGIN] = SCREEN_HEIGHT / 2 - height / 2;
+	point[Y_END] = SCREEN_HEIGHT / 2 + height / 2;
 	draw_space(point[Y_BEGIN], point[Y_END], x, game);
 	while (point[Y_BEGIN] < point[Y_END])
 	{
@@ -43,6 +43,26 @@ static void	draw_column(int height, int x, t_vector *ray, t_cubed *game)
 			continue ;
 		ft_putpixel(x, point[Y_BEGIN], color, game);
 	}
+}
+
+static void	prepare_drawing(int *height, t_vector *ray)
+{
+	if (ray->key == ELEM_NO)
+	{
+		ray->x = (int)(ray->y) % CELLSIZE;
+		if (ray->a > NORTH && ray->a < SOUTH)
+			ray->key = ELEM_SO;
+	}
+	else
+	{
+		ray->x = (int)(ray->x) % CELLSIZE;
+		if (ray->a > WEST)
+			ray->key = ELEM_EA;
+	}
+	if (*height > SCREEN_HEIGHT)
+		*height = SCREEN_HEIGHT;
+	ray->d = (float)CELLSIZE / (float)*height;
+	ray->y = 0;
 }
 
 static void	fix_fisheye(t_vector *ray, t_cubed *game)
@@ -70,11 +90,7 @@ void	draw_walls(t_cubed *game)
 		calculate_ray(&ray, game);
 		fix_fisheye(&ray, game);
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
-		if (height > SCREEN_HEIGHT)
-			height = SCREEN_HEIGHT;
-		ray.y = 0;
-		ray.x = (int)(ray.x / 2.0) % CELLSIZE;
-		ray.d = (float)CELLSIZE / (float)height;
+		prepare_drawing(&height, &ray);
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
 		draw_column(height, column++, &ray, game);
 	}
