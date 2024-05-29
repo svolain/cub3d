@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/28 15:57:18 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:09:35 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,34 +117,96 @@ void	move_minimap(t_cubed *game, t_action action)
 }
 */
 /*
+void	check_pixel(t_cubed *game, int x, int y)
+{
+	int	color;
+
+	color = get_color(game->map->minimap, x, y);
+	if (game->map->matrix[y][x] == '0' && color != )
+	{
+		ft_putpixel(x, y, , game);
+	}
+	else if (game->map->matrix[y][x] == '1' && color != )
+	{
+		float i = 0;
+		while (++i < 64)
+			mlx_put_pixel(game->map->minimap, x + i, y, );
+		
+	}
+	else if (game->map->matrix[y][x] == '2' && color != )
+	{
+		ft_putpixel(x, y, , game);
+	}
+}
+
 void	draw_minimap(t_cubed *game)
 {
-	int				i;
-	int				j;
+	int	i;
+	int	j;
+	int	x;
+	int	y;
 
+	x= game->cam->x / CELLSIZE;
+	y= game->cam->y / CELLSIZE;
 	i = 0;
-	while (i < game->map->height)
+	while (i < 5)
 	{
 		j = 0;
-		while(j < game->map->width)
+		while(j < 0)
 		{
-			j++;
+
+				check_pixel(game, x + j, y - i);
+				check_pixel(game, x + j, y + i);
+				check_pixel(game, x - j, y - i);
+				check_pixel(game, x - j, y + i);
+				j++;
 		}
 		i++;
 	}
 
-}*/
+} */
 
-void	init_minimap(t_cubed *game)
+static int32_t	get_map(int px, int py, t_cubed *game)
 {
-	mlx_image_t	*floor;
+	int	x;
+	int	y;
 
-	floor = mlx_new_image(game->mlx, CELLSIZE * 5, CELLSIZE * 5);
-	ft_memset(floor->pixels, 220, floor->width * floor->height * BPP);
-	game->map->minimap = floor;
-	mlx_image_to_window(game->mlx, floor, 0, 0);
-	//draw_minimap(game);
-
+	x = px / CELLSIZE;
+	y = py / CELLSIZE;
+	if (x < 0 || x >= game->map->width
+		|| y < 0 || y >= game->map->height)
+		return (game->col[COL_MF]);
+	return (game->col[COL_MW]);
 }
 
+static void	draw_blah(int x, t_cubed *game)
+{
+	int32_t	color;
+	int	px;
+	int	py;
+	int y;
 
+	y = 0;
+	px = game->cam->x - (MAPGRID / 2) * CELLSIZE;
+	py = game->cam->y + (MAPGRID / 2) * CELLSIZE;
+	while (y < MAPCELL * MAPGRID)
+	{
+		color = get_map(px, py, game);
+		ft_putpixel(x, y, color, game);
+		py++;
+		y++;
+	}
+}
+
+void	draw_minimap(t_cubed *game)
+{
+	int			column;
+
+	column = 0;
+	game->col[COL_MF] = get_rgba(50, 200, 50, 255);
+	game->col[COL_MW] = get_rgba(50, 50, 200, 255);
+	while (column < MAPCELL * MAPGRID)
+	{
+		draw_blah(column++, game);
+	}
+}

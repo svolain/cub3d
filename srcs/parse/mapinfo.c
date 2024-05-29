@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 19:50:03 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/28 13:30:34 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:38:22 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,25 +125,22 @@ void	parse_mapinfo(t_cubed *game)
 	buffer = prefilter(game);
 	while(true)
 	{
+		game->map->height++;
 		game->gnl = get_next_line(game->map->filefd);
 		if (!game->gnl)
 			break ;
+		if ((int)ft_strlen(game->gnl) > game->map->width)
+			game->map->width = ft_strlen(game->gnl);
 		join = safe_strjoin(buffer, game->gnl, game);
 		free(buffer);
 		buffer = join;
+		ft_strlen(game->gnl);
 		free(game->gnl);
 	}
 	game->map->matrix = safe_split(join, '\n', game);
+	map_dup = safe_split(join, '\n', game);
 	free(join);
-	game->map->height = ft_arrlen(game->map->matrix);
-	map_dup = dup_arr(game->map->matrix, game->map->height, game);
 	validate_walls(game, map_dup);
 	free_double(&map_dup);
 	check_map_characters(game, game->map->matrix);
-	//game->cam->x = 4 * CELLSIZE; // delete this
-	//game->cam->y = 4 * CELLSIZE; // delete this
-	//game->cam->a = NORTH - 0.1; // delete this
-	//game->map->width = 8;		 // delete this
-	printf("x %f | y %f | a %f \n", game->cam->x, game->cam->y, game->cam->a);
-	printf("h %d | w %d", game->map->height, game->map->width);
 }

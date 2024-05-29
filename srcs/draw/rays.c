@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 08:08:54 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/28 12:41:23 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:39:14 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	calc_collosion(t_vector *ray, float *offset, t_mapinfo *map)
 		x = ray->x / CELLSIZE;
 		y = ray->y / CELLSIZE;
 		if (x < 0 || x >= map->width
-			|| y < 0 || y >= map->height - 1
+			|| y < 0 || y >= map->height
 			|| map->matrix[y][x] != MAP_FLOOR)
 			break ;
 		ray->x += offset[X_COOR];
