@@ -12,19 +12,18 @@
 
 #include <cubed.h>
 
-mlx_image_t	*safe_image(uint32_t width, uint32_t height
-	,mlx_texture_t *texture, t_cubed *game)
+mlx_image_t	*safe_image(uint32_t w, uint32_t h ,mlx_texture_t *t, t_cubed *game)
 {
 	mlx_image_t	*i;
 
-	if (!texture)
-		i = mlx_new_image(game->mlx, width, height);
+	if (!t)
+		i = mlx_new_image(game->mlx, w, h);
 	else
-		i = mlx_texture_to_image(game->mlx, texture);
+		i = mlx_texture_to_image(game->mlx, t);
 	if (!i)
 	{
-		if (texture != NULL)
-			mlx_delete_texture(texture);
+		if (t != NULL)
+			mlx_delete_texture(t);
 		error_exit(ERR_MLX, MSG_MLX, game);
 	}
 	return (i);
@@ -41,6 +40,16 @@ mlx_texture_t	*safe_texture(char * file, t_cubed *game)
 		error_exit(ERR_MLX, MSG_MLX, game);
 	}
 	return (t);
+}
+
+char	*safe_strjoin(char *s1, char *s2, t_cubed *game)
+{
+	char	*s;
+
+	s = ft_strjoin(s1, s2);
+	if (!s)
+		error_fatal(ENOMEM, MSG_MEM, game);
+	return (s);
 }
 
 char	**safe_split(char *str, char c, t_cubed *game)

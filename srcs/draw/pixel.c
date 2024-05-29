@@ -26,16 +26,14 @@ int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y)
 {
 	uint8_t	*start;
 
-	if (!img || !valid_pixel(img, x, y))
-		return (0xFF000000);
 	start = img->pixels + (y * img->width + x) * BPP;
 	return (get_rgba(*start, *(start + 1), *(start + 2), *(start + 3)));
 }
 
 void	ft_putpixel(int x, int y, int32_t color, t_cubed *game)
 {
-	if (!valid_pixel(game->img[ELEM_BG], x, y)
-		|| get_color(game->img[ELEM_BG], x, y) == color)
+	if (!valid_pixel(game->canvas, x, y)
+		|| get_color(game->canvas, x, y) == color)
 		return ;
-	mlx_put_pixel(game->img[ELEM_BG], x, y, color);
+	mlx_put_pixel(game->canvas, x, y, color);
 }

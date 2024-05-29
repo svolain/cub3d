@@ -18,22 +18,36 @@ static void	rotate_camera(t_cubed *game, t_action action)
 		ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_LEFT);
 	else if (action == ROTATE_RIGHT)
 		ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_RIGHT);
+	game->cam->dx = cos(game->cam->a) * STEP_MOVEMENT;
+	game->cam->dy = sin(game->cam->a) * STEP_MOVEMENT;
 	draw_walls(game);
-	/* move_minimap(game, action); */
+	draw_minimap(game);
 }
 
 static void	move_camera(t_cubed *game, t_action action)
 {
 	if (action == MOVE_UP)
-		game->cam->y -= STEP_MOVEMENT;
+	{
+		game->cam->x += game->cam->dx;
+		game->cam->y += game->cam->dy;
+	}
 	else if (action == MOVE_DOWN)
-		game->cam->y += STEP_MOVEMENT;
+	{
+		game->cam->x -= game->cam->dx;
+		game->cam->y -= game->cam->dy;
+	}
 	else if (action == MOVE_LEFT)
-		game->cam->x -= STEP_MOVEMENT;
+	{
+		game->cam->x -= -game->cam->dy;
+		game->cam->y -= game->cam->dx;
+	}
 	else if (action == MOVE_RIGHT)
-		game->cam->x += STEP_MOVEMENT;
+	{
+		game->cam->x += -game->cam->dy;
+		game->cam->y += game->cam->dx;
+	}
 	draw_walls(game);
-	/* move_minimap(game, action); */
+	draw_minimap(game);
 }
 
 void	hook_keys(mlx_key_data_t keydata, void *param)

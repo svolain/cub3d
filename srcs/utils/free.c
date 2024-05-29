@@ -51,10 +51,11 @@ static void	clean_images(t_cubed *game)
 	i = 0;
 	while (i < GAME_ASSETS)
 	{
-		if (game->img[i] != NULL)
-			mlx_delete_image(game->mlx, game->img[i]);
+		if (game->image[i] != NULL)
+			mlx_delete_image(game->mlx, game->image[i]);
 		i++;
 	}
+	mlx_delete_image(game->mlx, game->canvas);
 }
 
 void	free_exit(t_cubed *game, int excode)

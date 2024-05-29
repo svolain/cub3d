@@ -32,7 +32,7 @@ static void	calc_collosion(t_vector *ray, float *offset, t_mapinfo *map)
 
 static float	calc_horizontal(t_vector *ray, float angle, t_cubed *game)
 {
-	t_vector	*cam;
+	t_camera	*cam;
 	float		offset[2];
 	float		atan;
 
@@ -56,7 +56,7 @@ static float	calc_horizontal(t_vector *ray, float angle, t_cubed *game)
 
 static float	calc_vertical(t_vector *ray, float angle, t_cubed *game)
 {
-	t_vector	*cam;
+	t_camera	*cam;
 	float		offset[2];
 	float		ntan;
 
@@ -91,13 +91,13 @@ void	calculate_ray(t_vector *ray, t_cubed *game)
 		ray->x = horizontal.x;
 		ray->y = horizontal.y;
 		ray->d = distance[H_DIST];
-		ray->key = ELEM_WE;
+		ray->img = IMG_WE;
 	}
 	else
 	{
 		ray->x = vertical.x;
 		ray->y = vertical.y;
 		ray->d = distance[V_DIST];
-		ray->key = ELEM_NO;
+		ray->img = IMG_NO;
 	}
 }

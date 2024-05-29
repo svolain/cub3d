@@ -96,20 +96,15 @@ void	validate_walls(t_cubed *game, char **map)
 
 char	*prefilter(t_cubed *game)
 {
-	char	*temp;
-
 	while (true)
 	{
 		free_single(&game->gnl);
 		game->gnl = get_next_line(game->map->filefd);
 		if (!game->gnl)
 			error_exit(ERR_MAP, MSG_NOMP, game);
-		temp = game->gnl;
-		while(*temp && ft_isspace(*temp))
-			temp++;
-		if (!*temp)
+		if (ft_isemptyline(game->gnl))
 			continue ;
-		else if (*temp != '1' && *temp != ' ')
+		else if (*game->gnl != '1' && *game->gnl != ' ')
 			error_exit(ERR_MAP, MSG_WALL, game);
 		break ;
 	}
@@ -119,8 +114,8 @@ char	*prefilter(t_cubed *game)
 void	parse_mapinfo(t_cubed *game)
 {
 	char	*buffer;
-	char	*join;
-	char	**map_dup;
+	char	*joined;
+	char	**duplex;
 
 	buffer = prefilter(game);
 	while(true)
@@ -131,16 +126,15 @@ void	parse_mapinfo(t_cubed *game)
 			break ;
 		if ((int)ft_strlen(game->gnl) > game->map->width)
 			game->map->width = ft_strlen(game->gnl);
-		join = safe_strjoin(buffer, game->gnl, game);
-		free(buffer);
-		buffer = join;
-		ft_strlen(game->gnl);
-		free(game->gnl);
+		joined = safe_strjoin(buffer, game->gnl, game);
+		free_single(&buffer);
+		free_single(&game->gnl);
+		buffer = joined;
 	}
-	game->map->matrix = safe_split(join, '\n', game);
-	map_dup = safe_split(join, '\n', game);
-	free(join);
-	validate_walls(game, map_dup);
-	free_double(&map_dup);
+	game->map->matrix = safe_split(joined, '\n', game);
+	duplex = safe_split(joined, '\n', game);
+	free(joined);
+	validate_walls(game, duplex);
+	free_double(&duplex);
 	check_map_characters(game, game->map->matrix);
 }

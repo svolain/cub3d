@@ -12,11 +12,16 @@
 
 #include <cubed.h>
 
-int	ft_arrlen(char **arr)
+static int	ft_isspace(char c)
 {
-	int i = 0;
+	return ((c >= 9 && c <= 13) || c == 32);
+}
 
-	while(arr[i] != 0)
-		i++;
-	return (i);
+bool	ft_isemptyline(char *str)
+{
+	while (*str && ft_isspace(*str))
+		str++;
+	if (!*str)
+		return (true);
+	return (false);
 }

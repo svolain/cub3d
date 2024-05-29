@@ -175,8 +175,8 @@ static int32_t	get_map(int px, int py, t_cubed *game)
 	y = py / CELLSIZE;
 	if (x < 0 || x >= game->map->width
 		|| y < 0 || y >= game->map->height)
-		return (game->col[COL_MF]);
-	return (game->col[COL_MW]);
+		return (game->color[COL_MF]);
+	return (game->color[COL_MW]);
 }
 
 static void	draw_blah(int x, t_cubed *game)
@@ -203,8 +203,8 @@ void	draw_minimap(t_cubed *game)
 	int			column;
 
 	column = 0;
-	game->col[COL_MF] = get_rgba(50, 200, 50, 255);
-	game->col[COL_MW] = get_rgba(50, 50, 200, 255);
+	game->color[COL_MF] = get_rgba(50, 200, 50, 255);
+	game->color[COL_MW] = get_rgba(50, 50, 200, 255);
 	while (column < MAPCELL * MAPGRID)
 	{
 		draw_blah(column++, game);

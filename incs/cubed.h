@@ -24,7 +24,7 @@
 # include <math.h>
 # include <stdio.h>
 
-# define GAME_ASSETS 5
+# define GAME_ASSETS 4
 # define GAME_COLORS 5
 
 # define SCREEN_WIDTH 1920
@@ -93,16 +93,15 @@ typedef enum e_minimap
 	MAP_WALL = 49
 }	t_minimap;
 
-typedef enum e_element
+typedef enum e_image
 {
-	ELEM_NO,
-	ELEM_SO,
-	ELEM_WE,
-	ELEM_EA,
-	ELEM_F,
-	ELEM_C,
-	ELEM_BG = 4,
-}	t_element;
+	IMG_NO,
+	IMG_SO,
+	IMG_WE,
+	IMG_EA,
+	IMG_F,
+	IMG_C,
+}	t_image;
 
 typedef enum e_color
 {
@@ -119,8 +118,18 @@ typedef struct s_vector
 	float		y;
 	float		a;
 	float		d;
-	t_element	key;
+	t_image		img;
 }	t_vector;
+
+
+typedef struct s_camera
+{
+	float		x;
+	float		y;
+	float		dx;
+	float		dy;
+	float		a;
+}	t_camera;
 
 typedef struct s_mapinfo
 {
@@ -129,17 +138,17 @@ typedef struct s_mapinfo
 	int			height;
 	char		*filename;
 	int			filefd;
-	mlx_image_t	*minimap;
 }	t_mapinfo;
 
 typedef struct s_cubed
 {
-	t_vector	*cam;
+	t_camera	*cam;
 	t_mapinfo	*map;
 	char		*gnl;
 	mlx_t		*mlx;
-	int32_t		col[GAME_COLORS];
-	mlx_image_t	*img[GAME_ASSETS];
+	mlx_image_t	*canvas;
+	mlx_image_t	*image[GAME_ASSETS];
+	int32_t		color[GAME_COLORS];
 }	t_cubed;
 
 //		Parse
@@ -147,10 +156,10 @@ void	parse_filename(t_cubed *game);
 void	open_infile(t_cubed *game);
 void	parse_elements(t_cubed *game);
 void	parse_mapinfo(t_cubed *game);
-int		ft_isspace(char c);
+bool	ft_isemptyline(char *str);
 
 //		Load
-void	load_sprite(t_element index, char *start, bool *loaded, t_cubed *game);
+void	load_sprite(t_image index, char *start, bool *loaded, t_cubed *game);
 void	load_color(t_color index, char *start, bool *loaded, t_cubed *game);
 
 //		Hook
@@ -185,13 +194,10 @@ void	free_double(char ***str);
 //		Util
 void	*safe_calloc(size_t n, t_cubed *game);
 char	*safe_substr(char *stt, char *end, t_cubed *game);
-char	**safe_split(char * str, char c, t_cubed *game);
 char	*safe_strjoin(char *s1, char *s2, t_cubed *game);
+char	**safe_split(char * str, char c, t_cubed *game);
+
 mlx_texture_t	*safe_texture(char * file, t_cubed *game);
-mlx_image_t	*safe_image(uint32_t width, uint32_t height
-	,mlx_texture_t *texture, t_cubed *game);
-char	*ft_skip_whitespace(char *str);
-int		ft_arrlen(char **arr);
-char	**dup_arr(char **arr, int height, t_cubed *game);
+mlx_image_t		*safe_image(uint32_t w, uint32_t h, mlx_texture_t *t, t_cubed *game);
 
 #endif

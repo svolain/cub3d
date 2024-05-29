@@ -26,7 +26,7 @@ static int32_t	parse_color(char *color, int iteration)
 	int	i;
 
 	i = 0;
-	if (iteration > 2)
+	if (!color || iteration > 2)
 		return (FAILURE);
 	while (color[i])
 	{
@@ -69,13 +69,13 @@ void	load_color(t_color index, char *start, bool *loaded, t_cubed *game)
 			error_occured(values, colors, game);
 		i++;
 	}
-	game->col[index] = get_rgba(rgba[0], rgba[1], rgba[2], 255);
+	game->color[index] = get_rgba(rgba[0], rgba[1], rgba[2], 255);
 	free_double(&colors);
 	free_single(&values);
 	*loaded = true;
 }
 
-void	load_sprite(t_element index, char *start, bool *loaded, t_cubed *game)
+void	load_sprite(t_image index, char *start, bool *loaded, t_cubed *game)
 {
 	mlx_texture_t	*tex;
 	char			*file;
@@ -85,8 +85,8 @@ void	load_sprite(t_element index, char *start, bool *loaded, t_cubed *game)
 	end = ft_strrchr(start, '\n');
 	file = safe_substr(start, end, game);
 	tex = safe_texture(file, game);
-	game->img[index] = safe_image(0, 0, tex, game);
-	mlx_delete_texture(tex);
 	free_single(&file);
+	game->image[index] = safe_image(0, 0, tex, game);
+	mlx_delete_texture(tex);
 	*loaded = true;
 }
