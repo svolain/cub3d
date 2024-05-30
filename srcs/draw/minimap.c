@@ -106,19 +106,7 @@ void	draw_bllah(t_cubed *game)
 
 }*/
 
-void	check_pixel_limits(float *pixelX, float *pixelY)
-{
-	if (*pixelY >= 255)
-			*pixelY = 255;
-		if (*pixelY < 0)
-			*pixelY = 0;
-		if (*pixelX >= 255)
-			*pixelX = 255;
-		if (*pixelX < 0)
-			*pixelX = 0;
-}
-
-static	void	draw_rays(t_vector	*ray, t_cubed *game)
+static void	get_ray(t_vector	*ray, t_cubed *game)
 {
 	float	deltaX;
 	float	deltaY;
@@ -135,7 +123,6 @@ static	void	draw_rays(t_vector	*ray, t_cubed *game)
 	pixelY = game->cam->y;
 	while(pixels)
 	{
-		check_pixel_limits(&pixelX, &pixelY);
 		ft_putpixel((int)pixelX, (int)pixelY, get_rgba(0, 0, 0, 0), game);
 		pixelX += deltaX;
 		pixelY += deltaY;
@@ -143,7 +130,7 @@ static	void	draw_rays(t_vector	*ray, t_cubed *game)
 	}
 }
 
-void	calculate_rays(t_cubed *game)
+static void	draw_rays(t_cubed *game)
 {
 	t_vector	ray;
 	float		angle;
@@ -157,75 +144,57 @@ void	calculate_rays(t_cubed *game)
 		ray.a = angle;
 		calculate_ray(&ray, game);
 		ft_rotate(&angle, DEGREE, ROTATE_RIGHT);
-		draw_rays(&ray, game);
+		get_ray(&ray, game);
 		i++;
 	}
 }
 
-static int32_t	get_map(int px, int py, t_cubed *game)
+static int32_t	get_map(int *player, t_cubed *game)
 {
 	int	x;
 	int	y;
 
-	x = px / CELLSIZE;
-	y = py / CELLSIZE;
-	// printf("x: %d\n", x);
-	// printf("y: %d\n", y);
-	//printf("getmap: width: %d | height: %d\n",game->map->width * CELLSIZE, game->map->height * CELLSIZE);
+	x = player[X_COOR] / CELLSIZE;
+	y = player[Y_COOR] / CELLSIZE;
 	if (x < 0 || x >= game->map->width
 		|| y < 0 || y >= game->map->height)
 		return (game->color[COL_MF]);
 	else if (game->map->matrix[y][x] == '0')
 		return (game->color[COL_MF]);
-
 	return (game->color[COL_MW]);
 }
 
-static void	draw_blah(int x, t_cubed *game, int px)
+static void	draw_column(int column, int *player, t_cubed *game)
 {
 	int32_t	color;
-	//int	px;
-	int	py;
-	int y;
+	int		row;
 
-	y = 0;
-	//px = game->cam->x - (MAPGRID / 2) * CELLSIZE;
-	py = game->cam->y - (MAPGRID / 2) * CELLSIZE;
-	//printf("drawblah px: %d | py: %d\n",px, py);
-	//printf("px: %d | py: %d\n", px / CELLSIZE, py / CELLSIZE);
-	while (y < MAPCELL * MAPGRID)
+	row = 0;
+	player[Y_COOR] = game->cam->y - (MAPGRID / 2) * CELLSIZE;
+	while (row < MAPSIZE)
 	{
-
-		color = get_map(px, py, game);
-		ft_putpixel(x, y, color, game);
-		py += 2;
-		y++;
+		if (column % MAPCELL > 30 || row % MAPCELL > 30)
+			color = get_rgba(50, 50, 50, 200);
+		else
+			color = get_map(player, game);
+		ft_putpixel(column, row, color, game);
+		player[Y_COOR] += 2;
+		row++;
 	}
-	//printf("px: %d | py: %d\n", px / CELLSIZE, py / CELLSIZE);
-	// printf("y: %d\n", y);
 }
 
 void	draw_minimap(t_cubed *game)
 {
-	int			column;
-	int			px;
-	int			py;
+	int	column;
+	int	player[2];
 	
 	column = 0;
-	game->color[COL_MF] = get_rgba(50, 200, 50, 255);
-	game->color[COL_MW] = get_rgba(50, 50, 200, 255);
-	px = game->cam->x - (MAPGRID / 2) * CELLSIZE;
-	 py = game->cam->y - (MAPGRID / 2) * CELLSIZE;
-	// printf("camx: %f\n", game->cam->x);
-	printf("px: %d\n", px);
-	// printf("camy: %f\n", game->cam->y);
-	 printf("py: %d\n", py);
-	while (column < MAPCELL * MAPGRID)
+	player[X_COOR] = game->cam->x - (MAPGRID / 2) * CELLSIZE;
+	while (column < MAPSIZE)
 	{
-		draw_blah(column++, game, px);
-		px += 2;
+		draw_column(column, player, game);
+		player[X_COOR] += 2;
+		column++;
 	}
-	calculate_rays(game);
-	// printf("column: %d\n", column);
-	//draw_bllah(game);
+	draw_rays(game);
 }

@@ -27,8 +27,8 @@ static void	load_scene(t_cubed *game)
 		error_exit(ERR_MLX, MSG_MLX, game);
 	if (mlx_image_to_window(game->mlx, game->canvas, 0, 0) == FAILURE)
 		error_exit(ERR_MLX, MSG_MLX, game);
-	draw_walls(game);
 	draw_minimap(game);
+	draw_walls(game);
 }
 
 static void	parse_file(t_cubed *game)
@@ -49,6 +49,8 @@ static void	init_game(t_cubed *game, char *file)
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, false);
 	if (!game->mlx)
 		error_exit(ERR_MLX, MSG_MLX, game);
+	game->color[COL_MW] = get_rgba(150, 150, 150, 150);
+	game->color[COL_MF] = get_rgba(255, 255, 255, 200);
 }
 
 int	main(int argc, char **argv)

@@ -104,6 +104,7 @@ void	draw_walls(t_cubed *game)
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
 		calculate_draw(&height, &ray);
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
-		draw_column(height, column++, &ray, game);
+		draw_column(height, column, &ray, game);
+		column++;
 	}
 }

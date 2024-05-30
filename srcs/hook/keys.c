@@ -24,28 +24,71 @@ static void	rotate_camera(t_cubed *game, t_action action)
 	draw_minimap(game);
 }
 
-static void	move_camera(t_cubed *game, t_action action)
+static void	update_coordinates(float *dest, t_action action, t_cubed *game)
 {
+	int xo = BUMP_BUFFER;
+	if (game->cam->dx < 0)
+		xo = -xo;
+	int yo = BUMP_BUFFER;
+	if (game->cam->dy < 0)
+		yo = -yo;
+	int px = game->cam->x / CELLSIZE;
+	int py = game->cam->y / CELLSIZE;
+	int xa = (xo + game->cam->x) / CELLSIZE;
+	int ya = (yo + game->cam->y) / CELLSIZE;
+	int xs = (game->cam->x - xo) / CELLSIZE;
+	int ys = (game->cam->y - yo) / CELLSIZE;
+
 	if (action == MOVE_UP)
 	{
-		game->cam->x += game->cam->dx;
-		game->cam->y += game->cam->dy;
+		if (game->map->matrix[py][xa] != MAP_WALL)
+			game->cam->x = dest[X_COOR];
+		if (game->map->matrix[ya][px] != MAP_WALL)
+			game->cam->y = dest[Y_COOR];
 	}
 	else if (action == MOVE_DOWN)
 	{
-		game->cam->x -= game->cam->dx;
-		game->cam->y -= game->cam->dy;
+		if (game->map->matrix[py][xs] != MAP_WALL)
+			game->cam->x = dest[X_COOR];
+		if (game->map->matrix[ys][px] != MAP_WALL)
+			game->cam->y = dest[Y_COOR];
+	}
+	/* if (action == MOVE_LEFT) */
+	/* { */
+	/* 	if (game->map->matrix[ya][xs] != MAP_WALL */
+	/* 		&& game->map->matrix[ys][xs] != MAP_WALL) */
+	/* 		game->cam->x = dest_x; */
+	/* 	if (game->map->matrix[ys][xa] != MAP_WALL */
+	/* 		&& game->map->matrix[ys][xs] != MAP_WALL) */
+	/* 		game->cam->y = dest_y; */
+	/* } */
+}
+
+static void	move_camera(t_cubed *game, t_action action)
+{
+	float	dest[2];
+
+	if (action == MOVE_UP)
+	{
+		dest[X_COOR] = game->cam->x + game->cam->dx;
+		dest[Y_COOR] = game->cam->y + game->cam->dy;
+	}
+	else if (action == MOVE_DOWN)
+	{
+		dest[X_COOR] = game->cam->x - game->cam->dx;
+		dest[Y_COOR] = game->cam->y - game->cam->dy;
 	}
 	else if (action == MOVE_LEFT)
 	{
-		game->cam->x -= -game->cam->dy;
-		game->cam->y -= game->cam->dx;
+		dest[X_COOR] = game->cam->x - -game->cam->dy;
+		dest[Y_COOR] = game->cam->y - game->cam->dx;
 	}
-	else if (action == MOVE_RIGHT)
+	else
 	{
-		game->cam->x += -game->cam->dy;
-		game->cam->y += game->cam->dx;
+		dest[X_COOR] = game->cam->x + -game->cam->dy;
+		dest[Y_COOR] = game->cam->y + game->cam->dx;
 	}
+	update_coordinates(dest, action, game);
 	draw_walls(game);
 	draw_minimap(game);
 }
