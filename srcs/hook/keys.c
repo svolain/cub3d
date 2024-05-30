@@ -53,6 +53,16 @@ static void	update_coordinates(float *dest, t_action action, t_cubed *game)
 		if (game->map->matrix[ys][px] != MAP_WALL)
 			game->cam->y = dest[Y_COOR];
 	}
+	else if (action == MOVE_LEFT)
+	{
+		game->cam->x = dest[X_COOR];
+		game->cam->y = dest[Y_COOR];
+	}
+	else
+	{
+		game->cam->x = dest[X_COOR];
+		game->cam->y = dest[Y_COOR];
+	}
 	/* if (action == MOVE_LEFT) */
 	/* { */
 	/* 	if (game->map->matrix[ya][xs] != MAP_WALL */
