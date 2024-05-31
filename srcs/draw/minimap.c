@@ -111,16 +111,16 @@ static void	get_ray(t_vector *ray, t_cubed *game)
 	float	delta[2];
 	float	pixel[2];
 	int		pixels;
-	float	blend;
+	int		blend;
 
+	pixel[X] = MAPGRID / SCALE_FACTOR * CELLSIZE / SCALE_FACTOR;
+	pixel[Y] = MAPGRID / SCALE_FACTOR * CELLSIZE / SCALE_FACTOR;
 	delta[X] = ray->x / SCALE_FACTOR - game->cam->x / SCALE_FACTOR;
 	delta[Y] = ray->y / SCALE_FACTOR - game->cam->y / SCALE_FACTOR;
-	pixels = sqrt((delta[X] * delta[X]) + (delta[Y] * delta[Y]));
+	pixels = sqrt(powf(delta[X], 2) + powf(delta[Y], 2));
 	delta[X] /= pixels;
 	delta[Y] /= pixels;
-	pixel[X] = (MAPGRID / SCALE_FACTOR) * CELLSIZE / SCALE_FACTOR;
-	pixel[Y] = (MAPGRID / SCALE_FACTOR) * CELLSIZE / SCALE_FACTOR;
-	blend = 255;
+	blend = 225;
 	while(pixels)
 	{
 		ft_putpixel((int)pixel[X], (int)pixel[Y],
@@ -191,8 +191,8 @@ void	draw_minimap(t_cubed *game)
 	int	position;
 	
 	column = 0;
-	position = (MAPGRID / SCALE_FACTOR) * (CELLSIZE / SCALE_FACTOR) -10;
-	player[X] = game->cam->x - (MAPGRID / SCALE_FACTOR) * CELLSIZE;
+	position = MAPGRID / SCALE_FACTOR * CELLSIZE / SCALE_FACTOR - 10;
+	player[X] = game->cam->x - MAPGRID / SCALE_FACTOR * CELLSIZE;
 	//draw_player(game);
 	while (column < MAPSIZE)
 	{
