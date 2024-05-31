@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 22:04:40 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 20:06:09 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:53:40 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,5 @@ void	load_sprite(t_image index, char *start, bool *loaded, t_cubed *game)
 	tex = safe_texture(file, game);
 	free_single(&file);
 	game->image[index] = safe_image(0, 0, tex, game);
-	mlx_delete_texture(tex);
 	*loaded = true;
 }
