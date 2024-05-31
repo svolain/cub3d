@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/31 15:37:27 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:58:01 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,18 @@
 # define MAP_CHARSET "012NSEW "
 # define PLAYER_SET "NSEW"
 
-# define PI 3.1415926535898
+# define PI 3.1415926535898f
 
 # define EAST 0
-# define NORTH PI / 2
+# define NORTH PI / 2.0f
 # define WEST PI
-# define SOUTH 3 * PI / 2
+# define SOUTH 3.0f * PI / 2.0f
 
 # define FOV ft_degtorad(66)
 # define DEGREE ft_degtorad(1)
 
-# define STEP_ANGLE 0.05
-# define STEP_MOVEMENT CELLSIZE / 8
+# define STEP_ANGLE 0.02f
+# define STEP_MOVEMENT CELLSIZE / 16
 # define STEP_WINDOW FOV / SCREEN_WIDTH
 
 # define MAPCELL CELLSIZE / SCALE_FACTOR
@@ -124,7 +124,6 @@ typedef struct s_vector
 	float		d;
 	t_image		img;
 }	t_vector;
-
 
 typedef struct s_camera
 {
