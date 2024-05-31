@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubed.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/31 12:53:28 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:45:12 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <math.h>
 # include <stdio.h>
 
-# define GAME_ASSETS 4
+# define GAME_ASSETS 5
 # define GAME_COLORS 5
 
 # define SCREEN_WIDTH 1920
@@ -102,8 +102,7 @@ typedef enum e_image
 	IMG_SO,
 	IMG_WE,
 	IMG_EA,
-	IMG_F,
-	IMG_C,
+	IMG_MP
 }	t_image;
 
 typedef enum e_color

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   element.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 19:48:31 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/27 19:15:16 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:44:46 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ static int	load_element(bool *elements, char *id, t_cubed *game)
 		load_sprite(IMG_WE, id + 2, &elements[IMG_WE], game);
 	else if (!elements[IMG_EA] && !ft_strncmp(id, "EA ", 3))
 		load_sprite(IMG_EA, id + 2, &elements[IMG_EA], game);
-	else if (!elements[IMG_F] && !ft_strncmp(id, "F ", 2))
-		load_color(COL_F, id + 1, &elements[IMG_F], game);
-	else if (!elements[IMG_C] && !ft_strncmp(id, "C ", 2))
-		load_color(COL_C, id + 1, &elements[IMG_C], game);
+	else if (!elements[4] && !ft_strncmp(id, "F ", 2))
+		load_color(COL_F, id + 1, &elements[4], game);
+	else if (!elements[5] && !ft_strncmp(id, "C ", 2))
+		load_color(COL_C, id + 1, &elements[5], game);
 	else
 		error_exit(ERR_ELEM, MSG_ELEM, game);
 	return (1);

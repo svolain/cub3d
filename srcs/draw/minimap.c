@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/31 12:56:26 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:05:15 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,28 +108,24 @@ void	draw_bllah(t_cubed *game)
 
 static void	get_ray(t_vector *ray, t_cubed *game)
 {
-	float	deltaX;
-	float	deltaY;
+	float	dlt[2];
 	int		pixels;
-	float	pixelX;
-	float	pixelY;
+	float	pixel[2];
+	float	blend = 255;
 
-	deltaX = ray->x / 2 - game->cam->x / 2;
-	deltaY = ray->y / 2 - game->cam->y / 2;
-	pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
-	deltaX /= pixels;
-	deltaY /= pixels;
-	pixelX = (MAPGRID / 2) * CELLSIZE / 2;
-	pixelY = (MAPGRID / 2) * CELLSIZE / 2;
-	//printf("dist: %f | pixels: %d", ray->d, pixels);
+	dlt[X_COOR] = ray->x / SCALE_FACTOR - game->cam->x / SCALE_FACTOR;
+	dlt[Y_COOR] = ray->y / SCALE_FACTOR - game->cam->y / SCALE_FACTOR;
+	pixels = sqrt((dlt[X_COOR] * dlt[X_COOR]) + (dlt[Y_COOR] * dlt[Y_COOR]));
+	dlt[X_COOR] /= pixels;
+	dlt[Y_COOR] /= pixels;
+	pixel[X_COOR] = (MAPGRID / SCALE_FACTOR) * CELLSIZE / SCALE_FACTOR;
+	pixel[Y_COOR] = (MAPGRID / SCALE_FACTOR) * CELLSIZE / SCALE_FACTOR;
 	while(pixels)
 	{
-		//if (ray->d <= (float)MAPSIZE)
-		//	deltaX = (float)MAPSIZE;
-		
-		ft_putpixel((int)pixelX, (int)pixelY, get_rgba(0, 0, 0, 0), game);
-		pixelX += deltaX;
-		pixelY += deltaY;
+		ft_putpixel((int)pixel[X_COOR], (int)pixel[Y_COOR],
+			get_rgba(190, 0, 0, blend--), game);
+		pixel[X_COOR] += dlt[X_COOR];
+		pixel[Y_COOR] += dlt[Y_COOR];
 		--pixels;
 	}
 }
@@ -174,7 +170,7 @@ static void	draw_column(int column, int *player, t_cubed *game)
 	int		row;
 
 	row = 0;
-	player[Y_COOR] = game->cam->y - (MAPGRID / 2) * CELLSIZE;
+	player[Y_COOR] = game->cam->y - (MAPGRID / SCALE_FACTOR) * CELLSIZE;
 	while (row < MAPSIZE)
 	{
 		if (column % MAPCELL > 30 || row % MAPCELL > 30)
@@ -193,7 +189,7 @@ void	draw_minimap(t_cubed *game)
 	int	player[2];
 	
 	column = 0;
-	player[X_COOR] = game->cam->x - (MAPGRID / 2) * CELLSIZE;
+	player[X_COOR] = game->cam->x - (MAPGRID / SCALE_FACTOR) * CELLSIZE;
 	//draw_player(game);
 	while (column < MAPSIZE)
 	{
