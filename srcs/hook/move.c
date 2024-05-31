@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   keys.c                                             :+:      :+:    :+:   */
+/*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:30:49 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/25 14:35:56 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:35:03 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,6 @@ static void	move_camera(t_cubed *game, t_action action)
 		dest[Y_COOR] = game->cam->y + game->cam->dx;
 	}
 	check_collision(dest, action, game);
-}
-
-static void	rotate_camera(t_cubed *game, t_action action)
-{
-	if (action == ROTATE_LEFT)
-		ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_LEFT);
-	else
-		ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_RIGHT);
-	game->cam->dx = cos(game->cam->a) * STEP_MOVEMENT;
-	game->cam->dy = sin(game->cam->a) * STEP_MOVEMENT;
 }
 
 void	hook_moves(void *param)

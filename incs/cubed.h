@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubed.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/31 14:45:12 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:35:30 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ void	calculate_ray(t_vector *ray, t_cubed *game);
 void	ft_putpixel(int x, int y, int32_t color, t_cubed *game);
 void	ft_rotate(float *target, float angle, t_action action);
 float	ft_degtorad(float degree);
+void	rotate_camera(t_cubed *game, t_action action);
 int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
