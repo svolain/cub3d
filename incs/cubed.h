@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubed.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/29 15:00:30 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/31 12:53:28 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define SCREEN_HEIGHT 1080
 # define SCREEN_TITLE "cub3d"
 
+# define FPS 0.1
 # define CELLSIZE 64
 # define SCALE_FACTOR 2
 # define MAPGRID 10
@@ -147,6 +148,7 @@ typedef struct s_cubed
 	t_camera	*cam;
 	t_mapinfo	*map;
 	char		*gnl;
+	double		fps;
 	mlx_t		*mlx;
 	mlx_image_t	*canvas;
 	mlx_image_t	*image[GAME_ASSETS];
@@ -165,9 +167,10 @@ void	load_sprite(t_image index, char *start, bool *loaded, t_cubed *game);
 void	load_color(t_color index, char *start, bool *loaded, t_cubed *game);
 
 //		Hook
+void	hook_actions(mlx_key_data_t keydata, void *param);
+void	hook_moves(void *param);
 void	hook_close(void *param);
-void	hook_keys(mlx_key_data_t keydata, void *param);
-/* void	hook_keys(void *param); */
+void	draw_scene(void *param);
 
 //		Draw
 void	draw_walls(t_cubed *game);

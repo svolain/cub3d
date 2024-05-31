@@ -47,19 +47,19 @@ SOURCES 	:= 	main.c \
 				infile.c \
 				element.c \
 				mapinfo.c \
-				load.c \
-				close.c \
-				keys.c \
+				action.c \
+				move.c \
+				loop.c \
 				rays.c \
 				walls.c \
 				minimap.c \
 				pixel.c \
 				rotate.c \
 				error.c \
-				safe.c \
 				free.c \
-				utils.c \
-				safe2.c
+				load.c \
+				safe.c \
+				utils.c
 
 SOURCEDIR	:=	$(addprefix $(SRCSDIR)/, $(MODULES))
 BUILDDIR	:=	$(addprefix $(OBJSDIR)/, $(MODULES))

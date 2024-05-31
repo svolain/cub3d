@@ -15,8 +15,9 @@
 static void	run_game(t_cubed *game)
 {
 	mlx_close_hook(game->mlx, hook_close, game);
-	mlx_key_hook(game->mlx, hook_keys, game);
-	/* mlx_loop_hook(game->mlx, hook_keys, game->mlx); *///segfaults
+	mlx_key_hook(game->mlx, hook_actions, game);
+	mlx_loop_hook(game->mlx, hook_moves, game);
+	mlx_loop_hook(game->mlx, draw_scene, game);
 	mlx_loop(game->mlx);
 }
 
@@ -27,6 +28,8 @@ static void	load_scene(t_cubed *game)
 		error_exit(ERR_MLX, MSG_MLX, game);
 	if (mlx_image_to_window(game->mlx, game->canvas, 0, 0) == FAILURE)
 		error_exit(ERR_MLX, MSG_MLX, game);
+	game->color[COL_MW] = get_rgba(150, 150, 150, 150);
+	game->color[COL_MF] = get_rgba(255, 255, 255, 200);
 	draw_minimap(game);
 	draw_walls(game);
 }
@@ -49,8 +52,7 @@ static void	init_game(t_cubed *game, char *file)
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, false);
 	if (!game->mlx)
 		error_exit(ERR_MLX, MSG_MLX, game);
-	game->color[COL_MW] = get_rgba(150, 150, 150, 150);
-	game->color[COL_MF] = get_rgba(255, 255, 255, 200);
+	game->fps = FPS;
 }
 
 int	main(int argc, char **argv)
