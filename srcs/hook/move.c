@@ -12,19 +12,7 @@
 
 #include <cubed.h>
 
-static void	rotate_camera(t_cubed *game, t_action action)
-{
-	if (action == ROTATE_LEFT)
-		ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_LEFT);
-	else if (action == ROTATE_RIGHT)
-		ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_RIGHT);
-	game->cam->dx = cos(game->cam->a) * STEP_MOVEMENT;
-	game->cam->dy = sin(game->cam->a) * STEP_MOVEMENT;
-	draw_walls(game);
-	draw_minimap(game);
-}
-
-static void	update_coordinates(float *dest, t_action action, t_cubed *game)
+static void	check_collision(float *dest, t_action action, t_cubed *game)
 {
 	int xo = BUMP_BUFFER;
 	if (game->cam->dx < 0)
@@ -52,6 +40,16 @@ static void	update_coordinates(float *dest, t_action action, t_cubed *game)
 			game->cam->x = dest[X_COOR];
 		if (game->map->matrix[ys][px] != MAP_WALL)
 			game->cam->y = dest[Y_COOR];
+	}
+	else if (action == MOVE_LEFT)
+	{
+		game->cam->x = dest[X_COOR];
+		game->cam->y = dest[Y_COOR];
+	}
+	else
+	{
+		game->cam->x = dest[X_COOR];
+		game->cam->y = dest[Y_COOR];
 	}
 	/* if (action == MOVE_LEFT) */
 	/* { */
@@ -88,52 +86,34 @@ static void	move_camera(t_cubed *game, t_action action)
 		dest[X_COOR] = game->cam->x + -game->cam->dy;
 		dest[Y_COOR] = game->cam->y + game->cam->dx;
 	}
-	update_coordinates(dest, action, game);
-	draw_walls(game);
-	draw_minimap(game);
+	check_collision(dest, action, game);
 }
 
-void	hook_keys(mlx_key_data_t keydata, void *param)
+static void	rotate_camera(t_cubed *game, t_action action)
 {
-	t_cubed		*game;
+	if (action == ROTATE_LEFT)
+		ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_LEFT);
+	else
+		ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_RIGHT);
+	game->cam->dx = cos(game->cam->a) * STEP_MOVEMENT;
+	game->cam->dy = sin(game->cam->a) * STEP_MOVEMENT;
+}
+
+void	hook_moves(void *param)
+{
+	t_cubed	*game;
 
 	game = param;
-	if (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT)
-	{
-		if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
-			free_exit(game, NOERROR);
-		if (mlx_is_key_down(game->mlx, MLX_KEY_W))
-			move_camera(game, MOVE_UP);
-		if (mlx_is_key_down(game->mlx, MLX_KEY_S))
-			move_camera(game, MOVE_DOWN);
-		if (mlx_is_key_down(game->mlx, MLX_KEY_A))
-			move_camera(game, MOVE_LEFT);
-		if (mlx_is_key_down(game->mlx, MLX_KEY_D))
-			move_camera(game, MOVE_RIGHT);
-		if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
-			rotate_camera(game, ROTATE_RIGHT);
-		if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
-			rotate_camera(game, ROTATE_LEFT);
-	}
+	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
+		move_camera(game, MOVE_UP);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
+		move_camera(game, MOVE_DOWN);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_A))
+		move_camera(game, MOVE_LEFT);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
+		move_camera(game, MOVE_RIGHT);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
+		rotate_camera(game, ROTATE_RIGHT);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
+		rotate_camera(game, ROTATE_LEFT);
 }
-
-/* void	hook_keys(void *param) */
-/* { */
-/* 	t_cubed	*game; */
-/**/
-/* 	game = param; */
-/* 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE)) */
-/* 		hook_close(game); */
-/* 	if (mlx_is_key_down(game->mlx, MLX_KEY_W)) */
-/* 		move_camera(game, MOVE_UP); */
-/* 	if (mlx_is_key_down(game->mlx, MLX_KEY_S)) */
-/* 		move_camera(game, MOVE_DOWN); */
-/* 	if (mlx_is_key_down(game->mlx, MLX_KEY_A)) */
-/* 		move_camera(game, MOVE_LEFT); */
-/* 	if (mlx_is_key_down(game->mlx, MLX_KEY_D)) */
-/* 		move_camera(game, MOVE_RIGHT); */
-/* 	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT)) */
-/* 		rotate_camera(game, ROTATE_RIGHT); */
-/* 	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT)) */
-/* 		rotate_camera(game, ROTATE_LEFT); */
-/* } */

@@ -158,7 +158,7 @@ static int32_t	get_map(int *player, t_cubed *game)
 	y = player[Y_COOR] / CELLSIZE;
 	if (x < 0 || x >= game->map->width
 		|| y < 0 || y >= game->map->height)
-		return (game->color[COL_MF]);
+		return (game->color[COL_MW]);
 	else if (game->map->matrix[y][x] == '0')
 		return (game->color[COL_MF]);
 	return (game->color[COL_MW]);
