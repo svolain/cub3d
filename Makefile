@@ -47,6 +47,7 @@ SOURCES 	:= 	main.c \
 				infile.c \
 				element.c \
 				mapinfo.c \
+				checker.c \
 				action.c \
 				mouse.c \
 				move.c \

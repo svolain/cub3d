@@ -108,24 +108,25 @@ void	draw_bllah(t_cubed *game)
 
 static void	get_ray(t_vector *ray, t_cubed *game)
 {
-	float	dlt[2];
-	int		pixels;
+	float	delta[2];
 	float	pixel[2];
-	float	blend = 255;
+	int		pixels;
+	float	blend;
 
-	dlt[X_COOR] = ray->x / SCALE_FACTOR - game->cam->x / SCALE_FACTOR;
-	dlt[Y_COOR] = ray->y / SCALE_FACTOR - game->cam->y / SCALE_FACTOR;
-	pixels = sqrt((dlt[X_COOR] * dlt[X_COOR]) + (dlt[Y_COOR] * dlt[Y_COOR]));
-	dlt[X_COOR] /= pixels;
-	dlt[Y_COOR] /= pixels;
-	pixel[X_COOR] = (MAPGRID / SCALE_FACTOR) * CELLSIZE / SCALE_FACTOR;
-	pixel[Y_COOR] = (MAPGRID / SCALE_FACTOR) * CELLSIZE / SCALE_FACTOR;
+	delta[X] = ray->x / SCALE_FACTOR - game->cam->x / SCALE_FACTOR;
+	delta[Y] = ray->y / SCALE_FACTOR - game->cam->y / SCALE_FACTOR;
+	pixels = sqrt((delta[X] * delta[X]) + (delta[Y] * delta[Y]));
+	delta[X] /= pixels;
+	delta[Y] /= pixels;
+	pixel[X] = (MAPGRID / SCALE_FACTOR) * CELLSIZE / SCALE_FACTOR;
+	pixel[Y] = (MAPGRID / SCALE_FACTOR) * CELLSIZE / SCALE_FACTOR;
+	blend = 255;
 	while(pixels)
 	{
-		ft_putpixel((int)pixel[X_COOR], (int)pixel[Y_COOR],
+		ft_putpixel((int)pixel[X], (int)pixel[Y],
 			get_rgba(225, 100, 100, blend--), game);
-		pixel[X_COOR] += dlt[X_COOR];
-		pixel[Y_COOR] += dlt[Y_COOR];
+		pixel[X] += delta[X];
+		pixel[Y] += delta[Y];
 		--pixels;
 	}
 }
@@ -154,8 +155,8 @@ static int32_t	get_map(int *player, t_cubed *game)
 	int	x;
 	int	y;
 
-	x = player[X_COOR] / CELLSIZE;
-	y = player[Y_COOR] / CELLSIZE;
+	x = player[X] / CELLSIZE;
+	y = player[Y] / CELLSIZE;
 	if (x < 0 || x >= game->map->width
 		|| y < 0 || y >= game->map->height)
 		return (game->color[COL_MW]);
@@ -170,7 +171,7 @@ static void	draw_column(int column, int *player, t_cubed *game)
 	int		row;
 
 	row = 0;
-	player[Y_COOR] = game->cam->y - (MAPGRID / SCALE_FACTOR) * CELLSIZE;
+	player[Y] = game->cam->y - (MAPGRID / SCALE_FACTOR) * CELLSIZE;
 	while (row < MAPSIZE)
 	{
 		if (column % MAPCELL > 30 || row % MAPCELL > 30)
@@ -178,7 +179,7 @@ static void	draw_column(int column, int *player, t_cubed *game)
 		else
 			color = get_map(player, game);
 		ft_putpixel(column, row, color, game);
-		player[Y_COOR] += 2;
+		player[Y] += 2;
 		row++;
 	}
 }
@@ -191,12 +192,12 @@ void	draw_minimap(t_cubed *game)
 	
 	column = 0;
 	position = (MAPGRID / SCALE_FACTOR) * (CELLSIZE / SCALE_FACTOR) -10;
-	player[X_COOR] = game->cam->x - (MAPGRID / SCALE_FACTOR) * CELLSIZE;
+	player[X] = game->cam->x - (MAPGRID / SCALE_FACTOR) * CELLSIZE;
 	//draw_player(game);
 	while (column < MAPSIZE)
 	{
 		draw_column(column, player, game);
-		player[X_COOR] += 2;
+		player[X] += 2;
 		column++;
 	}
 	draw_rays(game);

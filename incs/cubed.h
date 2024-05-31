@@ -32,12 +32,14 @@
 # define SCREEN_TITLE "cub3d"
 
 # define FPS 0.1
+# define MINSIZE 3
+# define MAXSIZE 500
 # define CELLSIZE 64
 # define SCALE_FACTOR 2
 # define MAPGRID 10
 
-# define MAP_CHARSET "012NSEW "
-# define PLAYER_SET "NSEW"
+# define CHARSET_MAP		"01NSEW "
+# define CHARSET_PLAYER		"NSEW"
 
 # define PI 3.1415926535898f
 
@@ -70,12 +72,12 @@ typedef enum e_check
 {
 	FAILURE = -1,
 	SUCCESS = 0,
-	X_COOR = 0,
-	Y_COOR = 1,
-	H_DIST = 0,
-	V_DIST = 1,
-	Y_BEGIN = 0,
-	Y_END = 1
+	X = 0,
+	Y = 1,
+	H = 0,
+	V = 1,
+	A = 0,
+	B = 1
 }	t_check;
 
 typedef enum e_action
@@ -161,6 +163,8 @@ void	parse_filename(t_cubed *game);
 void	open_infile(t_cubed *game);
 void	parse_elements(t_cubed *game);
 void	parse_mapinfo(t_cubed *game);
+void	check_walls(t_cubed *game, char **duplex);
+void	check_inward(t_cubed *game, char **map);
 bool	ft_isemptyline(char *str);
 
 //		Load
@@ -178,11 +182,11 @@ void	draw_scene(void *param);
 void	draw_walls(t_cubed *game);
 void	calculate_ray(t_vector *ray, t_cubed *game);
 void	ft_putpixel(int x, int y, int32_t color, t_cubed *game);
+int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y);
+int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 void	rotate_camera(t_cubed *game, t_action action);
 void	ft_rotate(float *target, float angle, t_action action);
 float	ft_degtorad(float degree);
-int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y);
-int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 //		Map
 void	init_minimap(t_cubed *game);
@@ -206,7 +210,7 @@ char	*safe_strjoin(char *s1, char *s2, t_cubed *game);
 char	**safe_split(char * str, char c, t_cubed *game);
 void	safe_draw(mlx_image_t *img, int x, int y, t_cubed *game);
 
-mlx_texture_t	*safe_texture(char * file, t_cubed *game);
+mlx_texture_t	*safe_texture(char * file, bool allocated, t_cubed *game);
 mlx_image_t		*safe_image(uint32_t w, uint32_t h, mlx_texture_t *t, t_cubed *game);
 
 #endif

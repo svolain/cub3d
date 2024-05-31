@@ -25,8 +25,8 @@ static void	calc_collosion(t_vector *ray, float *offset, t_mapinfo *map)
 			|| y < 0 || y >= map->height
 			|| map->matrix[y][x] != MAP_FLOOR)
 			break ;
-		ray->x += offset[X_COOR];
-		ray->y += offset[Y_COOR];
+		ray->x += offset[X];
+		ray->y += offset[Y];
 	}
 }
 
@@ -41,15 +41,15 @@ static float	calc_horizontal(t_vector *ray, float angle, t_cubed *game)
 	if (angle > WEST)
 	{
 		ray->y = (int)cam->y / CELLSIZE * CELLSIZE - 0.0001f;
-		offset[Y_COOR] = -CELLSIZE;
+		offset[Y] = -CELLSIZE;
 	}
 	else
 	{
 		ray->y = (int)cam->y / CELLSIZE * CELLSIZE + CELLSIZE;
-		offset[Y_COOR] = CELLSIZE;
+		offset[Y] = CELLSIZE;
 	}
 	ray->x = (cam->y - ray->y) * atan + cam->x;
-	offset[X_COOR] = -offset[Y_COOR] * atan;
+	offset[X] = -offset[Y] * atan;
 	calc_collosion(ray, offset, game->map);
 	return (sqrtf(powf((ray->x - cam->x), 2) + powf((ray->y - cam->y), 2)));
 }
@@ -65,15 +65,15 @@ static float	calc_vertical(t_vector *ray, float angle, t_cubed *game)
 	if (angle > NORTH && angle < SOUTH)
 	{
 		ray->x = (int)cam->x / CELLSIZE * CELLSIZE - 0.0001f;
-		offset[X_COOR] = -CELLSIZE;
+		offset[X] = -CELLSIZE;
 	}
 	else
 	{
 		ray->x = (int)cam->x / CELLSIZE * CELLSIZE + CELLSIZE;
-		offset[X_COOR] = CELLSIZE;
+		offset[X] = CELLSIZE;
 	}
 	ray->y = (cam->x - ray->x) * ntan + cam->y;
-	offset[Y_COOR] = -offset[X_COOR] * ntan;
+	offset[Y] = -offset[X] * ntan;
 	calc_collosion(ray, offset, game->map);
 	return (sqrtf(powf((ray->x - cam->x), 2) + powf((ray->y - cam->y), 2)));
 }
@@ -84,20 +84,20 @@ void	calculate_ray(t_vector *ray, t_cubed *game)
 	t_vector	vertical;
 	float		distance[2];
 
-	distance[H_DIST] = calc_horizontal(&horizontal, ray->a, game);
-	distance[V_DIST] = calc_vertical(&vertical, ray->a, game);
-	if (distance[H_DIST] < distance[V_DIST])
+	distance[H] = calc_horizontal(&horizontal, ray->a, game);
+	distance[V] = calc_vertical(&vertical, ray->a, game);
+	if (distance[H] < distance[V])
 	{
 		ray->x = horizontal.x;
 		ray->y = horizontal.y;
-		ray->d = distance[H_DIST];
+		ray->d = distance[H];
 		ray->img = IMG_WE;
 	}
 	else
 	{
 		ray->x = vertical.x;
 		ray->y = vertical.y;
-		ray->d = distance[V_DIST];
+		ray->d = distance[V];
 		ray->img = IMG_NO;
 	}
 }

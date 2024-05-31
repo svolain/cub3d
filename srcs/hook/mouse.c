@@ -18,12 +18,12 @@ void	hook_mouse(void *param)
 	int32_t	mouse[2];
 
 	game = param;
-	mlx_get_mouse_pos(game->mlx, &mouse[X_COOR], &mouse[Y_COOR]);
-	if (mouse[X_COOR] < game->mouse[X_COOR])
+	mlx_get_mouse_pos(game->mlx, &mouse[X], &mouse[Y]);
+	if (mouse[X] < game->mouse[X])
 		rotate_camera(game, ROTATE_LEFT);
-	else if (mouse[X_COOR] > game->mouse[X_COOR])
+	else if (mouse[X] > game->mouse[X])
 		rotate_camera(game, ROTATE_RIGHT);
-	game->mouse[X_COOR] = mouse[X_COOR];
-	if (mouse[X_COOR] > game->mlx->width || mouse[X_COOR] < 0)
+	game->mouse[X] = mouse[X];
+	if (mouse[X] > game->mlx->width || mouse[X] < 0)
 		mlx_set_mouse_pos(game->mlx, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 }

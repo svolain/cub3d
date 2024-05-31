@@ -84,7 +84,7 @@ void	load_sprite(t_image index, char *start, bool *loaded, t_cubed *game)
 	start = skip_spaces(start, game);
 	end = ft_strrchr(start, '\n');
 	file = safe_substr(start, end, game);
-	tex = safe_texture(file, game);
+	tex = safe_texture(file, true, game);
 	free_single(&file);
 	game->image[index] = safe_image(0, 0, tex, game);
 	*loaded = true;

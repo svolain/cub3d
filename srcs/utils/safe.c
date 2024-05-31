@@ -14,10 +14,7 @@
 
 void	safe_draw(mlx_image_t *img, int x, int y, t_cubed *game)
 {
-	int	status;
-
-	status = mlx_image_to_window(game->mlx, img, x, y);
-	if (status == -1)
+	if (mlx_image_to_window(game->mlx, img, x, y) == FAILURE)
 		error_exit(ERR_MLX, MSG_MLX, game);
 }
 
@@ -35,18 +32,20 @@ mlx_image_t	*safe_image(uint32_t w, uint32_t h, mlx_texture_t *t, t_cubed *game)
 			mlx_delete_texture(t);
 		error_exit(ERR_MLX, MSG_MLX, game);
 	}
-	mlx_delete_texture(t);
+	if (t != NULL)
+		mlx_delete_texture(t);
 	return (i);
 }
 
-mlx_texture_t	*safe_texture(char * file, t_cubed *game)
+mlx_texture_t	*safe_texture(char * file, bool allocated, t_cubed *game)
 {
 	mlx_texture_t	*t;
 
 	t = mlx_load_png(file);
 	if (!t)
 	{
-		free_single(&file);
+		if (allocated)
+			free_single(&file);
 		error_exit(ERR_MLX, MSG_MLX, game);
 	}
 	return (t);
@@ -58,17 +57,11 @@ char	*safe_strjoin(char *s1, char *s2, t_cubed *game)
 
 	s = ft_strjoin(s1, s2);
 	if (!s)
+	{
+		free_single(&s1);
+		free_single(&s2);
 		error_fatal(ENOMEM, MSG_MEM, game);
-	return (s);
-}
-
-char	**safe_split(char *str, char c, t_cubed *game)
-{
-	char	**s;
-
-	s = ft_split(str, c);
-	if (!s)
-		error_fatal(ENOMEM, MSG_MEM, game);
+	}
 	return (s);
 }
 
@@ -79,6 +72,19 @@ char	*safe_substr(char *stt, char *end, t_cubed *game)
 	s = ft_substr(stt, 0, end - stt);
 	if (!s)
 		error_fatal(ENOMEM, MSG_MEM, game);
+	return (s);
+}
+
+char	**safe_split(char *str, char c, t_cubed *game)
+{
+	char	**s;
+
+	s = ft_split(str, c);
+	if (!s)
+	{
+		free_single(&str);
+		error_fatal(ENOMEM, MSG_MEM, game);
+	}
 	return (s);
 }
 

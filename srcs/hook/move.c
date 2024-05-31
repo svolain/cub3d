@@ -30,26 +30,26 @@ static void	check_collision(float *dest, t_action action, t_cubed *game)
 	if (action == MOVE_UP)
 	{
 		if (game->map->matrix[py][xa] != MAP_WALL)
-			game->cam->x = dest[X_COOR];
+			game->cam->x = dest[X];
 		if (game->map->matrix[ya][px] != MAP_WALL)
-			game->cam->y = dest[Y_COOR];
+			game->cam->y = dest[Y];
 	}
 	else if (action == MOVE_DOWN)
 	{
 		if (game->map->matrix[py][xs] != MAP_WALL)
-			game->cam->x = dest[X_COOR];
+			game->cam->x = dest[X];
 		if (game->map->matrix[ys][px] != MAP_WALL)
-			game->cam->y = dest[Y_COOR];
+			game->cam->y = dest[Y];
 	}
 	else if (action == MOVE_LEFT)
 	{
-		game->cam->x = dest[X_COOR];
-		game->cam->y = dest[Y_COOR];
+		game->cam->x = dest[X];
+		game->cam->y = dest[Y];
 	}
 	else
 	{
-		game->cam->x = dest[X_COOR];
-		game->cam->y = dest[Y_COOR];
+		game->cam->x = dest[X];
+		game->cam->y = dest[Y];
 	}
 	/* if (action == MOVE_LEFT) */
 	/* { */
@@ -64,29 +64,29 @@ static void	check_collision(float *dest, t_action action, t_cubed *game)
 
 static void	move_camera(t_cubed *game, t_action action)
 {
-	float	dest[2];
+	float	destination[2];
 
 	if (action == MOVE_UP)
 	{
-		dest[X_COOR] = game->cam->x + game->cam->dx;
-		dest[Y_COOR] = game->cam->y + game->cam->dy;
+		destination[X] = game->cam->x + game->cam->dx;
+		destination[Y] = game->cam->y + game->cam->dy;
 	}
 	else if (action == MOVE_DOWN)
 	{
-		dest[X_COOR] = game->cam->x - game->cam->dx;
-		dest[Y_COOR] = game->cam->y - game->cam->dy;
+		destination[X] = game->cam->x - game->cam->dx;
+		destination[Y] = game->cam->y - game->cam->dy;
 	}
 	else if (action == MOVE_LEFT)
 	{
-		dest[X_COOR] = game->cam->x - -game->cam->dy;
-		dest[Y_COOR] = game->cam->y - game->cam->dx;
+		destination[X] = game->cam->x - -game->cam->dy;
+		destination[Y] = game->cam->y - game->cam->dx;
 	}
 	else
 	{
-		dest[X_COOR] = game->cam->x + -game->cam->dy;
-		dest[Y_COOR] = game->cam->y + game->cam->dx;
+		destination[X] = game->cam->x + -game->cam->dy;
+		destination[Y] = game->cam->y + game->cam->dx;
 	}
-	check_collision(dest, action, game);
+	check_collision(destination, action, game);
 }
 
 void	hook_moves(void *param)

@@ -45,20 +45,20 @@ static void	draw_space(int start_point, int end_point, int x, t_cubed *game)
 
 static void	draw_column(int height, int x, t_vector *ray, t_cubed *game)
 {
-	int32_t	color;
 	int		point[2];
+	int32_t	color;
 
-	point[Y_BEGIN] = SCREEN_HEIGHT / 2 - height / 2 - 1;
-	point[Y_END] = SCREEN_HEIGHT / 2 + height / 2;
-	draw_space(point[Y_BEGIN], point[Y_END], x, game);
+	point[A] = SCREEN_HEIGHT / 2 - height / 2 - 1;
+	point[B] = SCREEN_HEIGHT / 2 + height / 2;
+	draw_space(point[A], point[B], x, game);
 	/* draw_floor(x, point[Y_END], ray, game); */
-	while (point[Y_BEGIN]++ < point[Y_END])
+	while (point[A]++ < point[B])
 	{
 		color = get_color(game->image[ray->img], ray->x, ray->y);
 		ray->y += ray->d;
-		if (point[Y_BEGIN] < MAPCELL * MAPGRID && x < MAPCELL * MAPGRID)
+		if (point[A] < MAPCELL * MAPGRID && x < MAPCELL * MAPGRID)
 			continue ;
-		ft_putpixel(x, point[Y_BEGIN], color, game);
+		ft_putpixel(x, point[A], color, game);
 	}
 }
 
