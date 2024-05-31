@@ -5,9 +5,9 @@ static void	wait_frame(t_cubed *game)
 {
 	static double	frame = 0;
 
-	while (frame < game->fps)
+	while (frame < game->frame)
 		frame += game->mlx->delta_time;
-	game->fps += FPS;
+	game->frame += FPS;
 }
 
 void	draw_scene(void *param)

@@ -48,6 +48,7 @@ SOURCES 	:= 	main.c \
 				element.c \
 				mapinfo.c \
 				action.c \
+				mouse.c \
 				move.c \
 				loop.c \
 				rays.c \

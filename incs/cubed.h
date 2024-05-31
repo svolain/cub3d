@@ -147,7 +147,8 @@ typedef struct s_cubed
 	t_camera	*cam;
 	t_mapinfo	*map;
 	char		*gnl;
-	double		fps;
+	double		frame;
+	int32_t		mouse[2];
 	mlx_t		*mlx;
 	mlx_image_t	*canvas;
 	mlx_image_t	*image[GAME_ASSETS];
@@ -169,6 +170,7 @@ void	load_color(t_color index, char *start, bool *loaded, t_cubed *game);
 void	hook_actions(mlx_key_data_t keydata, void *param);
 void	hook_moves(void *param);
 void	hook_close(void *param);
+void	hook_mouse(void *param);
 void	draw_scene(void *param);
 
 //		Draw
