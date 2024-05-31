@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/31 14:05:15 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:26:42 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ static void	get_ray(t_vector *ray, t_cubed *game)
 	while(pixels)
 	{
 		ft_putpixel((int)pixel[X_COOR], (int)pixel[Y_COOR],
-			get_rgba(190, 0, 0, blend--), game);
+			get_rgba(225, 100, 100, blend--), game);
 		pixel[X_COOR] += dlt[X_COOR];
 		pixel[Y_COOR] += dlt[Y_COOR];
 		--pixels;
@@ -187,8 +187,10 @@ void	draw_minimap(t_cubed *game)
 {
 	int	column;
 	int	player[2];
+	int	position;
 	
 	column = 0;
+	position = (MAPGRID / SCALE_FACTOR) * (CELLSIZE / SCALE_FACTOR) -10;
 	player[X_COOR] = game->cam->x - (MAPGRID / SCALE_FACTOR) * CELLSIZE;
 	//draw_player(game);
 	while (column < MAPSIZE)
@@ -198,4 +200,5 @@ void	draw_minimap(t_cubed *game)
 		column++;
 	}
 	draw_rays(game);
+	safe_draw(game->image[IMG_MP], position, position, game);
 }

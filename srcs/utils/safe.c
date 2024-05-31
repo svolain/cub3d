@@ -3,16 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   safe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 19:46:50 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/26 22:34:07 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:18:44 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-mlx_image_t	*safe_image(uint32_t w, uint32_t h ,mlx_texture_t *t, t_cubed *game)
+void	safe_draw(mlx_image_t *img, int x, int y, t_cubed *game)
+{
+	int	status;
+
+	status = mlx_image_to_window(game->mlx, img, x, y);
+	if (status == -1)
+		error_exit(ERR_MLX, MSG_MLX, game);
+}
+
+mlx_image_t	*safe_image(uint32_t w, uint32_t h, mlx_texture_t *t, t_cubed *game)
 {
 	mlx_image_t	*i;
 
@@ -26,6 +35,7 @@ mlx_image_t	*safe_image(uint32_t w, uint32_t h ,mlx_texture_t *t, t_cubed *game)
 			mlx_delete_texture(t);
 		error_exit(ERR_MLX, MSG_MLX, game);
 	}
+	mlx_delete_texture(t);
 	return (i);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/31 15:35:30 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:37:27 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@
 # define BUMP_BUFFER CELLSIZE / 3
 
 # define BPP sizeof(int)
+
+# define TEX_MINI_PLAYER "./textures/minimap_player.png"
 
 # define FMT_BOLD_RED	"\033[1;31m"
 # define FMT_YELLOW		"\033[0;33m"
@@ -177,9 +179,9 @@ void	draw_scene(void *param);
 void	draw_walls(t_cubed *game);
 void	calculate_ray(t_vector *ray, t_cubed *game);
 void	ft_putpixel(int x, int y, int32_t color, t_cubed *game);
+void	rotate_camera(t_cubed *game, t_action action);
 void	ft_rotate(float *target, float angle, t_action action);
 float	ft_degtorad(float degree);
-void	rotate_camera(t_cubed *game, t_action action);
 int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
@@ -203,6 +205,7 @@ void	*safe_calloc(size_t n, t_cubed *game);
 char	*safe_substr(char *stt, char *end, t_cubed *game);
 char	*safe_strjoin(char *s1, char *s2, t_cubed *game);
 char	**safe_split(char * str, char c, t_cubed *game);
+void	safe_draw(mlx_image_t *img, int x, int y, t_cubed *game);
 
 mlx_texture_t	*safe_texture(char * file, t_cubed *game);
 mlx_image_t		*safe_image(uint32_t w, uint32_t h, mlx_texture_t *t, t_cubed *game);
