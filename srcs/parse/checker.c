@@ -29,6 +29,7 @@ static int	load_player(t_cubed *game, char c, int i, int j)
 	else if (c == 'W')
 		game->cam->a = WEST - STEP_ANGLE;
 	game->map->matrix[i][j] = MAP_FLOOR;
+	ft_rotate(&game->cam->a, PI, ROTATE_LEFT);
 	loaded = true;
 	return(1);
 }

@@ -64,17 +64,17 @@ static void	draw_column(int height, int x, t_vector *ray, t_cubed *game)
 
 static void	calculate_draw(int *height, t_vector *ray)
 {
-	if (ray->img == IMG_NO)
+	if (ray->img == IMG_WE)
 	{
 		ray->x = (int)(ray->y) % CELLSIZE;
 		if (ray->a > NORTH && ray->a < SOUTH)
-			ray->img = IMG_SO;
+			ray->img = IMG_EA;
 	}
 	else
 	{
 		ray->x = (int)(ray->x) % CELLSIZE;
 		if (ray->a > WEST)
-			ray->img = IMG_EA;
+			ray->img = IMG_SO;
 	}
 	ray->y = 0;
 	ray->d = (float)CELLSIZE / *height;
