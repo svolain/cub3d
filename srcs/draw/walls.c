@@ -62,25 +62,25 @@ static void	draw_column(int height, int x, t_vector *ray, t_cubed *game)
 	}
 }
 
-static void	calculate_draw(int *height, t_vector *ray)
+static void	calculate_draw(int *height, t_vector *ray, t_cubed *game)
 {
-	if (ray->img == IMG_WE)
+	if (ray->img == IMG_EA)
 	{
-		ray->x = (int)(ray->y) % CELLSIZE;
+		ray->x = (int)(ray->y) % game->image[ray->img]->width;
 		if (ray->a > NORTH && ray->a < SOUTH)
-			ray->img = IMG_EA;
+			ray->img = IMG_WE;
 	}
 	else
 	{
-		ray->x = (int)(ray->x) % CELLSIZE;
+		ray->x = (int)(ray->x) % game->image[ray->img]->width;
 		if (ray->a > WEST)
-			ray->img = IMG_SO;
+			ray->img = IMG_NO;
 	}
 	ray->y = 0;
-	ray->d = (float)CELLSIZE / *height;
+	ray->d = (float)game->image[ray->img]->width / *height;
 	if (*height > SCREEN_HEIGHT)
 	{
-		ray->y = (*height - SCREEN_HEIGHT) / 2 * ray->d;
+		ray->y = (float)(*height - SCREEN_HEIGHT) / 2 * ray->d;
 		*height = SCREEN_HEIGHT;
 	}
 }
@@ -110,7 +110,7 @@ void	draw_walls(t_cubed *game)
 		calculate_ray(&ray, game);
 		fix_fisheye(&ray, game);
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
-		calculate_draw(&height, &ray);
+		calculate_draw(&height, &ray, game);
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
 		draw_column(height, column, &ray, game);
 		column++;

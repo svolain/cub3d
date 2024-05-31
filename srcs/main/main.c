@@ -24,10 +24,12 @@ static void	run_game(t_cubed *game)
 
 static void	load_scene(t_cubed *game)
 {
-	game->canvas = safe_image(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
-	safe_draw(game->canvas, 0, 0, game);
+	game->image[IMG_MP] = safe_image(0, 0, safe_texture(TEX_MINI_PLAYER, false, game), game);
+	game->image[IMG_FL] = safe_image(0, 0, safe_texture(TEX_FLOOR, false, game), game);
 	game->color[COL_MW] = get_rgba(150, 150, 150, 150);
 	game->color[COL_MF] = get_rgba(255, 255, 255, 200);
+	game->canvas = safe_image(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
+	safe_draw(game->canvas, 0, 0, game);
 	draw_minimap(game);
 	draw_walls(game);
 }
@@ -52,7 +54,6 @@ static void	init_game(t_cubed *game, char *file)
 		error_exit(ERR_MLX, MSG_MLX, game);
 	mlx_get_mouse_pos(game->mlx, &game->mouse[X], &game->mouse[Y]);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
-	game->image[IMG_MP] = safe_image(0, 0, safe_texture(TEX_MINI_PLAYER, true, game), game);
 }
 
 int	main(int argc, char **argv)

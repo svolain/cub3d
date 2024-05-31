@@ -24,7 +24,7 @@
 # include <math.h>
 # include <stdio.h>
 
-# define GAME_ASSETS 5
+# define GAME_ASSETS 6
 # define GAME_COLORS 5
 
 # define SCREEN_WIDTH 1920
@@ -62,7 +62,8 @@
 
 # define BPP sizeof(int)
 
-# define TEX_MINI_PLAYER "./textures/minimap_player.png"
+# define TEX_MINI_PLAYER	"./textures/minimap_player.png"
+# define TEX_FLOOR			"./textures/floor.png"
 
 # define FMT_BOLD_RED	"\033[1;31m"
 # define FMT_YELLOW		"\033[0;33m"
@@ -106,7 +107,8 @@ typedef enum e_image
 	IMG_SO,
 	IMG_WE,
 	IMG_EA,
-	IMG_MP
+	IMG_MP,
+	IMG_FL
 }	t_image;
 
 typedef enum e_color

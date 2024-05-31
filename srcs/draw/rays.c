@@ -91,13 +91,13 @@ void	calculate_ray(t_vector *ray, t_cubed *game)
 		ray->x = horizontal.x;
 		ray->y = horizontal.y;
 		ray->d = distance[H];
-		ray->img = IMG_NO;
+		ray->img = IMG_SO;
 	}
 	else
 	{
 		ray->x = vertical.x;
 		ray->y = vertical.y;
 		ray->d = distance[V];
-		ray->img = IMG_WE;
+		ray->img = IMG_EA;
 	}
 }
