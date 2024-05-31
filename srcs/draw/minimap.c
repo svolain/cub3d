@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/30 19:19:59 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/31 12:56:26 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	draw_bllah(t_cubed *game)
 
 }*/
 
-static void	get_ray(t_vector	*ray, t_cubed *game)
+static void	get_ray(t_vector *ray, t_cubed *game)
 {
 	float	deltaX;
 	float	deltaY;
@@ -114,15 +114,19 @@ static void	get_ray(t_vector	*ray, t_cubed *game)
 	float	pixelX;
 	float	pixelY;
 
-	deltaX = ray->x / 2 - game->cam->x;
-	deltaY = ray->y / 2 - game->cam->y;
+	deltaX = ray->x / 2 - game->cam->x / 2;
+	deltaY = ray->y / 2 - game->cam->y / 2;
 	pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 	deltaX /= pixels;
 	deltaY /= pixels;
-	pixelX = game->cam->x;
-	pixelY = game->cam->y;
+	pixelX = (MAPGRID / 2) * CELLSIZE / 2;
+	pixelY = (MAPGRID / 2) * CELLSIZE / 2;
+	//printf("dist: %f | pixels: %d", ray->d, pixels);
 	while(pixels)
 	{
+		//if (ray->d <= (float)MAPSIZE)
+		//	deltaX = (float)MAPSIZE;
+		
 		ft_putpixel((int)pixelX, (int)pixelY, get_rgba(0, 0, 0, 0), game);
 		pixelX += deltaX;
 		pixelY += deltaY;
@@ -158,7 +162,7 @@ static int32_t	get_map(int *player, t_cubed *game)
 	y = player[Y_COOR] / CELLSIZE;
 	if (x < 0 || x >= game->map->width
 		|| y < 0 || y >= game->map->height)
-		return (game->color[COL_MF]);
+		return (game->color[COL_MW]);
 	else if (game->map->matrix[y][x] == '0')
 		return (game->color[COL_MF]);
 	return (game->color[COL_MW]);
@@ -190,6 +194,7 @@ void	draw_minimap(t_cubed *game)
 	
 	column = 0;
 	player[X_COOR] = game->cam->x - (MAPGRID / 2) * CELLSIZE;
+	//draw_player(game);
 	while (column < MAPSIZE)
 	{
 		draw_column(column, player, game);

@@ -6,13 +6,13 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 19:50:03 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/29 15:38:22 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/31 10:58:06 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-void	update_player_data(t_cubed *game, char c, int i, int j)
+int	update_player_data(t_cubed *game, char c, int i, int j)
 {
 	static bool loaded = false;
 
@@ -30,14 +30,17 @@ void	update_player_data(t_cubed *game, char c, int i, int j)
 		game->cam->a = WEST - 0.001;
 	game->map->matrix[i][j] = '0';
 	loaded = true;
+	return(1);
 }
 
 void	check_map_characters(t_cubed *game, char **map)
 {
 	int		i;
 	int		j;
+	int		players;
 
 	i = 0;
+	players = 0;
 	while(map[i])
 	{
 		j = 0;
@@ -48,11 +51,13 @@ void	check_map_characters(t_cubed *game, char **map)
 			if (!ft_strchr(MAP_CHARSET, map[i][j]))
 				error_exit(ERR_MAP, MSG_CHAR, game);
 			else if (ft_strchr(PLAYER_SET, map[i][j]))
-				update_player_data(game, map[i][j], i, j);
+				players = update_player_data(game, map[i][j], i, j);
 			j++;
 		}
 		i++;
 	}
+	if (!players)
+		error_exit(ERR_MAP, MSG_PLAY, game);
 }
 
 int	check_wall(char **map, int i, int j)
