@@ -17,6 +17,7 @@ static void	run_game(t_cubed *game)
 	mlx_close_hook(game->mlx, hook_close, game);
 	mlx_key_hook(game->mlx, hook_actions, game);
 	mlx_loop_hook(game->mlx, hook_moves, game);
+	mlx_loop_hook(game->mlx, hook_mouse, game);
 	mlx_loop_hook(game->mlx, draw_scene, game);
 	mlx_loop(game->mlx);
 }
@@ -52,7 +53,8 @@ static void	init_game(t_cubed *game, char *file)
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, false);
 	if (!game->mlx)
 		error_exit(ERR_MLX, MSG_MLX, game);
-	game->fps = FPS;
+	mlx_get_mouse_pos(game->mlx, &game->mouse[X_COOR], &game->mouse[Y_COOR]);
+	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
 }
 
 int	main(int argc, char **argv)
