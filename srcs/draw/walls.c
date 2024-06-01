@@ -12,6 +12,26 @@
 
 #include <cubed.h>
 
+/* static void	draw_floor(int x, int y, t_vector *ray, t_cubed *game) */
+/* { */
+/* 	int32_t	color; */
+/* 	float	offset; */
+/* 	float	ty; */
+/* 	float	tx; */
+/**/
+/* 	offset = ray->d; */
+/* 	ty = CELLSIZE - ray->y; */
+/* 	tx = ray->x; */
+/* 	while (y < SCREEN_HEIGHT) */
+/* 	{ */
+/* 		color = get_color(game->image[IMG_FL], ray->x, ty); */
+/* 		ft_putpixel(x, y, color, game); */
+/* 		ty += offset; */
+/* 		tx += offset; */
+/* 		y++; */
+/* 	} */
+/* } */
+
 static void	draw_space(int start_point, int end_point, int x, t_cubed *game)
 {
 	int	floor;
@@ -30,13 +50,14 @@ static void	draw_space(int start_point, int end_point, int x, t_cubed *game)
 		ft_putpixel(x, floor, game->color[COL_F], game);
 }
 
-static void	draw_column(int height, int x, t_vector *ray, t_cubed *game)
+static void	draw_column(int x, int height, t_vector *ray, t_cubed *game)
 {
 	int		point[2];
 	int32_t	color;
 
 	point[A] = SCREEN_HEIGHT / 2 - height / 2 - 1;
 	point[B] = SCREEN_HEIGHT / 2 + height / 2;
+	/* draw_floor(x, point[B], ray, game); */
 	draw_space(point[A], point[B], x, game);
 	while (point[A]++ < point[B])
 	{
@@ -98,7 +119,7 @@ void	draw_walls(t_cubed *game)
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
 		calculate_draw(&height, &ray, game);
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
-		draw_column(height, column, &ray, game);
+		draw_column(column, height, &ray, game);
 		column++;
 	}
 }
