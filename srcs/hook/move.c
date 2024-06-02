@@ -29,16 +29,16 @@ static void	check_collision(float *dest, t_action action, t_cubed *game)
 
 	if (action == MOVE_UP)
 	{
-		if (game->map->matrix[py][xa] != MAP_WALL)
+		if (game->map->matrix[py][xa] == MAP_FLOOR)
 			game->cam->x = dest[X];
-		if (game->map->matrix[ya][px] != MAP_WALL)
+		if (game->map->matrix[ya][px] == MAP_FLOOR)
 			game->cam->y = dest[Y];
 	}
 	else if (action == MOVE_DOWN)
 	{
-		if (game->map->matrix[py][xs] != MAP_WALL)
+		if (game->map->matrix[py][xs] == MAP_FLOOR)
 			game->cam->x = dest[X];
-		if (game->map->matrix[ys][px] != MAP_WALL)
+		if (game->map->matrix[ys][px] == MAP_FLOOR)
 			game->cam->y = dest[Y];
 	}
 	else if (action == MOVE_LEFT)
@@ -51,15 +51,6 @@ static void	check_collision(float *dest, t_action action, t_cubed *game)
 		game->cam->x = dest[X];
 		game->cam->y = dest[Y];
 	}
-	/* if (action == MOVE_LEFT) */
-	/* { */
-	/* 	if (game->map->matrix[ya][xs] != MAP_WALL */
-	/* 		&& game->map->matrix[ys][xs] != MAP_WALL) */
-	/* 		game->cam->x = dest_x; */
-	/* 	if (game->map->matrix[ys][xa] != MAP_WALL */
-	/* 		&& game->map->matrix[ys][xs] != MAP_WALL) */
-	/* 		game->cam->y = dest_y; */
-	/* } */
 }
 
 static void	move_camera(t_cubed *game, t_action action)

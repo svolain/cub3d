@@ -38,7 +38,6 @@ static void	draw_space(int start_point, int end_point, int x, t_cubed *game)
 	int	roof;
 
 	roof = -1;
-	(void)end_point;
 	floor = SCREEN_HEIGHT + 1;
 	while (roof++ < start_point)
 	{

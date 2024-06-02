@@ -12,13 +12,15 @@
 
 #include <cubed.h>
 
-/* static void	wait_frame(t_cubed *game) */
+/* static bool	frame_elapsed(t_cubed *game) */
 /* { */
 /* 	static double	frame = 0; */
 /**/
-/* 	while (frame < game->frame) */
-/* 		frame += game->mlx->delta_time; */
-/* 	game->frame += FPS; */
+/* 	frame += game->mlx->delta_time; */
+/* 	if (frame < FPS / 1000) */
+/* 		return (false); */
+/* 	frame -= FPS / 1000; */
+/* 	return (true); */
 /* } */
 
 void	draw_scene(void *param)
@@ -26,7 +28,9 @@ void	draw_scene(void *param)
 	t_cubed	*game;
 
 	game = param;
-	/* wait_frame(game); */
+
+	/* if (!frame_elapsed(game)) */
+	/* 	return ; */
 	draw_minimap(game);
 	draw_walls(game);
 }

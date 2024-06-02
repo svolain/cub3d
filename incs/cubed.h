@@ -31,14 +31,14 @@
 # define SCREEN_HEIGHT 1080
 # define SCREEN_TITLE "cub3d"
 
-# define FPS 0.1
-# define MINSIZE 3
+# define FPS 30.0f
 # define MAXSIZE 500
 # define CELLSIZE 64
+# define BUMP_BUFFER 20
 # define SCALE_FACTOR 2
 # define MAPGRID 10
 
-# define CHARSET_MAP		"01NSEW "
+# define CHARSET_MAP		"01CONSEW "
 # define CHARSET_PLAYER		"NSEW"
 
 # define PI 3.1415926535898f
@@ -52,15 +52,13 @@
 # define DEGREE ft_degtorad(1)
 
 # define STEP_ANGLE 0.02f
-# define STEP_MOVEMENT CELLSIZE / 16
+# define STEP_MOVEMENT 2.0f
 # define STEP_WINDOW FOV / SCREEN_WIDTH
 
 # define MAPCELL CELLSIZE / SCALE_FACTOR
 # define MAPSIZE MAPCELL * MAPGRID
 
-# define BUMP_BUFFER CELLSIZE / 3
-
-# define BPP sizeof(int)
+# define BPP sizeof(int32_t)
 
 # define TEX_MINI_PLAYER	"./textures/minimap_player.png"
 # define TEX_FLOOR			"./textures/floor.png"
@@ -152,9 +150,8 @@ typedef struct s_cubed
 	t_camera	*cam;
 	t_mapinfo	*map;
 	char		*gnl;
-	double		frame;
-	int32_t		mouse[2];
 	mlx_t		*mlx;
+	int32_t		mouse[2];
 	mlx_image_t	*canvas;
 	mlx_image_t	*image[GAME_ASSETS];
 	int32_t		color[GAME_COLORS];
@@ -182,6 +179,7 @@ void	draw_scene(void *param);
 
 //		Draw
 void	draw_walls(t_cubed *game);
+void	draw_minimap(t_cubed *game);
 void	calculate_ray(t_vector *ray, t_cubed *game);
 void	ft_putpixel(int x, int y, int32_t color, t_cubed *game);
 int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y);
@@ -189,12 +187,6 @@ int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 void	rotate_camera(t_cubed *game, t_action action);
 void	ft_rotate(float *target, float angle, t_action action);
 float	ft_degtorad(float degree);
-
-//		Map
-void	init_minimap(t_cubed *game);
-void	draw_minimap(t_cubed *game);
-void	move_minimap(t_cubed *game, t_action action);
-void	change_mini_foor(t_cubed *game);
 
 //		Error
 void	error_exit(int errcode, char *errmsg, t_cubed *game);
