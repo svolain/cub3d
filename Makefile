@@ -22,11 +22,11 @@ LIBFTBIN	:=	$(LIBFTDIR)/libft.a
 RM			:=	rm -rf
 AR			:=	ar -rcs
 CC			:=	cc
+PFLAGS		=	-O3
 CFLAGS		:=	-Wall -Werror -Wextra
 DEBUGFLAGS	=	-g -fsanitize=address
 DEPFLAGS	=	-c -MT $$@ -MMD -MP -MF $(DEPSDIR)/$$*.d
 SCREENCLR	:=	printf "\033c"
-SLEEP		:=	sleep .1
 
 MLXDIR		:=	mlx
 MLXLIB		:=	$(MLXDIR)/$(OBJSDIR)/libmlx42.a
@@ -115,7 +115,7 @@ $(LIBFTBIN):
 	@make title
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(INCS) $^ $(LIBFTBIN) $(MLXLIB) $(MLXFLAGS) -o $@
+	@$(CC) $(CFLAGS) $(PFLAGS) $(INCS) $^ $(LIBFTBIN) $(MLXLIB) $(MLXFLAGS) -o $@
 	@make finish
 
 db: CFLAGS += $(DEBUGFLAGS)
