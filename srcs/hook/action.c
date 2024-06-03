@@ -26,8 +26,8 @@ static bool	active_door(t_cubed *game)
 	int	player[2];
 	int	map[2];
 
-	get_buffer(buffer, game);
 	get_position(player, game);
+	set_buffer(buffer, BUMP_BUFFER + 5, game);
 	map[X] = (game->cam->x + game->cam->dx + buffer[X]) / CELLSIZE;
 	map[Y] = (game->cam->y + game->cam->dy + buffer[Y]) / CELLSIZE;
 	if (game->map->matrix[player[Y]][player[X]] != MAP_OPENED)

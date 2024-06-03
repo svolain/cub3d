@@ -179,7 +179,7 @@ void	load_color(t_color index, char *start, bool *loaded, t_cubed *game);
 void	hook_movement(void *param);
 void	move_camera(t_cubed *game, t_action action);
 void	rotate_camera(t_cubed *game, t_action action);
-void	get_buffer(int *offset, t_cubed *game);
+void	set_buffer(int *buffer, int size, t_cubed *game);
 void	get_position(int *player, t_cubed *game);
 void	hook_actions(mlx_key_data_t keydata, void *param);
 void	open_door(t_cubed *game);

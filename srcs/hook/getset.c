@@ -12,10 +12,10 @@
 
 #include <cubed.h>
 
-void	get_buffer(int *buffer, t_cubed *game)
+void	set_buffer(int *buffer, int size, t_cubed *game)
 {
-	buffer[X] = BUMP_BUFFER;
-	buffer[Y] = BUMP_BUFFER;
+	buffer[X] = size;
+	buffer[Y] = size;
 	if (game->cam->dx < 0)
 		buffer[X] = -buffer[X];
 	if (game->cam->dy < 0)
