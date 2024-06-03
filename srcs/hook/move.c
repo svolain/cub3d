@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:30:49 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/03 09:24:35 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:40:04 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
+
+void	animate_minimap(t_cubed *game)
+{
+	static int	i;
+	mlx_image_t	*old;
+	mlx_image_t	*new;
+
+	old = game->image[IMG_PS];
+	i++;
+	if (i > 2)
+		i = 0;
+	new = game->image[i];
+	ft_memcpy(old->pixels, new->pixels,
+			old->height * old->width * sizeof(int32_t));
+}
 
 static void	check_collision(float *dest, t_action action, t_cubed *game)
 {
@@ -78,4 +93,5 @@ void	move_camera(t_cubed *game, t_action action)
 		destination[Y] = game->cam->y + game->cam->dx;
 	}
 	check_collision(destination, action, game);
+	animate_minimap(game);
 }

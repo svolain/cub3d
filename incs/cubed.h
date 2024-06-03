@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubed.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/03 09:25:57 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:27:53 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <math.h>
 # include <stdio.h>
 
-# define GAME_ASSETS 6
+# define GAME_ASSETS 9
 # define GAME_COLORS 5
 
 # define SCREEN_WIDTH 1920
@@ -61,8 +61,10 @@
 
 # define BPP sizeof(int32_t)
 
-# define TEX_MINI_PLAYER	"./textures/minimap_player.png"
+# define TEX_MINI_PLAYER	"./textures/player_stand.png"
 # define TEX_FLOOR			"./textures/floor.png"
+# define TEX_PLAYER_WALK1	"./textures/player_walk1.png"
+# define TEX_PLAYER_WALK2	"./textures/player_walk2.png"
 
 # define FMT_BOLD_RED	"\033[1;31m"
 # define FMT_YELLOW		"\033[0;33m"
@@ -106,12 +108,15 @@ typedef enum e_minimap
 
 typedef enum e_image
 {
+	IMG_MP,
+	IMG_W1,
+	IMG_W2,
 	IMG_NO,
 	IMG_SO,
 	IMG_WE,
 	IMG_EA,
-	IMG_MP,
-	IMG_FL
+	IMG_PS,
+	IMG_FL,
 }	t_image;
 
 typedef enum e_color
