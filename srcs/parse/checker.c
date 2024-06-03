@@ -49,7 +49,7 @@ void	check_inward(t_cubed *game, char **map)
 		{
 			if (map[i][j] == ' ')
 				map[i][j] = MAP_FLOOR;
-			if (!ft_strchr(CHARSET_MAP, map[i][j]))
+			if (!ft_strchr(CHARSET_ALLOWED, map[i][j]))
 				error_exit(ERR_MAP, MSG_CHAR, game);
 			else if (ft_strchr(CHARSET_PLAYER, map[i][j]))
 				players = load_player(game, map[i][j], i, j);

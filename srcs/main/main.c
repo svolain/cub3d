@@ -16,7 +16,7 @@ static void	run_game(t_cubed *game)
 {
 	mlx_close_hook(game->mlx, hook_close, game);
 	mlx_key_hook(game->mlx, hook_actions, game);
-	mlx_loop_hook(game->mlx, hook_moves, game);
+	mlx_loop_hook(game->mlx, hook_movement, game);
 	mlx_loop_hook(game->mlx, hook_mouse, game);
 	mlx_loop_hook(game->mlx, draw_scene, game);
 	mlx_loop(game->mlx);
@@ -26,8 +26,6 @@ static void	load_scene(t_cubed *game)
 {
 	game->image[IMG_MP] = safe_image(0, 0, safe_texture(TEX_MINI_PLAYER, false, game), game);
 	game->image[IMG_FL] = safe_image(0, 0, safe_texture(TEX_FLOOR, false, game), game);
-	game->color[COL_MW] = get_rgba(150, 150, 150, 150);
-	game->color[COL_MF] = get_rgba(255, 255, 255, 200);
 	game->canvas = safe_image(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
 	safe_draw(game->canvas, 0, 0, game);
 	draw_minimap(game);

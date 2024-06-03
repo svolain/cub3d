@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:30:49 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/31 15:35:03 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/03 09:24:35 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,16 @@ static void	check_collision(float *dest, t_action action, t_cubed *game)
 
 	if (action == MOVE_UP)
 	{
-		if (game->map->matrix[py][xa] == MAP_FLOOR)
+		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[py][xa]))
 			game->cam->x = dest[X];
-		if (game->map->matrix[ya][px] == MAP_FLOOR)
+		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ya][px]))
 			game->cam->y = dest[Y];
 	}
 	else if (action == MOVE_DOWN)
 	{
-		if (game->map->matrix[py][xs] == MAP_FLOOR)
+		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[py][xs]))
 			game->cam->x = dest[X];
-		if (game->map->matrix[ys][px] == MAP_FLOOR)
+		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ys][px]))
 			game->cam->y = dest[Y];
 	}
 	else if (action == MOVE_LEFT)
@@ -53,7 +53,7 @@ static void	check_collision(float *dest, t_action action, t_cubed *game)
 	}
 }
 
-static void	move_camera(t_cubed *game, t_action action)
+void	move_camera(t_cubed *game, t_action action)
 {
 	float	destination[2];
 
@@ -78,23 +78,4 @@ static void	move_camera(t_cubed *game, t_action action)
 		destination[Y] = game->cam->y + game->cam->dx;
 	}
 	check_collision(destination, action, game);
-}
-
-void	hook_moves(void *param)
-{
-	t_cubed	*game;
-
-	game = param;
-	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
-		move_camera(game, MOVE_UP);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
-		move_camera(game, MOVE_DOWN);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_A))
-		move_camera(game, MOVE_LEFT);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
-		move_camera(game, MOVE_RIGHT);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
-		rotate_camera(game, ROTATE_RIGHT);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
-		rotate_camera(game, ROTATE_LEFT);
 }

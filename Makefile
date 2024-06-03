@@ -6,7 +6,7 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/05/27 19:16:02 by jmertane         ###   ########.fr        #
+#    Updated: 2024/06/03 09:23:52 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,10 +48,11 @@ SOURCES 	:= 	main.c \
 				element.c \
 				mapinfo.c \
 				checker.c \
+				getset.c \
 				action.c \
 				mouse.c \
 				move.c \
-				loop.c \
+				scene.c \
 				rays.c \
 				walls.c \
 				minimap.c \

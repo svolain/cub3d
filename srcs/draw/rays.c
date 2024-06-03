@@ -21,9 +21,8 @@ static void	calc_collosion(t_vector *ray, float *offset, t_mapinfo *map)
 	{
 		x = ray->x / CELLSIZE;
 		y = ray->y / CELLSIZE;
-		if (x < 0 || x >= map->width
-			|| y < 0 || y >= map->height
-			|| map->matrix[y][x] != MAP_FLOOR)
+		if (x < 0 || x >= map->width || y < 0 || y >= map->height
+			|| !ft_strchr(CHARSET_MOVEABLE, map->matrix[y][x]))
 			break ;
 		ray->x += offset[X];
 		ray->y += offset[Y];

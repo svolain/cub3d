@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/31 15:26:42 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/03 09:12:35 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,14 @@ static int32_t	get_map(int *player, t_cubed *game)
 	y = player[Y] / CELLSIZE;
 	if (x < 0 || x >= game->map->width
 		|| y < 0 || y >= game->map->height)
-		return (game->color[COL_MW]);
-	else if (game->map->matrix[y][x] == '0')
-		return (game->color[COL_MF]);
-	return (game->color[COL_MW]);
+		return (get_rgba(150, 150, 150, 150));
+	else if (game->map->matrix[y][x] == MAP_CLOSED)
+		return (get_rgba(50, 150, 150, 255));
+	else if (game->map->matrix[y][x] == MAP_OPENED)
+		return (get_rgba(100, 200, 50, 255));
+	else if (game->map->matrix[y][x] == MAP_FLOOR)
+		return (get_rgba(255, 255, 255, 200));
+	return (get_rgba(150, 150, 150, 150));
 }
 
 static void	draw_column(int column, int *player, t_cubed *game)
@@ -95,7 +99,7 @@ void	draw_minimap(t_cubed *game)
 	int	column;
 	int	player[2];
 	int	position;
-	
+
 	column = 0;
 	position = MAPGRID / SCALE_FACTOR * CELLSIZE / SCALE_FACTOR - 10;
 	player[X] = game->cam->x - MAPGRID / SCALE_FACTOR * CELLSIZE;

@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 13:35:51 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/18 22:04:22 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/03 09:11:27 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,20 @@ static void	draw_column(int x, int height, t_vector *ray, t_cubed *game)
 
 static void	calculate_draw(int *height, t_vector *ray, t_cubed *game)
 {
+	int map[2];
+
+	map[X] = ray->x / CELLSIZE;
+	map[Y] = ray->y / CELLSIZE;
 	if (ray->img == IMG_EA)
-	{
 		ray->x = (int)(ray->y) % game->image[ray->img]->width;
-		if (ray->a > NORTH && ray->a < SOUTH)
-			ray->img = IMG_WE;
-	}
 	else
-	{
 		ray->x = (int)(ray->x) % game->image[ray->img]->width;
-		if (ray->a > WEST)
-			ray->img = IMG_NO;
-	}
+	if (game->map->matrix[map[Y]][map[X]] == 'C')
+		ray->img = IMG_FL;
+	else if (ray->img == IMG_EA && ray->a > NORTH && ray->a < SOUTH)
+		ray->img = IMG_WE;
+	else if (ray->img == IMG_SO && ray->a > WEST)
+		ray->img = IMG_NO;
 	ray->y = 0;
 	ray->d = (float)game->image[ray->img]->width / *height;
 	if (*height > SCREEN_HEIGHT)
@@ -89,15 +91,6 @@ static void	calculate_draw(int *height, t_vector *ray, t_cubed *game)
 		ray->y = (float)(*height - SCREEN_HEIGHT) / 2 * ray->d;
 		*height = SCREEN_HEIGHT;
 	}
-}
-
-static void	fix_fisheye(t_vector *ray, t_cubed *game)
-{
-	float	angle;
-
-	angle = game->cam->a;
-	ft_rotate(&angle, ray->a, ROTATE_LEFT);
-	ray->d *= cos(angle);
 }
 
 void	draw_walls(t_cubed *game)

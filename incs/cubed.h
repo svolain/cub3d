@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/31 15:58:01 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/03 09:25:57 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@
 # define SCALE_FACTOR 2
 # define MAPGRID 10
 
-# define CHARSET_MAP		"01CONSEW "
+# define CHARSET_ALLOWED	"01CONSEW "
 # define CHARSET_PLAYER		"NSEW"
+# define CHARSET_MOVEABLE	"0O"
 
 # define PI 3.1415926535898f
 
@@ -87,6 +88,8 @@ typedef enum e_action
 	MOVE_DOWN,
 	MOVE_LEFT,
 	MOVE_RIGHT,
+	DOOR_OPEN,
+	DOOR_CLOSE,
 	GET_RED,
 	GET_GREEN,
 	GET_BLUE,
@@ -96,7 +99,9 @@ typedef enum e_action
 typedef enum e_minimap
 {
 	MAP_FLOOR = 48,
-	MAP_WALL = 49
+	MAP_WALL = 49,
+	MAP_OPENED = 79,
+	MAP_CLOSED = 67,
 }	t_minimap;
 
 typedef enum e_image
@@ -171,8 +176,13 @@ void	load_sprite(t_image index, char *start, bool *loaded, t_cubed *game);
 void	load_color(t_color index, char *start, bool *loaded, t_cubed *game);
 
 //		Hook
+void	hook_movement(void *param);
+void	move_camera(t_cubed *game, t_action action);
+void	rotate_camera(t_cubed *game, t_action action);
+void	get_buffer(int *offset, t_cubed *game);
+void	get_position(int *player, t_cubed *game);
 void	hook_actions(mlx_key_data_t keydata, void *param);
-void	hook_moves(void *param);
+void	open_door(t_cubed *game);
 void	hook_close(void *param);
 void	hook_mouse(void *param);
 void	draw_scene(void *param);
@@ -184,8 +194,10 @@ void	calculate_ray(t_vector *ray, t_cubed *game);
 void	ft_putpixel(int x, int y, int32_t color, t_cubed *game);
 int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
-void	rotate_camera(t_cubed *game, t_action action);
+
+//		Rotate
 void	ft_rotate(float *target, float angle, t_action action);
+void	fix_fisheye(t_vector *ray, t_cubed *game);
 float	ft_degtorad(float degree);
 
 //		Error
