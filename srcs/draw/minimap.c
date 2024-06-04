@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/03 15:16:06 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:47:21 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,5 +110,5 @@ void	draw_minimap(t_cubed *game)
 		column++;
 	}
 	draw_rays(game);
-	safe_draw(game->image[IMG_MP], position, position, game);
+	safe_draw(game->minimap_player[IMG_MP], position, position, game);
 }

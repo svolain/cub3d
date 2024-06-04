@@ -24,15 +24,14 @@ static void	run_game(t_cubed *game)
 
 static void	load_scene(t_cubed *game)
 {
-	game->image[IMG_W1] = safe_image(0, 0, safe_texture(TEX_PLAYER_WALK1, false, game), game);
-	game->image[IMG_W2] = safe_image(0, 0, safe_texture(TEX_PLAYER_WALK2, false, game), game);
-	game->image[IMG_PS] = safe_image(0, 0, safe_texture(TEX_MINI_PLAYER, false, game), game);
-	game->image[IMG_FL] = safe_image(0, 0, safe_texture(TEX_FLOOR, false, game), game);
-	game->image[IMG_MP] = game->image[IMG_PS];
+	game->image[IMG_FL] =
+		safe_image(0, 0, safe_texture(TEX_FLOOR, false, game), game);
 	game->canvas = safe_image(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
 	safe_draw(game->canvas, 0, 0, game);
+	load_animation(game);
 	draw_minimap(game);
 	draw_walls(game);
+	draw_torch(game);
 }
 
 static void	parse_file(t_cubed *game)

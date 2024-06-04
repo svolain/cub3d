@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/03 16:28:39 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:52:28 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@
 # include <math.h>
 # include <stdio.h>
 
-# define GAME_ASSETS 9
+# define GAME_ASSETS 5
 # define GAME_COLORS 5
+# define MINIMAP_ANIMATION 4
+# define TORCH_ANIMATION 7
 
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
@@ -65,6 +67,12 @@
 # define TEX_FLOOR			"./textures/floor.png"
 # define TEX_PLAYER_WALK1	"./textures/player_walk1.png"
 # define TEX_PLAYER_WALK2	"./textures/player_walk2.png"
+# define TEX_TORCH1			"./textures/torch1.png"
+# define TEX_TORCH2			"./textures/torch2.png"
+# define TEX_TORCH3			"./textures/torch3.png"
+# define TEX_TORCH4			"./textures/torch4.png"
+# define TEX_TORCH5			"./textures/torch5.png"
+# define TEX_TORCH6			"./textures/torch6.png"
 
 # define FMT_BOLD_RED	"\033[1;31m"
 # define FMT_YELLOW		"\033[0;33m"
@@ -108,16 +116,31 @@ typedef enum e_minimap
 
 typedef enum e_image
 {
-	IMG_MP,
-	IMG_W1,
-	IMG_W2,
 	IMG_NO,
 	IMG_SO,
 	IMG_WE,
 	IMG_EA,
-	IMG_PS,
 	IMG_FL,
 }	t_image;
+
+typedef enum e_manimation
+{
+	IMG_MP,
+	IMG_PS,
+	IMG_W1,
+	IMG_W2
+} t_manimation;
+
+typedef enum e_tanimation
+{
+	IMG_TO,
+	IMG_T1,
+	IMG_T2,
+	IMG_T3,
+	IMG_T4,
+	IMG_T5,
+	IMG_T6
+} t_tanimation;
 
 typedef enum e_color
 {
@@ -164,6 +187,8 @@ typedef struct s_cubed
 	int32_t		mouse[2];
 	mlx_image_t	*canvas;
 	mlx_image_t	*image[GAME_ASSETS];
+	mlx_image_t *minimap_player[MINIMAP_ANIMATION];
+	mlx_image_t *torch[TORCH_ANIMATION];
 	int32_t		color[GAME_COLORS];
 }	t_cubed;
 
@@ -179,6 +204,7 @@ bool	ft_isemptyline(char *str);
 //		Load
 void	load_sprite(t_image index, char *start, bool *loaded, t_cubed *game);
 void	load_color(t_color index, char *start, bool *loaded, t_cubed *game);
+void	load_animation(t_cubed *game);
 
 //		Hook
 void	hook_movement(void *param);
@@ -199,6 +225,9 @@ void	calculate_ray(t_vector *ray, t_cubed *game);
 void	ft_putpixel(int x, int y, int32_t color, t_cubed *game);
 int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+void	animate_minimap(t_cubed *game);
+void	animate_torch(t_cubed *game);
+void	draw_torch(t_cubed *game);
 
 //		Rotate
 void	ft_rotate(float *target, float angle, t_action action);

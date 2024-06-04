@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 19:59:41 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/03 16:26:19 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:54:06 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	draw_scene(void *param)
 	game = param;
 	//if (!frame_elapsed(game))
 	// 	return ;
+	animate_torch(game);
+
 	draw_minimap(game);
 	draw_walls(game);
 }
