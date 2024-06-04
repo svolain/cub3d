@@ -22,8 +22,8 @@ void	set_buffer(int *buffer, int size, t_cubed *game)
 		buffer[Y] = -buffer[Y];
 }
 
-void	get_position(int *player, t_cubed *game)
+void	get_position(int *target, int x, int y)
 {
-	player[X] = game->cam->x / CELLSIZE;
-	player[Y] = game->cam->y / CELLSIZE;
+	target[X] = x / CELLSIZE;
+	target[Y] = y / CELLSIZE;
 }

@@ -26,6 +26,7 @@
 
 # define GAME_ASSETS 9
 # define GAME_COLORS 5
+# define GAME_ANIMS 2
 
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
@@ -122,11 +123,14 @@ typedef enum e_image
 typedef enum e_color
 {
 	COL_F,
-	COL_C,
-	COL_MP,
-	COL_MF,
-	COL_MW
+	COL_C
 }	t_color;
+
+typedef enum e_anim
+{
+	ANIM_OPEN,
+	ANIM_CLOSE
+}	t_anim;
 
 typedef struct s_vector
 {
@@ -165,6 +169,7 @@ typedef struct s_cubed
 	mlx_image_t	*canvas;
 	mlx_image_t	*image[GAME_ASSETS];
 	int32_t		color[GAME_COLORS];
+	bool		anims[GAME_ANIMS];
 }	t_cubed;
 
 //		Parse
@@ -184,13 +189,13 @@ void	load_color(t_color index, char *start, bool *loaded, t_cubed *game);
 void	hook_movement(void *param);
 void	move_camera(t_cubed *game, t_action action);
 void	rotate_camera(t_cubed *game, t_action action);
-void	set_buffer(int *buffer, int size, t_cubed *game);
-void	get_position(int *player, t_cubed *game);
 void	hook_actions(mlx_key_data_t keydata, void *param);
 void	open_door(t_cubed *game);
 void	hook_close(void *param);
 void	hook_mouse(void *param);
 void	draw_scene(void *param);
+void	set_buffer(int *buffer, int size, t_cubed *game);
+void	get_position(int *target, int x, int y);
 
 //		Draw
 void	draw_walls(t_cubed *game);

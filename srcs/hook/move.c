@@ -14,7 +14,7 @@
 
 void	animate_minimap(t_cubed *game)
 {
-	static int	i;
+	static int	i = 0;
 	mlx_image_t	*old;
 	mlx_image_t	*new;
 
@@ -23,8 +23,7 @@ void	animate_minimap(t_cubed *game)
 	if (i > 2)
 		i = 0;
 	new = game->image[i];
-	ft_memcpy(old->pixels, new->pixels,
-			old->height * old->width * sizeof(int32_t));
+	ft_memcpy(old->pixels, new->pixels, old->height * old->width * BPP);
 }
 
 static void	check_collision(float *dest, t_action action, t_cubed *game)
@@ -32,7 +31,7 @@ static void	check_collision(float *dest, t_action action, t_cubed *game)
 	int	buffer[2];
 	int	player[2];
 
-	get_position(player, game);
+	get_position(player, game->cam->x, game->cam->y);
 	set_buffer(buffer, BUMP_BUFFER, game);
 	int xa = (buffer[X] + game->cam->x) / CELLSIZE;
 	int ya = (buffer[Y] + game->cam->y) / CELLSIZE;

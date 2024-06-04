@@ -50,6 +50,7 @@ SOURCES 	:= 	main.c \
 				checker.c \
 				getset.c \
 				action.c \
+				open.c \
 				mouse.c \
 				move.c \
 				scene.c \

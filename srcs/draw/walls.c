@@ -72,13 +72,12 @@ static void	calculate_draw(int *height, t_vector *ray, t_cubed *game)
 {
 	int map[2];
 
-	map[X] = ray->x / CELLSIZE;
-	map[Y] = ray->y / CELLSIZE;
+	get_position(map, ray->x, ray->y);
 	if (ray->img == IMG_EA)
 		ray->x = (int)(ray->y) % game->image[ray->img]->width;
 	else
 		ray->x = (int)(ray->x) % game->image[ray->img]->width;
-	if (game->map->matrix[map[Y]][map[X]] == 'C')
+	if (game->map->matrix[map[Y]][map[X]] == MAP_CLOSED)
 		ray->img = IMG_FL;
 	else if (ray->img == IMG_EA && ray->a > NORTH && ray->a < SOUTH)
 		ray->img = IMG_WE;
