@@ -29,31 +29,28 @@ void	animate_minimap(t_cubed *game)
 
 static void	check_collision(float *dest, t_action action, t_cubed *game)
 {
-	int xo = BUMP_BUFFER;
-	if (game->cam->dx < 0)
-		xo = -xo;
-	int yo = BUMP_BUFFER;
-	if (game->cam->dy < 0)
-		yo = -yo;
-	int px = game->cam->x / CELLSIZE;
-	int py = game->cam->y / CELLSIZE;
-	int xa = (xo + game->cam->x) / CELLSIZE;
-	int ya = (yo + game->cam->y) / CELLSIZE;
-	int xs = (game->cam->x - xo) / CELLSIZE;
-	int ys = (game->cam->y - yo) / CELLSIZE;
+	int	buffer[2];
+	int	player[2];
+
+	get_position(player, game);
+	set_buffer(buffer, BUMP_BUFFER, game);
+	int xa = (buffer[X] + game->cam->x) / CELLSIZE;
+	int ya = (buffer[Y] + game->cam->y) / CELLSIZE;
+	int xs = (game->cam->x - buffer[X]) / CELLSIZE;
+	int ys = (game->cam->y - buffer[Y]) / CELLSIZE;
 
 	if (action == MOVE_UP)
 	{
-		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[py][xa]))
+		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xa]))
 			game->cam->x = dest[X];
-		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ya][px]))
+		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ya][player[X]]))
 			game->cam->y = dest[Y];
 	}
 	else if (action == MOVE_DOWN)
 	{
-		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[py][xs]))
+		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xs]))
 			game->cam->x = dest[X];
-		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ys][px]))
+		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ys][player[X]]))
 			game->cam->y = dest[Y];
 	}
 	else if (action == MOVE_LEFT)
