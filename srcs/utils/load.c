@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 22:04:40 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/31 14:53:40 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/04 20:03:44 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,6 @@ static int32_t	parse_color(char *color, int iteration)
 	return (ft_atoi(color));
 }
 
-static char	*skip_spaces(char *start, t_cubed *game)
-{
-	while (*start && *start == ' ')
-		start++;
-	if (!*start || *start == '\n')
-		error_exit(ERR_ELEM, MSG_ELEM, game);
-	return (start);
-}
-
 void	load_color(t_color index, char *start, bool *loaded, t_cubed *game)
 {
 	int32_t	rgba[4];
@@ -57,7 +48,7 @@ void	load_color(t_color index, char *start, bool *loaded, t_cubed *game)
 	char	*end;
 	int		i;
 
-	start = skip_spaces(start, game);
+	start = ft_skipspaces(start, game);
 	end = ft_strrchr(start, '\n');
 	values = safe_substr(start, end, game);
 	colors = safe_split(values, ',', game);
@@ -81,11 +72,29 @@ void	load_sprite(t_image index, char *start, bool *loaded, t_cubed *game)
 	char			*file;
 	char			*end;
 
-	start = skip_spaces(start, game);
+	start = ft_skipspaces(start, game);
 	end = ft_strrchr(start, '\n');
 	file = safe_substr(start, end, game);
-	tex = safe_texture(file, true, game);
+	tex = safe_tex(file, true, game);
 	free_single(&file);
-	game->image[index] = safe_image(0, 0, tex, game);
+	game->image[index] = safe_img(0, 0, tex, game);
 	*loaded = true;
+}
+
+void	load_assets(t_cubed *game)
+{
+	game->image[IMG_FL] = safe_img(0, 0, safe_tex(TEX_FLOOR, 0, game), game);
+	game->image[IMG_RF] = safe_img(0, 0, safe_tex(TEX_ROOF, 0, game), game);
+	game->image[IMG_DR] = safe_img(0, 0, safe_tex(TEX_DOOR, 0, game), game);
+	game->anim[IMG_W1] = safe_img(0, 0, safe_tex(TEX_WALK1, 0, game), game);
+	game->anim[IMG_W2] = safe_img(0, 0, safe_tex(TEX_WALK2, 0, game), game);
+	game->anim[IMG_PS] = safe_img(0, 0, safe_tex(TEX_IDLE, 0, game), game);
+	game->anim[IMG_MP] = game->anim[IMG_PS];
+	game->anim[IMG_T1] = safe_img(0, 0, safe_tex(TEX_TORCH1, 0, game), game);
+	game->anim[IMG_T2] = safe_img(0, 0, safe_tex(TEX_TORCH2, 0, game), game);
+	game->anim[IMG_T3] = safe_img(0, 0, safe_tex(TEX_TORCH3, 0, game), game);
+	game->anim[IMG_T4] = safe_img(0, 0, safe_tex(TEX_TORCH4, 0, game), game);
+	game->anim[IMG_T5] = safe_img(0, 0, safe_tex(TEX_TORCH5, 0, game), game);
+	game->anim[IMG_T6] = safe_img(0, 0, safe_tex(TEX_TORCH6, 0, game), game);
+	game->anim[IMG_TO] = game->anim[IMG_T1];
 }

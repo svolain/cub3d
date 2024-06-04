@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 06:47:11 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/03 12:10:09 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/04 21:47:28 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ static bool	active_door(t_cubed *game)
 	{
 		if (game->map->matrix[map[Y]][map[X]] == MAP_CLOSED)
 		{
-			open_door(game);
+			game->status[STAT_OPEN] = true;
 			return (true);
 		}
 		else if (game->map->matrix[map[Y]][map[X]] == MAP_OPENED)
 		{
+			// game->status[STAT_CLOSE] = true;
 			game->map->matrix[map[Y]][map[X]] = MAP_CLOSED;
 			return (true);
 		}

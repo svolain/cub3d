@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:32:56 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/29 15:33:46 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/04 19:06:53 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
+
+char	*ft_skipspaces(char *start, t_cubed *game)
+{
+	while (*start && *start == ' ')
+		start++;
+	if (!*start || *start == '\n')
+		error_exit(ERR_ELEM, MSG_ELEM, game);
+	return (start);
+}
 
 static int	ft_isspace(char c)
 {

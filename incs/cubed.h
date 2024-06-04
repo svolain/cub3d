@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubed.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/03 15:27:53 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/04 21:52:53 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@
 # include <math.h>
 # include <stdio.h>
 
-# define GAME_ASSETS 9
-# define GAME_COLORS 5
-# define GAME_ANIMS 2
+# define GAME_ASSETS 7
+# define GAME_COLORS 2
+# define GAME_ANIMS 11
+# define GAME_STATS 2
 
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
@@ -62,10 +63,20 @@
 
 # define BPP sizeof(int32_t)
 
-# define TEX_MINI_PLAYER	"./textures/player_stand.png"
-# define TEX_FLOOR			"./textures/floor.png"
-# define TEX_PLAYER_WALK1	"./textures/player_walk1.png"
-# define TEX_PLAYER_WALK2	"./textures/player_walk2.png"
+# define TEX_FLOOR		"./textures/floor.png"
+# define TEX_ROOF		"./textures/roof.png"
+# define TEX_DOOR		"./textures/door.png"
+
+# define TEX_IDLE		"./textures/player_stand.png"
+# define TEX_WALK1		"./textures/player_walk1.png"
+# define TEX_WALK2		"./textures/player_walk2.png"
+
+# define TEX_TORCH1		"./textures/torch1.png"
+# define TEX_TORCH2		"./textures/torch2.png"
+# define TEX_TORCH3		"./textures/torch3.png"
+# define TEX_TORCH4		"./textures/torch4.png"
+# define TEX_TORCH5		"./textures/torch5.png"
+# define TEX_TORCH6		"./textures/torch6.png"
 
 # define FMT_BOLD_RED	"\033[1;31m"
 # define FMT_YELLOW		"\033[0;33m"
@@ -109,15 +120,13 @@ typedef enum e_minimap
 
 typedef enum e_image
 {
-	IMG_MP,
-	IMG_W1,
-	IMG_W2,
 	IMG_NO,
 	IMG_SO,
 	IMG_WE,
 	IMG_EA,
-	IMG_PS,
+	IMG_DR,
 	IMG_FL,
+	IMG_RF
 }	t_image;
 
 typedef enum e_color
@@ -126,11 +135,26 @@ typedef enum e_color
 	COL_C
 }	t_color;
 
-typedef enum e_anim
+typedef enum e_status
 {
-	ANIM_OPEN,
-	ANIM_CLOSE
-}	t_anim;
+	STAT_OPEN,
+	STAT_CLOSE
+}	t_status;
+
+typedef enum e_animation
+{
+	IMG_MP,
+	IMG_PS,
+	IMG_W1,
+	IMG_W2,
+	IMG_TO,
+	IMG_T1,
+	IMG_T2,
+	IMG_T3,
+	IMG_T4,
+	IMG_T5,
+	IMG_T6
+}	t_animation;
 
 typedef struct s_vector
 {
@@ -145,9 +169,9 @@ typedef struct s_camera
 {
 	float		x;
 	float		y;
+	float		a;
 	float		dx;
 	float		dy;
-	float		a;
 }	t_camera;
 
 typedef struct s_mapinfo
@@ -165,11 +189,12 @@ typedef struct s_cubed
 	t_mapinfo	*map;
 	char		*gnl;
 	mlx_t		*mlx;
-	int32_t		mouse[2];
 	mlx_image_t	*canvas;
-	mlx_image_t	*image[GAME_ASSETS];
+	int32_t		mouse[2];
+	bool		status[GAME_STATS];
 	int32_t		color[GAME_COLORS];
-	bool		anims[GAME_ANIMS];
+	mlx_image_t	*image[GAME_ASSETS];
+	mlx_image_t	*anim[GAME_ANIMS];
 }	t_cubed;
 
 //		Parse
@@ -179,11 +204,13 @@ void	parse_elements(t_cubed *game);
 void	parse_mapinfo(t_cubed *game);
 void	check_walls(t_cubed *game, char **duplex);
 void	check_inward(t_cubed *game, char **map);
+char	*ft_skipspaces(char *start, t_cubed *game);
 bool	ft_isemptyline(char *str);
 
 //		Load
 void	load_sprite(t_image index, char *start, bool *loaded, t_cubed *game);
 void	load_color(t_color index, char *start, bool *loaded, t_cubed *game);
+void	load_assets(t_cubed *game);
 
 //		Hook
 void	hook_movement(void *param);
@@ -191,16 +218,24 @@ void	move_camera(t_cubed *game, t_action action);
 void	rotate_camera(t_cubed *game, t_action action);
 void	hook_actions(mlx_key_data_t keydata, void *param);
 void	open_door(t_cubed *game);
-void	hook_close(void *param);
+void	close_door(t_cubed *game);
 void	hook_mouse(void *param);
 void	draw_scene(void *param);
-void	set_buffer(int *buffer, int size, t_cubed *game);
+void	hook_close(void *param);
 void	get_position(int *target, int x, int y);
+void	set_buffer(int *buffer, int size, t_cubed *game);
 
 //		Draw
 void	draw_walls(t_cubed *game);
+void	draw_segment(int x, int height, t_vector *ray, t_cubed *game);
+void	draw_background(int start, int end, int x, t_cubed *game);
 void	draw_minimap(t_cubed *game);
+void	animate_minimap(t_cubed *game);
+void	animate_torch(t_cubed *game);
+void	wait_frame(t_cubed *game, float limit);
+void	draw_torch(t_cubed *game);
 void	calculate_ray(t_vector *ray, t_cubed *game);
+void	calculate_draw(int *height, t_vector *ray, t_cubed *game);
 void	ft_putpixel(int x, int y, int32_t color, t_cubed *game);
 int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
@@ -219,14 +254,15 @@ void	free_exit(t_cubed *game, int excode);
 void	free_single(char **str);
 void	free_double(char ***str);
 
-//		Util
-void	*safe_calloc(size_t n, t_cubed *game);
+//		String
 char	*safe_substr(char *stt, char *end, t_cubed *game);
 char	*safe_strjoin(char *s1, char *s2, t_cubed *game);
 char	**safe_split(char * str, char c, t_cubed *game);
-void	safe_draw(mlx_image_t *img, int x, int y, t_cubed *game);
 
-mlx_texture_t	*safe_texture(char * file, bool allocated, t_cubed *game);
-mlx_image_t		*safe_image(uint32_t w, uint32_t h, mlx_texture_t *t, t_cubed *game);
+//		Safe
+void	*safe_calloc(size_t n, t_cubed *game);
+void	safe_draw(mlx_image_t *img, int x, int y, t_cubed *game);
+void	*safe_tex(char *file, bool allocated, t_cubed *game);
+void	*safe_img(uint32_t w, uint32_t h, mlx_texture_t *t, t_cubed *game);
 
 #endif

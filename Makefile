@@ -6,7 +6,7 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/06/03 09:23:52 by jmertane         ###   ########.fr        #
+#    Updated: 2024/06/04 19:37:14 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,22 +48,25 @@ SOURCES 	:= 	main.c \
 				element.c \
 				mapinfo.c \
 				checker.c \
-				getset.c \
-				action.c \
-				open.c \
-				mouse.c \
+				utils.c \
 				move.c \
+				rotate.c \
+				action.c \
+				mouse.c \
 				scene.c \
+				getset.c \
 				rays.c \
 				walls.c \
+				doors.c \
+				draw.c \
 				minimap.c \
+				animation.c \
 				pixel.c \
-				rotate.c \
 				error.c \
 				free.c \
 				load.c \
 				safe.c \
-				utils.c
+				string.c
 
 SOURCEDIR	:=	$(addprefix $(SRCSDIR)/, $(MODULES))
 BUILDDIR	:=	$(addprefix $(OBJSDIR)/, $(MODULES))

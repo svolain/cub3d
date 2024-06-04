@@ -55,6 +55,13 @@ static void	clean_images(t_cubed *game)
 			mlx_delete_image(game->mlx, game->image[i]);
 		i++;
 	}
+	i = 0;
+	while (i < GAME_ANIMS)
+	{
+		if (game->anim[i] != NULL)
+			mlx_delete_image(game->mlx, game->image[i]);
+		i++;
+	}
 	mlx_delete_image(game->mlx, game->canvas);
 }
 

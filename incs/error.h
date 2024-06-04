@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:28:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/27 14:56:56 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/04 18:38:54 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define MSG_ELEM	"Invalid map element"
 # define MSG_ASST	"Invalid amount of elements"
 # define MSG_NOMP	"Map was not found"
-# define MSG_SIZE	"Map is too small or large <500x500>"
+# define MSG_SIZE	"Map is too large <500x500>"
 # define MSG_WALL	"Map has no properly closed walls"
 # define MSG_PLAY	"Map has no or more than one player(s)"
 # define MSG_CHAR	"Map has invalid character(s)"

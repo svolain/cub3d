@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   safe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 19:46:50 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/31 15:18:44 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/04 21:53:23 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	safe_draw(mlx_image_t *img, int x, int y, t_cubed *game)
 		error_exit(ERR_MLX, MSG_MLX, game);
 }
 
-mlx_image_t	*safe_image(uint32_t w, uint32_t h, mlx_texture_t *t, t_cubed *game)
+void	*safe_img(uint32_t w, uint32_t h, mlx_texture_t *t, t_cubed *game)
 {
 	mlx_image_t	*i;
 
@@ -26,18 +26,14 @@ mlx_image_t	*safe_image(uint32_t w, uint32_t h, mlx_texture_t *t, t_cubed *game)
 		i = mlx_new_image(game->mlx, w, h);
 	else
 		i = mlx_texture_to_image(game->mlx, t);
-	if (!i)
-	{
-		if (t != NULL)
-			mlx_delete_texture(t);
-		error_exit(ERR_MLX, MSG_MLX, game);
-	}
 	if (t != NULL)
 		mlx_delete_texture(t);
+	if (!i)
+		error_exit(ERR_MLX, MSG_MLX, game);
 	return (i);
 }
 
-mlx_texture_t	*safe_texture(char * file, bool allocated, t_cubed *game)
+void	*safe_tex(char * file, bool allocated, t_cubed *game)
 {
 	mlx_texture_t	*t;
 
@@ -49,43 +45,6 @@ mlx_texture_t	*safe_texture(char * file, bool allocated, t_cubed *game)
 		error_exit(ERR_MLX, MSG_MLX, game);
 	}
 	return (t);
-}
-
-char	*safe_strjoin(char *s1, char *s2, t_cubed *game)
-{
-	char	*s;
-
-	s = ft_strjoin(s1, s2);
-	if (!s)
-	{
-		free_single(&s1);
-		free_single(&s2);
-		error_fatal(ENOMEM, MSG_MEM, game);
-	}
-	return (s);
-}
-
-char	*safe_substr(char *stt, char *end, t_cubed *game)
-{
-	char	*s;
-
-	s = ft_substr(stt, 0, end - stt);
-	if (!s)
-		error_fatal(ENOMEM, MSG_MEM, game);
-	return (s);
-}
-
-char	**safe_split(char *str, char c, t_cubed *game)
-{
-	char	**s;
-
-	s = ft_split(str, c);
-	if (!s)
-	{
-		free_single(&str);
-		error_fatal(ENOMEM, MSG_MEM, game);
-	}
-	return (s);
 }
 
 void	*safe_calloc(size_t n, t_cubed *game)

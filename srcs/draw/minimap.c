@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/03 15:16:06 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/04 18:31:17 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	get_ray(t_vector *ray, t_cubed *game)
 			get_rgba(225, 100, 100, blend--), game);
 		pixel[X] += delta[X];
 		pixel[Y] += delta[Y];
-		--pixels;
+		pixels--;
 	}
 }
 
@@ -110,5 +110,5 @@ void	draw_minimap(t_cubed *game)
 		column++;
 	}
 	draw_rays(game);
-	safe_draw(game->image[IMG_MP], position, position, game);
+	safe_draw(game->anim[IMG_MP], position, position, game);
 }

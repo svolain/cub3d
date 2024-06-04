@@ -3,30 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:30:49 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/03 15:40:04 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/04 19:00:53 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-void	animate_minimap(t_cubed *game)
-{
-	static int	i = 0;
-	mlx_image_t	*old;
-	mlx_image_t	*new;
-
-	old = game->image[IMG_PS];
-	i++;
-	if (i > 2)
-		i = 0;
-	new = game->image[i];
-	ft_memcpy(old->pixels, new->pixels, old->height * old->width * BPP);
-}
-
-static void	check_collision(float *dest, t_action action, t_cubed *game)
+static void	update_coordinates(float *dest, t_action action, t_cubed *game)
 {
 	int	buffer[2];
 	int	player[2];
@@ -88,6 +74,6 @@ void	move_camera(t_cubed *game, t_action action)
 		destination[X] = game->cam->x + -game->cam->dy;
 		destination[Y] = game->cam->y + game->cam->dx;
 	}
-	check_collision(destination, action, game);
+	update_coordinates(destination, action, game);
 	animate_minimap(game);
 }
