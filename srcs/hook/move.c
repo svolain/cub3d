@@ -17,7 +17,7 @@ static void	update_coordinates(float *dest, t_action action, t_cubed *game)
 	int	buffer[2];
 	int	player[2];
 
-	get_position(player, game->cam->x, game->cam->y);
+	get_map_position(player, game->cam->x, game->cam->y);
 	set_buffer(buffer, BUMP_BUFFER, game);
 	int xa = (buffer[X] + game->cam->x) / CELLSIZE;
 	int ya = (buffer[Y] + game->cam->y) / CELLSIZE;

@@ -6,13 +6,13 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 22:04:40 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/04 20:03:44 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/05 20:05:37 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-static	void	error_occured(char *str, char **arr, t_cubed *game)
+static void	error_occured(char *str, char **arr, t_cubed *game)
 {
 	if (str != NULL)
 		free_single(&str);

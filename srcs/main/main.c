@@ -15,7 +15,7 @@
 static void	run_game(t_cubed *game)
 {
 	mlx_close_hook(game->mlx, hook_close, game);
-	mlx_key_hook(game->mlx, hook_actions, game);
+	mlx_key_hook(game->mlx, hook_action, game);
 	mlx_loop_hook(game->mlx, hook_movement, game);
 	mlx_loop_hook(game->mlx, hook_mouse, game);
 	mlx_loop_hook(game->mlx, draw_scene, game);
@@ -27,8 +27,8 @@ static void	load_scene(t_cubed *game)
 	safe_draw(game->canvas, 0, 0, game);
 	load_assets(game);
 	draw_minimap(game);
-	draw_walls(game);
-	draw_torch(game);
+	draw_worldspace(game);
+	// draw_torch(game);
 }
 
 static void	parse_file(t_cubed *game)
@@ -51,7 +51,7 @@ static void	init_game(t_cubed *game, char *file)
 		error_exit(ERR_MLX, MSG_MLX, game);
 	game->canvas = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
 	mlx_get_mouse_pos(game->mlx, &game->mouse[X], &game->mouse[Y]);
-	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
+	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
 }
 
 int	main(int argc, char **argv)

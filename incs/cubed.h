@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/04 21:52:53 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/05 21:57:56 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,15 @@ typedef struct s_camera
 	float		dy;
 }	t_camera;
 
+typedef struct s_rgba
+{
+	int32_t		color;
+	int8_t		r;
+	int8_t		g;
+	int8_t		b;
+	int8_t		a;
+}	t_rgba;
+
 typedef struct s_mapinfo
 {
 	char		**matrix;
@@ -216,29 +225,28 @@ void	load_assets(t_cubed *game);
 void	hook_movement(void *param);
 void	move_camera(t_cubed *game, t_action action);
 void	rotate_camera(t_cubed *game, t_action action);
-void	hook_actions(mlx_key_data_t keydata, void *param);
-void	open_door(t_cubed *game);
-void	close_door(t_cubed *game);
+void	hook_action(mlx_key_data_t keydata, void *param);
 void	hook_mouse(void *param);
 void	draw_scene(void *param);
 void	hook_close(void *param);
-void	get_position(int *target, int x, int y);
+void	get_map_position(int *target, int x, int y);
 void	set_buffer(int *buffer, int size, t_cubed *game);
 
 //		Draw
-void	draw_walls(t_cubed *game);
-void	draw_segment(int x, int height, t_vector *ray, t_cubed *game);
-void	draw_background(int start, int end, int x, t_cubed *game);
+void	draw_worldspace(t_cubed *game);
 void	draw_minimap(t_cubed *game);
+void	calculate_ray(t_vector *ray, t_cubed *game);
+int32_t	get_channel_color(int32_t rgba, t_action action);
+int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
+int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+void	image_to_canvas(int dst_x, int dst_y, mlx_image_t *img, t_cubed *game);
+void	ft_put_pixel(int x, int y, int32_t color, t_cubed *game);
+
+//		Anim
 void	animate_minimap(t_cubed *game);
 void	animate_torch(t_cubed *game);
 void	wait_frame(t_cubed *game, float limit);
 void	draw_torch(t_cubed *game);
-void	calculate_ray(t_vector *ray, t_cubed *game);
-void	calculate_draw(int *height, t_vector *ray, t_cubed *game);
-void	ft_putpixel(int x, int y, int32_t color, t_cubed *game);
-int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y);
-int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 //		Rotate
 void	ft_rotate(float *target, float angle, t_action action);

@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mouse.c                                            :+:      :+:    :+:   */
+/*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/31 14:46:36 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/31 15:34:57 by jmertane         ###   ########.fr       */
+/*   Created: 2024/06/05 21:09:24 by jmertane          #+#    #+#             */
+/*   Updated: 2024/06/05 21:09:27 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-void	hook_mouse(void *param)
+int32_t	get_channel_color(int32_t rgba, t_action action)
 {
-	t_cubed	*game;
-	int32_t	mouse[2];
+	if (action == GET_RED)
+		return ((rgba >> 24) & 0xFF);
+	else if (action == GET_GREEN)
+		return ((rgba >> 16) & 0xFF);
+	else if (action == GET_BLUE)
+		return ((rgba >> 8) & 0xFF);
+	else
+		return (rgba & 0xFF);
+}
 
-	game = param;
-	mlx_get_mouse_pos(game->mlx, &mouse[X], &mouse[Y]);
-	if (mouse[X] < game->mouse[X])
-		rotate_camera(game, ROTATE_LEFT);
-	else if (mouse[X] > game->mouse[X])
-		rotate_camera(game, ROTATE_RIGHT);
-	game->mouse[X] = mouse[X];
-	if (mouse[X] > game->mlx->width || mouse[X] < 0)
-		mlx_set_mouse_pos(game->mlx, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+	return (r << 24 | g << 16 | b << 8 | a);
 }

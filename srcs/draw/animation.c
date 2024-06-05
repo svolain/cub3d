@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:06:35 by vsavolai          #+#    #+#             */
-/*   Updated: 2024/06/04 19:13:57 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/05 20:47:14 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	wait_frame(t_cubed *game, float limit)
 	frame = 0;
  	while (frame < limit)
 		frame += game->mlx->delta_time * 1000;
-	frame -= limit;
 }
 
 void	animate_minimap(t_cubed *game)

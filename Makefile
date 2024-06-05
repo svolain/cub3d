@@ -6,7 +6,7 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/06/04 19:37:14 by jmertane         ###   ########.fr        #
+#    Updated: 2024/06/05 21:54:23 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,7 @@ LIBFTBIN	:=	$(LIBFTDIR)/libft.a
 RM			:=	rm -rf
 AR			:=	ar -rcs
 CC			:=	cc
-PFLAGS		=	-O3
-CFLAGS		:=	-Wall -Werror -Wextra
+CFLAGS		:=	-Wall -Werror -Wextra -Ofast
 DEBUGFLAGS	=	-g -fsanitize=address
 DEPFLAGS	=	-c -MT $$@ -MMD -MP -MF $(DEPSDIR)/$$*.d
 SCREENCLR	:=	printf "\033c"
@@ -52,16 +51,14 @@ SOURCES 	:= 	main.c \
 				move.c \
 				rotate.c \
 				action.c \
-				mouse.c \
-				scene.c \
-				getset.c \
-				rays.c \
-				walls.c \
-				doors.c \
-				draw.c \
+				misc.c \
+				world.c \
 				minimap.c \
-				animation.c \
+				rays.c \
+				draw.c \
+				color.c \
 				pixel.c \
+				animation.c \
 				error.c \
 				free.c \
 				load.c \
@@ -120,7 +117,7 @@ $(LIBFTBIN):
 	@make title
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(PFLAGS) $(INCS) $^ $(LIBFTBIN) $(MLXLIB) $(MLXFLAGS) -o $@
+	@$(CC) $(CFLAGS) $(INCS) $^ $(LIBFTBIN) $(MLXLIB) $(MLXFLAGS) -o $@
 	@make finish
 
 db: CFLAGS += $(DEBUGFLAGS)
