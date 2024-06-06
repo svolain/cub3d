@@ -40,13 +40,37 @@ static void	update_coordinates(float *dest, t_action action, t_cubed *game)
 	}
 	else if (action == MOVE_LEFT)
 	{
-		game->cam->x = dest[X];
-		game->cam->y = dest[Y];
+		if (game->cam->a < NORTH || (game->cam->a > WEST && game->cam->a < SOUTH))
+		{
+			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xa]))
+				game->cam->x = dest[X];
+			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ys][player[X]]))
+				game->cam->y = dest[Y];
+		}
+		else
+		{
+			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xs]))
+				game->cam->x = dest[X];
+			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ya][player[X]]))
+				game->cam->y = dest[Y];
+		}
 	}
 	else
 	{
-		game->cam->x = dest[X];
-		game->cam->y = dest[Y];
+		if (game->cam->a < NORTH || (game->cam->a > WEST && game->cam->a < SOUTH))
+		{
+			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xs]))
+				game->cam->x = dest[X];
+			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ya][player[X]]))
+				game->cam->y = dest[Y];
+		}
+		else
+		{
+			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xa]))
+				game->cam->x = dest[X];
+			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ys][player[X]]))
+				game->cam->y = dest[Y];
+		}
 	}
 }
 
