@@ -12,7 +12,47 @@
 
 #include <cubed.h>
 
-static void	update_coordinates(float *dest, t_action action, t_cubed *game)
+/* static void	check_collision(int *dest, int *player, int *new, t_cubed *game) */
+/* { */
+/* 	if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][new[X]])) */
+/* 		game->cam->x = dest[X]; */
+/* 	if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[new[Y]][player[X]])) */
+/* 		game->cam->y = dest[Y]; */
+/* } */
+
+/* static void	update_position(int *dest, t_action action, t_cubed *game) */
+/* { */
+/* 	int	bump[2]; */
+/* 	int	player[2]; */
+/* 	int	new[2]; */
+/**/
+/* 	get_map_position(player, game->cam->x, game->cam->y); */
+/* 	set_buffer(bump, BUMP_BUFFER, game); */
+/* 	if (action == MOVE_UP) */
+/* 	{ */
+/* 		new[X] = (bump[X] + game->cam->x) / CELLSIZE; */
+/* 		new[Y] = (bump[Y] + game->cam->y) / CELLSIZE; */
+/* 	} */
+/* 	else if (action == MOVE_DOWN) */
+/* 	{ */
+/* 		new[X] = (game->cam->x - bump[X]) / CELLSIZE; */
+/* 		new[Y] = (game->cam->y - bump[Y]) / CELLSIZE; */
+/* 	} */
+/* 	else if ((action == MOVE_LEFT && (game->cam->a < NORTH || (game->cam->a > WEST && game->cam->a < SOUTH))) */
+/* 		|| (action == MOVE_RIGHT && (game->cam->a > SOUTH || (game->cam->a > NORTH && game->cam->a < WEST)))) */
+/* 	{ */
+/* 		new[X] = (bump[X] + game->cam->x) / CELLSIZE; */
+/* 		new[Y] = (game->cam->y - bump[Y]) / CELLSIZE; */
+/* 	} */
+/* 	else */
+/* 	{ */
+/* 		new[X] = (game->cam->x - bump[X]) / CELLSIZE; */
+/* 		new[Y] = (bump[Y] + game->cam->y) / CELLSIZE; */
+/* 	} */
+/* 	check_collision(dest, player, new, game); */
+/* } */
+
+static void	update_position(int *dest, t_action action, t_cubed *game)
 {
 	int	buffer[2];
 	int	player[2];
@@ -76,28 +116,29 @@ static void	update_coordinates(float *dest, t_action action, t_cubed *game)
 
 void	move_camera(t_cubed *game, t_action action)
 {
-	float	destination[2];
+	int	dest[2];
 
 	if (action == MOVE_UP)
 	{
-		destination[X] = game->cam->x + game->cam->dx;
-		destination[Y] = game->cam->y + game->cam->dy;
+		dest[X] = game->cam->x + game->cam->dx;
+		dest[Y] = game->cam->y + game->cam->dy;
 	}
 	else if (action == MOVE_DOWN)
 	{
-		destination[X] = game->cam->x - game->cam->dx;
-		destination[Y] = game->cam->y - game->cam->dy;
+		dest[X] = game->cam->x - game->cam->dx;
+		dest[Y] = game->cam->y - game->cam->dy;
 	}
 	else if (action == MOVE_LEFT)
 	{
-		destination[X] = game->cam->x - -game->cam->dy;
-		destination[Y] = game->cam->y - game->cam->dx;
+		dest[X] = game->cam->x - -game->cam->dy;
+		dest[Y] = game->cam->y - game->cam->dx;
 	}
 	else
 	{
-		destination[X] = game->cam->x + -game->cam->dy;
-		destination[Y] = game->cam->y + game->cam->dx;
+		dest[X] = game->cam->x + -game->cam->dy;
+		dest[Y] = game->cam->y + game->cam->dx;
 	}
-	update_coordinates(destination, action, game);
+	update_position(dest, action, game);
 	animate_minimap(game);
 }
+
