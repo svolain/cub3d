@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:17:29 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/07 13:31:50 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:14:16 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	hook_mouse(void *param)
 {
 	t_cubed	*game;
 	int32_t	mouse[2];
-	int		i;
 
 	game = param;
 	mlx_get_mouse_pos(game->mlx, &mouse[X], &mouse[Y]);
@@ -27,13 +26,10 @@ void	hook_mouse(void *param)
 	game->mouse[X] = mouse[X];
 	if (mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT))
 	{
-		i = IMG_G1;
-		while (++i < IMG_G15 + 2)
-		{
-			animate_shotgun(game, i);
-		}
+		int i = -1;
+		while(++i < 15)
+			animate_shotgun(game);
 	}
-		
 }
 
 void	fix_fisheye(t_vector *ray, t_cubed *game)

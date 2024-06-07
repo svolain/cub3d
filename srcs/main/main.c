@@ -22,13 +22,24 @@ static void	run_game(t_cubed *game)
 	mlx_loop(game->mlx);
 }
 
+void	draw_shotgun(t_cubed *game)
+{
+	int i = IMG_G15 + 1;
+	while(--i > IMG_G1)
+	{
+		safe_draw(game->anim[i], 0, 0, game);
+		game->anim[i]->instances->enabled = false;
+	}
+	safe_draw(game->anim[IMG_G1], 0, 0, game);
+}
+
 static void	load_scene(t_cubed *game)
 {
 	safe_draw(game->canvas, 0, 0, game);
 	load_assets(game);
 	draw_minimap(game);
 	draw_worldspace(game);
-	safe_draw(game->anim[IMG_GO], 0, 0, game);
+	draw_shotgun(game);
 }
 
 static void	parse_file(t_cubed *game)

@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/07 13:15:43 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/07 15:38:12 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ void	ft_put_pixel(int x, int y, int32_t color, t_cubed *game);
 
 //		Anim
 void	animate_minimap(t_cubed *game);
-void	animate_shotgun(t_cubed *game, int i);
+void	animate_shotgun(t_cubed *game);
 void	wait_frame(t_cubed *game, float limit);
 void	calculate_ray(t_vector *ray, t_cubed *game);
 int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y);

@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 06:47:11 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/07 10:12:19 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/07 14:27:35 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	active_door(t_cubed *game)
 void	hook_action(mlx_key_data_t keydata, void *param)
 {
 	t_cubed		*game;
-
+	
 	game = param;
 	if (keydata.action == MLX_PRESS)
 	{
