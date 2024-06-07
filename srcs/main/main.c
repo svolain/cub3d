@@ -28,7 +28,7 @@ static void	load_scene(t_cubed *game)
 	load_assets(game);
 	draw_minimap(game);
 	draw_walls(game);
-	draw_torch(game);
+	draw_shotgun(game);
 }
 
 static void	parse_file(t_cubed *game)

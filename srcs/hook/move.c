@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:30:49 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/04 19:00:53 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/05 14:12:05 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ static void	update_coordinates(float *dest, t_action action, t_cubed *game)
 	}
 	else if (action == MOVE_DOWN)
 	{
-		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xs]))
+		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ys][xa]))
 			game->cam->x = dest[X];
-		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ys][player[X]]))
+		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ya][xs]))
 			game->cam->y = dest[Y];
 	}
 	else if (action == MOVE_LEFT)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubed.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/04 21:52:53 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/05 16:33:50 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 # define GAME_ASSETS 7
 # define GAME_COLORS 2
-# define GAME_ANIMS 11
+# define GAME_ANIMS 10
 # define GAME_STATS 2
 
 # define SCREEN_WIDTH 1920
@@ -71,12 +71,12 @@
 # define TEX_WALK1		"./textures/player_walk1.png"
 # define TEX_WALK2		"./textures/player_walk2.png"
 
-# define TEX_TORCH1		"./textures/torch1.png"
-# define TEX_TORCH2		"./textures/torch2.png"
-# define TEX_TORCH3		"./textures/torch3.png"
-# define TEX_TORCH4		"./textures/torch4.png"
-# define TEX_TORCH5		"./textures/torch5.png"
-# define TEX_TORCH6		"./textures/torch6.png"
+# define TEX_SHOT1		"./textures/shotgun1.png"
+# define TEX_SHOT2		"./textures/shotgun2.png"
+# define TEX_SHOT3		"./textures/shotgun3.png"
+# define TEX_SHOT4		"./textures/shotgun4.png"
+# define TEX_SHOT5		"./textures/shotgun5.png"
+
 
 # define FMT_BOLD_RED	"\033[1;31m"
 # define FMT_YELLOW		"\033[0;33m"
@@ -152,8 +152,7 @@ typedef enum e_animation
 	IMG_T2,
 	IMG_T3,
 	IMG_T4,
-	IMG_T5,
-	IMG_T6
+	IMG_T5
 }	t_animation;
 
 typedef struct s_vector
@@ -231,9 +230,9 @@ void	draw_segment(int x, int height, t_vector *ray, t_cubed *game);
 void	draw_background(int start, int end, int x, t_cubed *game);
 void	draw_minimap(t_cubed *game);
 void	animate_minimap(t_cubed *game);
-void	animate_torch(t_cubed *game);
+void	animate_shotgun(t_cubed *game);
 void	wait_frame(t_cubed *game, float limit);
-void	draw_torch(t_cubed *game);
+void	draw_shotgun(t_cubed *game);
 void	calculate_ray(t_vector *ray, t_cubed *game);
 void	calculate_draw(int *height, t_vector *ray, t_cubed *game);
 void	ft_putpixel(int x, int y, int32_t color, t_cubed *game);

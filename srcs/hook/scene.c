@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   scene.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 19:59:41 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/04 19:42:59 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/05 17:06:38 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
-/*
-static bool	frame_elapsed(t_cubed *game)
+
+/*static bool	frame_elapsed(t_cubed *game)
 {
  	static double	frame = 0;
 
@@ -26,9 +26,8 @@ static bool	frame_elapsed(t_cubed *game)
 void	draw_scene(void *param)
 {
 	t_cubed	*game;
-
+	
 	game = param;
-	// animate_torch(game);
 	if (game->status[STAT_OPEN])
 		open_door(game);
 	else if (game->status[STAT_CLOSE])

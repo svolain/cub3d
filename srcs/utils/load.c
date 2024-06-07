@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 22:04:40 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/04 20:03:44 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/05 15:33:41 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,10 @@ void	load_assets(t_cubed *game)
 	game->anim[IMG_W2] = safe_img(0, 0, safe_tex(TEX_WALK2, 0, game), game);
 	game->anim[IMG_PS] = safe_img(0, 0, safe_tex(TEX_IDLE, 0, game), game);
 	game->anim[IMG_MP] = game->anim[IMG_PS];
-	game->anim[IMG_T1] = safe_img(0, 0, safe_tex(TEX_TORCH1, 0, game), game);
-	game->anim[IMG_T2] = safe_img(0, 0, safe_tex(TEX_TORCH2, 0, game), game);
-	game->anim[IMG_T3] = safe_img(0, 0, safe_tex(TEX_TORCH3, 0, game), game);
-	game->anim[IMG_T4] = safe_img(0, 0, safe_tex(TEX_TORCH4, 0, game), game);
-	game->anim[IMG_T5] = safe_img(0, 0, safe_tex(TEX_TORCH5, 0, game), game);
-	game->anim[IMG_T6] = safe_img(0, 0, safe_tex(TEX_TORCH6, 0, game), game);
+	game->anim[IMG_T1] = safe_img(0, 0, safe_tex(TEX_SHOT1, 0, game), game);
+	game->anim[IMG_T2] = safe_img(0, 0, safe_tex(TEX_SHOT2, 0, game), game);
+	game->anim[IMG_T3] = safe_img(0, 0, safe_tex(TEX_SHOT3, 0, game), game);
+	game->anim[IMG_T4] = safe_img(0, 0, safe_tex(TEX_SHOT4, 0, game), game);
+	game->anim[IMG_T5] = safe_img(0, 0, safe_tex(TEX_SHOT5, 0, game), game);
 	game->anim[IMG_TO] = game->anim[IMG_T1];
 }
