@@ -6,13 +6,13 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 22:04:40 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/05 15:33:41 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/07 12:15:52 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-static	void	error_occured(char *str, char **arr, t_cubed *game)
+static void	error_occured(char *str, char **arr, t_cubed *game)
 {
 	if (str != NULL)
 		free_single(&str);
@@ -90,10 +90,21 @@ void	load_assets(t_cubed *game)
 	game->anim[IMG_W2] = safe_img(0, 0, safe_tex(TEX_WALK2, 0, game), game);
 	game->anim[IMG_PS] = safe_img(0, 0, safe_tex(TEX_IDLE, 0, game), game);
 	game->anim[IMG_MP] = game->anim[IMG_PS];
-	game->anim[IMG_T1] = safe_img(0, 0, safe_tex(TEX_SHOT1, 0, game), game);
-	game->anim[IMG_T2] = safe_img(0, 0, safe_tex(TEX_SHOT2, 0, game), game);
-	game->anim[IMG_T3] = safe_img(0, 0, safe_tex(TEX_SHOT3, 0, game), game);
-	game->anim[IMG_T4] = safe_img(0, 0, safe_tex(TEX_SHOT4, 0, game), game);
-	game->anim[IMG_T5] = safe_img(0, 0, safe_tex(TEX_SHOT5, 0, game), game);
-	game->anim[IMG_TO] = game->anim[IMG_T1];
+	game->anim[IMG_G1] = safe_img(0, 0, safe_tex(TEX_GUN1, 0, game), game);
+	game->anim[IMG_G2] = safe_img(0, 0, safe_tex(TEX_GUN2, 0, game), game);
+	game->anim[IMG_G3] = safe_img(0, 0, safe_tex(TEX_GUN3, 0, game), game);
+	game->anim[IMG_G4] = safe_img(0, 0, safe_tex(TEX_GUN4, 0, game), game);
+	game->anim[IMG_G5] = safe_img(0, 0, safe_tex(TEX_GUN5, 0, game), game);
+	game->anim[IMG_G6] = safe_img(0, 0, safe_tex(TEX_GUN6, 0, game), game);
+	game->anim[IMG_G7] = safe_img(0, 0, safe_tex(TEX_GUN7, 0, game), game);
+	game->anim[IMG_G8] = safe_img(0, 0, safe_tex(TEX_GUN8, 0, game), game);
+	game->anim[IMG_G9] = safe_img(0, 0, safe_tex(TEX_GUN9, 0, game), game);
+	game->anim[IMG_G10] = safe_img(0, 0, safe_tex(TEX_GUN10, 0, game), game);
+	game->anim[IMG_G11] = safe_img(0, 0, safe_tex(TEX_GUN11, 0, game), game);
+	game->anim[IMG_G12] = safe_img(0, 0, safe_tex(TEX_GUN12, 0, game), game);
+	game->anim[IMG_G13] = safe_img(0, 0, safe_tex(TEX_GUN13, 0, game), game);
+	game->anim[IMG_G14] = safe_img(0, 0, safe_tex(TEX_GUN14, 0, game), game);
+	game->anim[IMG_G15] = safe_img(0, 0, safe_tex(TEX_GUN15, 0, game), game);
+	game->anim[IMG_GO] = safe_img(0, 0, safe_tex(TEX_GUN1, 0, game), game);
+	
 }

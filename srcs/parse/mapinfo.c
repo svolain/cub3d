@@ -48,6 +48,7 @@ void	parse_mapinfo(t_cubed *game)
 	char	*buffer;
 	char	*joined;
 
+	joined = NULL;
 	buffer = prefilter(game);
 	while(true)
 	{

@@ -3,14 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:17:29 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/31 15:34:51 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/07 13:31:50 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
+
+void	hook_mouse(void *param)
+{
+	t_cubed	*game;
+	int32_t	mouse[2];
+	int		i;
+
+	game = param;
+	mlx_get_mouse_pos(game->mlx, &mouse[X], &mouse[Y]);
+	if (mouse[X] < game->mouse[X])
+		rotate_camera(game, ROTATE_LEFT);
+	else if (mouse[X] > game->mouse[X])
+		rotate_camera(game, ROTATE_RIGHT);
+	game->mouse[X] = mouse[X];
+	if (mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT))
+	{
+		i = IMG_G1;
+		while (++i < IMG_G15 + 2)
+		{
+			animate_shotgun(game, i);
+		}
+	}
+		
+}
 
 void	fix_fisheye(t_vector *ray, t_cubed *game)
 {

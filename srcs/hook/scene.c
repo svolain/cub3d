@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 19:59:41 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/05 17:06:38 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/07 11:29:30 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 void	draw_scene(void *param)
 {
 	t_cubed	*game;
+	int		i;
 	
 	game = param;
 	if (game->status[STAT_OPEN])

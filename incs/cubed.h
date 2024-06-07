@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/05 16:33:50 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/07 13:15:43 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 # define GAME_ASSETS 7
 # define GAME_COLORS 2
-# define GAME_ANIMS 10
+# define GAME_ANIMS 20
 # define GAME_STATS 2
 
 # define SCREEN_WIDTH 1920
@@ -71,12 +71,21 @@
 # define TEX_WALK1		"./textures/player_walk1.png"
 # define TEX_WALK2		"./textures/player_walk2.png"
 
-# define TEX_SHOT1		"./textures/shotgun1.png"
-# define TEX_SHOT2		"./textures/shotgun2.png"
-# define TEX_SHOT3		"./textures/shotgun3.png"
-# define TEX_SHOT4		"./textures/shotgun4.png"
-# define TEX_SHOT5		"./textures/shotgun5.png"
-
+# define TEX_GUN1		"./textures/gun/gun_idle.png"
+# define TEX_GUN2		"./textures/gun/gun_shoot1.png"
+# define TEX_GUN3		"./textures/gun/gun_shoot2.png"
+# define TEX_GUN4		"./textures/gun/gun_shoot3.png"
+# define TEX_GUN5		"./textures/gun/gun_shoot4.png"
+# define TEX_GUN6		"./textures/gun/gun_reload1.png"
+# define TEX_GUN7		"./textures/gun/gun_reload2.png"
+# define TEX_GUN8		"./textures/gun/gun_reload3.png"
+# define TEX_GUN9		"./textures/gun/gun_reload4.png"
+# define TEX_GUN10		"./textures/gun/gun_reload5.png"
+# define TEX_GUN11		"./textures/gun/gun_reload6.png"
+# define TEX_GUN12		"./textures/gun/gun_reload7.png"
+# define TEX_GUN13		"./textures/gun/gun_reload8.png"
+# define TEX_GUN14		"./textures/gun/gun_reload9.png"
+# define TEX_GUN15		"./textures/gun/gun_reload10.png"
 
 # define FMT_BOLD_RED	"\033[1;31m"
 # define FMT_YELLOW		"\033[0;33m"
@@ -147,12 +156,22 @@ typedef enum e_animation
 	IMG_PS,
 	IMG_W1,
 	IMG_W2,
-	IMG_TO,
-	IMG_T1,
-	IMG_T2,
-	IMG_T3,
-	IMG_T4,
-	IMG_T5
+	IMG_GO,
+	IMG_G1,
+	IMG_G2,
+	IMG_G3,
+	IMG_G4,
+	IMG_G5,
+	IMG_G6,
+	IMG_G7,
+	IMG_G8,
+	IMG_G9,
+	IMG_G10,
+	IMG_G11,
+	IMG_G12,
+	IMG_G13,
+	IMG_G14,
+	IMG_G15
 }	t_animation;
 
 typedef struct s_vector
@@ -172,6 +191,15 @@ typedef struct s_camera
 	float		dx;
 	float		dy;
 }	t_camera;
+
+typedef struct s_rgba
+{
+	int32_t		color;
+	int8_t		r;
+	int8_t		g;
+	int8_t		b;
+	int8_t		a;
+}	t_rgba;
 
 typedef struct s_mapinfo
 {
@@ -215,27 +243,28 @@ void	load_assets(t_cubed *game);
 void	hook_movement(void *param);
 void	move_camera(t_cubed *game, t_action action);
 void	rotate_camera(t_cubed *game, t_action action);
-void	hook_actions(mlx_key_data_t keydata, void *param);
-void	open_door(t_cubed *game);
-void	close_door(t_cubed *game);
+void	hook_action(mlx_key_data_t keydata, void *param);
 void	hook_mouse(void *param);
 void	draw_scene(void *param);
 void	hook_close(void *param);
-void	get_position(int *target, int x, int y);
+void	get_map_position(int *target, int x, int y);
 void	set_buffer(int *buffer, int size, t_cubed *game);
 
 //		Draw
-void	draw_walls(t_cubed *game);
-void	draw_segment(int x, int height, t_vector *ray, t_cubed *game);
-void	draw_background(int start, int end, int x, t_cubed *game);
+void	draw_worldspace(t_cubed *game);
 void	draw_minimap(t_cubed *game);
-void	animate_minimap(t_cubed *game);
-void	animate_shotgun(t_cubed *game);
-void	wait_frame(t_cubed *game, float limit);
-void	draw_shotgun(t_cubed *game);
 void	calculate_ray(t_vector *ray, t_cubed *game);
-void	calculate_draw(int *height, t_vector *ray, t_cubed *game);
-void	ft_putpixel(int x, int y, int32_t color, t_cubed *game);
+int32_t	get_channel_color(int32_t rgba, t_action action);
+int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
+int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+void	image_to_canvas(int dst_x, int dst_y, mlx_image_t *img, t_cubed *game);
+void	ft_put_pixel(int x, int y, int32_t color, t_cubed *game);
+
+//		Anim
+void	animate_minimap(t_cubed *game);
+void	animate_shotgun(t_cubed *game, int i);
+void	wait_frame(t_cubed *game, float limit);
+void	calculate_ray(t_vector *ray, t_cubed *game);
 int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 

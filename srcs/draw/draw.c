@@ -6,67 +6,42 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 19:24:05 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/04 19:40:15 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/05 21:05:06 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-void	draw_background(int start, int end, int x, t_cubed *game)
+void	image_to_canvas(int dst_x, int dst_y, mlx_image_t *img, t_cubed *game)
 {
-	int	floor;
-	int	roof;
+	uint32_t	color;
+	uint32_t	height;
+	uint32_t	i;
+	uint32_t	j;
 
-	roof = -1;
-	floor = SCREEN_HEIGHT + 1;
-	while (roof++ < start)
+	i = 0;
+	height = dst_y;
+	while (i < img->width)
 	{
-		if (roof < MAPCELL * MAPGRID && x < MAPCELL * MAPGRID)
-			continue ;
-		ft_putpixel(x, roof, game->color[COL_C], game);
-	}
-	while (floor-- > end)
-		ft_putpixel(x, floor, game->color[COL_F], game);
-}
-
-void	draw_segment(int x, int height, t_vector *ray, t_cubed *game)
-{
-	int		point[2];
-	int32_t	color;
-
-	point[A] = SCREEN_HEIGHT / 2 - height / 2 - 1;
-	point[B] = SCREEN_HEIGHT / 2 + height / 2;
-	draw_background(point[A], point[B], x, game);
-	while (point[A]++ < point[B])
-	{
-		color = get_color(game->image[ray->img], ray->x, ray->y);
-		ray->y += ray->d;
-		if (point[A] < MAPCELL * MAPGRID && x < MAPCELL * MAPGRID)
-			continue ;
-		ft_putpixel(x, point[A], color, game);
+		j = 0;
+		dst_y = height;
+		while (j < img->height)
+		{
+			color = get_pixel_color(img, i, j);
+			ft_put_pixel(dst_x, dst_y, color, game);
+			dst_y++;
+			j++;
+		}
+		dst_x++;
+		i++;
 	}
 }
 
-void	calculate_draw(int *height, t_vector *ray, t_cubed *game)
+void	draw_scene(void *param)
 {
-	int map[2];
+	t_cubed	*game;
 
-	get_position(map, ray->x, ray->y);
-	if (ray->img == IMG_EA)
-		ray->x = (int)(ray->y) % game->image[ray->img]->width;
-	else
-		ray->x = (int)(ray->x) % game->image[ray->img]->width;
-	if (game->map->matrix[map[Y]][map[X]] == MAP_CLOSED)
-		ray->img = IMG_DR;
-	else if (ray->img == IMG_EA && ray->a > NORTH && ray->a < SOUTH)
-		ray->img = IMG_WE;
-	else if (ray->img == IMG_SO && ray->a > WEST)
-		ray->img = IMG_NO;
-	ray->y = 0;
-	ray->d = (float)game->image[ray->img]->width / *height;
-	if (*height > SCREEN_HEIGHT)
-	{
-		ray->y = (float)(*height - SCREEN_HEIGHT) / 2 * ray->d;
-		*height = SCREEN_HEIGHT;
-	}
+	game = param;
+	draw_minimap(game);
+	draw_worldspace(game);
 }

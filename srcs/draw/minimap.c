@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/04 18:31:17 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/07 10:47:57 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ static void	get_ray(t_vector *ray, t_cubed *game)
 	float	delta[2];
 	float	pixel[2];
 	int		pixels;
-	int		blend;
+	int8_t	alpha;
 
+	alpha = (int8_t)225;
 	pixel[X] = MAPGRID / SCALE_FACTOR * CELLSIZE / SCALE_FACTOR;
 	pixel[Y] = MAPGRID / SCALE_FACTOR * CELLSIZE / SCALE_FACTOR;
 	delta[X] = ray->x / SCALE_FACTOR - game->cam->x / SCALE_FACTOR;
@@ -26,19 +27,17 @@ static void	get_ray(t_vector *ray, t_cubed *game)
 	pixels = sqrt(powf(delta[X], 2) + powf(delta[Y], 2));
 	delta[X] /= pixels;
 	delta[Y] /= pixels;
-	blend = 225;
-	while(pixels)
+	while(pixels-- >= 0)
 	{
-		ft_putpixel((int)pixel[X], (int)pixel[Y],
-			get_rgba(225, 100, 100, blend--), game);
+		ft_put_pixel(pixel[X], pixel[Y], get_rgba(225, 100, 100, alpha--), game);
 		pixel[X] += delta[X];
 		pixel[Y] += delta[Y];
-		pixels--;
 	}
 }
 
 static void	draw_rays(t_cubed *game)
 {
+	static int	density = 6;
 	t_vector	ray;
 	float		angle;
 	int			i;
@@ -46,11 +45,11 @@ static void	draw_rays(t_cubed *game)
 	angle = game->cam->a;
 	ft_rotate(&angle, FOV / 2, ROTATE_LEFT);
 	i = 0;
-	while (i < 66)
+	while (i < density * 66)
 	{
 		ray.a = angle;
 		calculate_ray(&ray, game);
-		ft_rotate(&angle, DEGREE, ROTATE_RIGHT);
+		ft_rotate(&angle, DEGREE / density, ROTATE_RIGHT);
 		get_ray(&ray, game);
 		i++;
 	}
@@ -72,7 +71,8 @@ static int32_t	get_map(int *player, t_cubed *game)
 		return (get_rgba(100, 200, 50, 255));
 	else if (game->map->matrix[y][x] == MAP_FLOOR)
 		return (get_rgba(255, 255, 255, 200));
-	return (get_rgba(150, 150, 150, 150));
+	else
+		return (get_rgba(150, 150, 150, 150));
 }
 
 static void	draw_column(int column, int *player, t_cubed *game)
@@ -88,7 +88,7 @@ static void	draw_column(int column, int *player, t_cubed *game)
 			color = get_rgba(50, 50, 50, 200);
 		else
 			color = get_map(player, game);
-		ft_putpixel(column, row, color, game);
+		ft_put_pixel(column, row, color, game);
 		player[Y] += 2;
 		row++;
 	}
@@ -110,5 +110,5 @@ void	draw_minimap(t_cubed *game)
 		column++;
 	}
 	draw_rays(game);
-	safe_draw(game->anim[IMG_MP], position, position, game);
+	image_to_canvas(position, position, game->anim[IMG_MP], game);
 }

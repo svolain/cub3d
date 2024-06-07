@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 19:46:50 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/04 21:53:23 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/05 20:07:04 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	*safe_img(uint32_t w, uint32_t h, mlx_texture_t *t, t_cubed *game)
 	return (i);
 }
 
-void	*safe_tex(char * file, bool allocated, t_cubed *game)
+void	*safe_tex(char *file, bool allocated, t_cubed *game)
 {
 	mlx_texture_t	*t;
 
