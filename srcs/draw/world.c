@@ -11,27 +11,39 @@
 /* ************************************************************************** */
 
 #include <cubed.h>
+#include <stdio.h>
 
 /* draw_floor(x, point[B], ray, game); */
-/* static void	draw_floor(int x, int y, t_vector *ray, t_cubed *game) */
-/* { */
-/* 	int32_t	color; */
-/* 	float	offset; */
-/* 	float	ty; */
-/* 	float	tx; */
-/**/
-/* 	offset = ray->d; */
-/* 	ty = CELLSIZE - ray->y; */
-/* 	tx = ray->x; */
-/* 	while (y < SCREEN_HEIGHT) */
-/* 	{ */
-/* 		color = get_pixel_color(game->image[IMG_FL], ray->x, ty); */
-/* 		ft_put_pixel(x, y, color, game); */
-/* 		ty += offset; */
-/* 		tx += offset; */
-/* 		y++; */
-/* 	} */
-/* } */
+
+/* float dy=y-(320/2.0), deg=degToRad(ra), raFix=cos(degToRad(FixAng(pa-ra))); */
+/*   tx=px/2 + cos(deg)*158*32/dy/raFix; */
+/*   ty=py/2 - sin(deg)*158*32/dy/raFix; */
+
+static void	draw_floor(int x, int height, t_vector *ray, t_cubed *game)
+{
+	float	row;
+	float	tx;
+	float	ty;
+	int32_t	color;
+	float	angle;
+	float	dist;
+
+	angle = game->cam->a;
+	ft_rotate(&angle, ray->a, ROTATE_LEFT);
+	/* printf("New floor section!\n"); */
+	while (height < SCREEN_HEIGHT)
+	{
+		row = height - (float)SCREEN_HEIGHT / 2.0f;
+		dist = row / cos(angle);
+		tx = game->cam->x + cos(ray->a) * dist;
+		ty = game->cam->y - sin(ray->a) * dist;
+		tx = (int)tx % CELLSIZE;
+		ty = (int)ty % CELLSIZE;
+		color = get_pixel_color(game->image[IMG_FL], tx, ty);
+		ft_put_pixel(x, height, color, game);
+		height++;
+	}
+}
 
 static void	draw_background(int start, int end, int x, t_cubed *game)
 {
@@ -58,6 +70,8 @@ static void	draw_segment(int x, int height, t_vector *ray, t_cubed *game)
 	point[A] = SCREEN_HEIGHT / 2 - height / 2 - 1;
 	point[B] = SCREEN_HEIGHT / 2 + height / 2 - 1;
 	draw_background(point[A], point[B], x, game);
+	if (height != SCREEN_HEIGHT)
+		draw_floor(x, point[B], ray, game);
 	while (++point[A] < point[B])
 	{
 		color = get_pixel_color(game->image[ray->img], ray->x, ray->y);

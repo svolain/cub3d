@@ -28,6 +28,8 @@ int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y)
 {
 	uint8_t	*start;
 
+	if (!valid_pixel(img, x, y))
+		return (0xFF000000);
 	start = img->pixels + (y * img->width + x) * BPP;
 	return (get_rgba(*start, *(start + 1), *(start + 2), *(start + 3)));
 }

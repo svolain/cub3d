@@ -59,8 +59,8 @@
 /**/
 /* 	get_map_position(player, game->cam->x, game->cam->y); */
 /* 	set_buffer(buffer, BUMP_BUFFER, game); */
-/* 	int xa = (buffer[X] + game->cam->x) / CELLSIZE; */
-/* 	int ya = (buffer[Y] + game->cam->y) / CELLSIZE; */
+/* 	int xa = (game->cam->x + buffer[X]) / CELLSIZE; */
+/* 	int ya = (game->cam->y + buffer[Y]) / CELLSIZE; */
 /* 	int xs = (game->cam->x - buffer[X]) / CELLSIZE; */
 /* 	int ys = (game->cam->y - buffer[Y]) / CELLSIZE; */
 /**/
@@ -114,9 +114,17 @@
 /* 	} */
 /* } */
 
-/* void	check_collision(float x, float y, t_cubed *game) */
+/* void	check_collision(float *prev, t_cubed *game) */
 /* { */
+/* 	int	buffer[2]; */
+/* 	int	player[2]; */
 /**/
+/* 	set_buffer(buffer, BUMP_BUFFER, game); */
+/* 	get_map_position(player, game->cam->x, game->cam->y); */
+/* 	if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xa])) */
+/* 		game->cam->x = prev[X]; */
+/* 	if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xa])) */
+/* 		game->cam->y = prev[Y]; */
 /* } */
 
 void	move_camera(t_cubed *game, t_action action)
@@ -141,5 +149,6 @@ void	move_camera(t_cubed *game, t_action action)
 		game->cam->x += -game->cam->dy;
 		game->cam->y += game->cam->dx;
 	}
+	/* check_collision(previous, game); */
 	animate_minimap(game);
 }
