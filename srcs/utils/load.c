@@ -106,5 +106,4 @@ void	load_assets(t_cubed *game)
 	game->anim[IMG_G14] = safe_img(0, 0, safe_tex(TEX_GUN14, 0, game), game);
 	game->anim[IMG_G15] = safe_img(0, 0, safe_tex(TEX_GUN15, 0, game), game);
 	game->anim[IMG_GO] = safe_img(0, 0, safe_tex(TEX_GUN1, 0, game), game);
-	
 }
