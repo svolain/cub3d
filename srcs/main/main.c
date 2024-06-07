@@ -28,7 +28,7 @@ static void	load_scene(t_cubed *game)
 	load_assets(game);
 	draw_minimap(game);
 	draw_worldspace(game);
-	// draw_torch(game);
+	safe_draw(game->anim[IMG_GO], 0, 0, game);
 }
 
 static void	parse_file(t_cubed *game)

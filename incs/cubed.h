@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubed.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/05 21:57:56 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/07 13:15:43 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 # define GAME_ASSETS 7
 # define GAME_COLORS 2
-# define GAME_ANIMS 11
+# define GAME_ANIMS 20
 # define GAME_STATS 2
 
 # define SCREEN_WIDTH 1920
@@ -71,12 +71,21 @@
 # define TEX_WALK1		"./textures/player_walk1.png"
 # define TEX_WALK2		"./textures/player_walk2.png"
 
-# define TEX_TORCH1		"./textures/torch1.png"
-# define TEX_TORCH2		"./textures/torch2.png"
-# define TEX_TORCH3		"./textures/torch3.png"
-# define TEX_TORCH4		"./textures/torch4.png"
-# define TEX_TORCH5		"./textures/torch5.png"
-# define TEX_TORCH6		"./textures/torch6.png"
+# define TEX_GUN1		"./textures/gun/gun_idle.png"
+# define TEX_GUN2		"./textures/gun/gun_shoot1.png"
+# define TEX_GUN3		"./textures/gun/gun_shoot2.png"
+# define TEX_GUN4		"./textures/gun/gun_shoot3.png"
+# define TEX_GUN5		"./textures/gun/gun_shoot4.png"
+# define TEX_GUN6		"./textures/gun/gun_reload1.png"
+# define TEX_GUN7		"./textures/gun/gun_reload2.png"
+# define TEX_GUN8		"./textures/gun/gun_reload3.png"
+# define TEX_GUN9		"./textures/gun/gun_reload4.png"
+# define TEX_GUN10		"./textures/gun/gun_reload5.png"
+# define TEX_GUN11		"./textures/gun/gun_reload6.png"
+# define TEX_GUN12		"./textures/gun/gun_reload7.png"
+# define TEX_GUN13		"./textures/gun/gun_reload8.png"
+# define TEX_GUN14		"./textures/gun/gun_reload9.png"
+# define TEX_GUN15		"./textures/gun/gun_reload10.png"
 
 # define FMT_BOLD_RED	"\033[1;31m"
 # define FMT_YELLOW		"\033[0;33m"
@@ -147,13 +156,22 @@ typedef enum e_animation
 	IMG_PS,
 	IMG_W1,
 	IMG_W2,
-	IMG_TO,
-	IMG_T1,
-	IMG_T2,
-	IMG_T3,
-	IMG_T4,
-	IMG_T5,
-	IMG_T6
+	IMG_GO,
+	IMG_G1,
+	IMG_G2,
+	IMG_G3,
+	IMG_G4,
+	IMG_G5,
+	IMG_G6,
+	IMG_G7,
+	IMG_G8,
+	IMG_G9,
+	IMG_G10,
+	IMG_G11,
+	IMG_G12,
+	IMG_G13,
+	IMG_G14,
+	IMG_G15
 }	t_animation;
 
 typedef struct s_vector
@@ -244,9 +262,11 @@ void	ft_put_pixel(int x, int y, int32_t color, t_cubed *game);
 
 //		Anim
 void	animate_minimap(t_cubed *game);
-void	animate_torch(t_cubed *game);
+void	animate_shotgun(t_cubed *game, int i);
 void	wait_frame(t_cubed *game, float limit);
-void	draw_torch(t_cubed *game);
+void	calculate_ray(t_vector *ray, t_cubed *game);
+int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y);
+int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 //		Rotate
 void	ft_rotate(float *target, float angle, t_action action);

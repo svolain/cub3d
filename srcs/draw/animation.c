@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   animation.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:06:35 by vsavolai          #+#    #+#             */
-/*   Updated: 2024/06/05 20:47:14 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/07 13:33:34 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,16 @@ void	animate_minimap(t_cubed *game)
 	ft_memcpy(old->pixels, new->pixels, old->height * old->width * BPP);
 }
 
-void	animate_torch(t_cubed *game)
+void    animate_shotgun(t_cubed *game, int i)
 {
-	static int	i = 0;
-	mlx_image_t	*old;
-	mlx_image_t	*new;
+    mlx_image_t *old;
+    mlx_image_t *new;
 
-	old = game->anim[IMG_TO];
-	i++;
-	if (i > 5)
-		i = 0;
-	new = game->anim[i];
-	ft_memcpy(old->pixels, new->pixels, old->height * old->width * BPP);
-}
-
-void	draw_torch(t_cubed *game)
-{
-	int x;
-	int y;
-
-	x = SCREEN_WIDTH / 2 - 100;
-	y = SCREEN_HEIGHT - 330;
-	safe_draw(game->anim[IMG_TO], x, y, game);
+    old = game->anim[IMG_GO];
+	//printf("i: %d\n", i);
+	if (i == IMG_G15 + 1)
+		new = game->anim[IMG_G1];
+	else
+		new = game->anim[i];
+    ft_memcpy(old->pixels, new->pixels, old->height * old->width * BPP);
 }

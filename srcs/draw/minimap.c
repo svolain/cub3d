@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/05 20:47:43 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/07 10:47:57 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	get_ray(t_vector *ray, t_cubed *game)
 	int		pixels;
 	int8_t	alpha;
 
-	alpha = 225;
+	alpha = (int8_t)225;
 	pixel[X] = MAPGRID / SCALE_FACTOR * CELLSIZE / SCALE_FACTOR;
 	pixel[Y] = MAPGRID / SCALE_FACTOR * CELLSIZE / SCALE_FACTOR;
 	delta[X] = ray->x / SCALE_FACTOR - game->cam->x / SCALE_FACTOR;
