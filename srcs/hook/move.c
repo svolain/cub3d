@@ -52,93 +52,94 @@
 /* 	check_collision(dest, player, new, game); */
 /* } */
 
-static void	update_position(int *dest, t_action action, t_cubed *game)
-{
-	int	buffer[2];
-	int	player[2];
+/* static void	update_position(int *dest, t_action action, t_cubed *game) */
+/* { */
+/* 	int	buffer[2]; */
+/* 	int	player[2]; */
+/**/
+/* 	get_map_position(player, game->cam->x, game->cam->y); */
+/* 	set_buffer(buffer, BUMP_BUFFER, game); */
+/* 	int xa = (buffer[X] + game->cam->x) / CELLSIZE; */
+/* 	int ya = (buffer[Y] + game->cam->y) / CELLSIZE; */
+/* 	int xs = (game->cam->x - buffer[X]) / CELLSIZE; */
+/* 	int ys = (game->cam->y - buffer[Y]) / CELLSIZE; */
+/**/
+/* 	if (action == MOVE_UP) */
+/* 	{ */
+/* 		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xa])) */
+/* 			game->cam->x = dest[X]; */
+/* 		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ya][player[X]])) */
+/* 			game->cam->y = dest[Y]; */
+/* 	} */
+/* 	else if (action == MOVE_DOWN) */
+/* 	{ */
+/* 		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xs])) */
+/* 			game->cam->x = dest[X]; */
+/* 		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ys][player[X]])) */
+/* 			game->cam->y = dest[Y]; */
+/* 	} */
+/* 	else if (action == MOVE_LEFT) */
+/* 	{ */
+/* 		if (game->cam->a < NORTH || (game->cam->a > WEST && game->cam->a < SOUTH)) */
+/* 		{ */
+/* 			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xa])) */
+/* 				game->cam->x = dest[X]; */
+/* 			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ys][player[X]])) */
+/* 				game->cam->y = dest[Y]; */
+/* 		} */
+/* 		else */
+/* 		{ */
+/* 			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xs])) */
+/* 				game->cam->x = dest[X]; */
+/* 			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ya][player[X]])) */
+/* 				game->cam->y = dest[Y]; */
+/* 		} */
+/* 	} */
+/* 	else */
+/* 	{ */
+/* 		if (game->cam->a < NORTH || (game->cam->a > WEST && game->cam->a < SOUTH)) */
+/* 		{ */
+/* 			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xs])) */
+/* 				game->cam->x = dest[X]; */
+/* 			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ya][player[X]])) */
+/* 				game->cam->y = dest[Y]; */
+/* 		} */
+/* 		else */
+/* 		{ */
+/* 			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xa])) */
+/* 				game->cam->x = dest[X]; */
+/* 			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ys][player[X]])) */
+/* 				game->cam->y = dest[Y]; */
+/* 		} */
+/* 	} */
+/* } */
 
-	get_map_position(player, game->cam->x, game->cam->y);
-	set_buffer(buffer, BUMP_BUFFER, game);
-	int xa = (buffer[X] + game->cam->x) / CELLSIZE;
-	int ya = (buffer[Y] + game->cam->y) / CELLSIZE;
-	int xs = (game->cam->x - buffer[X]) / CELLSIZE;
-	int ys = (game->cam->y - buffer[Y]) / CELLSIZE;
-
-	if (action == MOVE_UP)
-	{
-		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xa]))
-			game->cam->x = dest[X];
-		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ya][player[X]]))
-			game->cam->y = dest[Y];
-	}
-	else if (action == MOVE_DOWN)
-	{
-		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xs]))
-			game->cam->x = dest[X];
-		if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ys][player[X]]))
-			game->cam->y = dest[Y];
-	}
-	else if (action == MOVE_LEFT)
-	{
-		if (game->cam->a < NORTH || (game->cam->a > WEST && game->cam->a < SOUTH))
-		{
-			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xa]))
-				game->cam->x = dest[X];
-			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ys][player[X]]))
-				game->cam->y = dest[Y];
-		}
-		else
-		{
-			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xs]))
-				game->cam->x = dest[X];
-			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ya][player[X]]))
-				game->cam->y = dest[Y];
-		}
-	}
-	else
-	{
-		if (game->cam->a < NORTH || (game->cam->a > WEST && game->cam->a < SOUTH))
-		{
-			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xs]))
-				game->cam->x = dest[X];
-			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ya][player[X]]))
-				game->cam->y = dest[Y];
-		}
-		else
-		{
-			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xa]))
-				game->cam->x = dest[X];
-			if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[ys][player[X]]))
-				game->cam->y = dest[Y];
-		}
-	}
-}
+/* void	check_collision(float x, float y, t_cubed *game) */
+/* { */
+/**/
+/* } */
 
 void	move_camera(t_cubed *game, t_action action)
 {
-	int	dest[2];
-
 	if (action == MOVE_UP)
 	{
-		dest[X] = game->cam->x + game->cam->dx;
-		dest[Y] = game->cam->y + game->cam->dy;
+		game->cam->x += game->cam->dx;
+		game->cam->y += game->cam->dy;
 	}
 	else if (action == MOVE_DOWN)
 	{
-		dest[X] = game->cam->x - game->cam->dx;
-		dest[Y] = game->cam->y - game->cam->dy;
+		game->cam->x -= game->cam->dx;
+		game->cam->y -= game->cam->dy;
 	}
 	else if (action == MOVE_LEFT)
 	{
-		dest[X] = game->cam->x - -game->cam->dy;
-		dest[Y] = game->cam->y - game->cam->dx;
+		game->cam->x -= -game->cam->dy;
+		game->cam->y -= game->cam->dx;
 	}
 	else
 	{
-		dest[X] = game->cam->x + -game->cam->dy;
-		dest[Y] = game->cam->y + game->cam->dx;
+		game->cam->x += -game->cam->dy;
+		game->cam->y += game->cam->dx;
 	}
-	update_position(dest, action, game);
 	animate_minimap(game);
 }
-
