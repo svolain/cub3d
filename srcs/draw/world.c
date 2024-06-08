@@ -11,67 +11,49 @@
 /* ************************************************************************** */
 
 #include <cubed.h>
-#include <stdio.h>
 
-/* draw_floor(x, point[B], ray, game); */
-
-/* float dy=y-(320/2.0), deg=degToRad(ra), raFix=cos(degToRad(FixAng(pa-ra))); */
-/*   tx=px/2 + cos(deg)*158*32/dy/raFix; */
-/*   ty=py/2 - sin(deg)*158*32/dy/raFix; */
-
-static void	draw_floor(int x, int height, t_vector *ray, t_cubed *game)
+static void	calculate_draw(int y, float *tex, t_vector *ray, t_cubed *game)
 {
-	float	row;
-	float	tx;
-	float	ty;
-	int32_t	color;
+	float	pp;
+	float	dy;
 	float	angle;
-	float	dist;
 
-	angle = game->cam->a;
-	ft_rotate(&angle, ray->a, ROTATE_LEFT);
-	/* printf("New floor section!\n"); */
-	while (height < SCREEN_HEIGHT)
-	{
-		row = height - (float)SCREEN_HEIGHT / 2.0f;
-		dist = row / cos(angle);
-		tx = game->cam->x + cos(ray->a) * dist;
-		ty = game->cam->y - sin(ray->a) * dist;
-		tx = (int)tx % CELLSIZE;
-		ty = (int)ty % CELLSIZE;
-		color = get_pixel_color(game->image[IMG_FL], tx, ty);
-		ft_put_pixel(x, height, color, game);
-		height++;
-	}
+	angle = cos(fabs(game->cam->a - ray->a));
+	pp = ((float)SCREEN_WIDTH / 2.0f) / tan(FOV / 2.0f);
+	dy = y - (float)SCREEN_HEIGHT / 2.0f;
+	tex[X] = game->cam->x + cos(ray->a) * pp * CELLSIZE / dy / angle;
+	tex[Y] = game->cam->y - sin(ray->a) * pp * CELLSIZE / dy / angle;
+	tex[X] = (int)tex[X] % game->image[IMG_FL]->width;
+	tex[Y] = (int)tex[Y] % game->image[IMG_FL]->height;
 }
 
-static void	draw_background(int start, int end, int x, t_cubed *game)
+static void	draw_background(int x, int y, t_vector *ray, t_cubed *game)
 {
-	int	floor;
-	int	roof;
+	float	tex[2];
+	int32_t	floor;
+	int32_t	roof;
 
-	roof = -1;
-	while (++roof < start)
+	while (++y < SCREEN_HEIGHT)
 	{
-		if (roof < MAPCELL * MAPGRID && x < MAPCELL * MAPGRID)
+		calculate_draw(y, tex, ray, game);
+		floor = get_pixel_color(game->image[IMG_FL], tex[Y], tex[X]);
+		roof = get_pixel_color(game->image[IMG_RF], tex[Y], tex[X]);
+		ft_put_pixel(x, y, floor, game);
+		if (SCREEN_HEIGHT - y < MAPCELL * MAPGRID && x < MAPCELL * MAPGRID)
 			continue ;
-		ft_put_pixel(x, roof, game->color[COL_C], game);
+		ft_put_pixel(x, SCREEN_HEIGHT - y, roof, game);
 	}
-	floor = SCREEN_HEIGHT + 1;
-	while (--floor > end)
-		ft_put_pixel(x, floor, game->color[COL_F], game);
 }
 
-static void	draw_segment(int x, int height, t_vector *ray, t_cubed *game)
+static void	draw_column(int x, int height, t_vector *ray, t_cubed *game)
 {
 	int		point[2];
 	int32_t	color;
 
 	point[A] = SCREEN_HEIGHT / 2 - height / 2 - 1;
 	point[B] = SCREEN_HEIGHT / 2 + height / 2 - 1;
-	draw_background(point[A], point[B], x, game);
 	if (height != SCREEN_HEIGHT)
-		draw_floor(x, point[B], ray, game);
+		draw_background(x, point[B], ray, game);
 	while (++point[A] < point[B])
 	{
 		color = get_pixel_color(game->image[ray->img], ray->x, ray->y);
@@ -82,7 +64,7 @@ static void	draw_segment(int x, int height, t_vector *ray, t_cubed *game)
 	}
 }
 
-static void	calculate_draw(int *height, t_vector *ray, t_cubed *game)
+static void	calculate_texture(int *height, t_vector *ray, t_cubed *game)
 {
 	int map[2];
 
@@ -122,9 +104,26 @@ void	draw_worldspace(t_cubed *game)
 		calculate_ray(&ray, game);
 		fix_fisheye(&ray, game);
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
-		calculate_draw(&height, &ray, game);
+		calculate_texture(&height, &ray, game);
+		draw_column(column, height, &ray, game);
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
-		draw_segment(column, height, &ray, game);
 		column++;
 	}
 }
+
+/* static void	draw_background(int start, int end, int x, t_cubed *game) */
+/* { */
+/* 	int	floor; */
+/* 	int	roof; */
+/**/
+/* 	roof = -1; */
+/* 	while (++roof < start) */
+/* 	{ */
+/* 		if (roof < MAPCELL * MAPGRID && x < MAPCELL * MAPGRID) */
+/* 			continue ; */
+/* 		ft_put_pixel(x, roof, game->color[COL_C], game); */
+/* 	} */
+/* 	floor = SCREEN_HEIGHT + 1; */
+/* 	while (--floor > end) */
+/* 		ft_put_pixel(x, floor, game->color[COL_F], game); */
+/* } */
