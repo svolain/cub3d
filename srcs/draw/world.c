@@ -12,40 +12,40 @@
 
 #include <cubed.h>
 
-static void	calculate_draw(int y, float *tex, t_vector *ray, t_cubed *game)
+static void	calculate_draw(int row, float *tex, t_vector *ray, t_cubed *game)
 {
 	float	pp;
 	float	dy;
 	float	angle;
 
 	angle = cos(fabs(game->cam->a - ray->a));
-	pp = ((float)SCREEN_WIDTH / 2.0f) / tan(FOV / 2.0f);
-	dy = y - (float)SCREEN_HEIGHT / 2.0f;
-	tex[X] = game->cam->x + cos(ray->a) * pp * CELLSIZE / dy / angle;
-	tex[Y] = game->cam->y - sin(ray->a) * pp * CELLSIZE / dy / angle;
+	pp = (float)SCREEN_WIDTH / tan(FOV / 2);
+	dy = row - (float)SCREEN_HEIGHT / 2.0f;
+	tex[X] = cos(ray->a) * pp * CELLSIZE / dy / angle;
+	tex[Y] = sin(ray->a) * pp * CELLSIZE / dy / angle;
 	tex[X] = (int)tex[X] % game->image[IMG_FL]->width;
 	tex[Y] = (int)tex[Y] % game->image[IMG_FL]->height;
 }
 
-static void	draw_background(int x, int y, t_vector *ray, t_cubed *game)
+static void	draw_background(int column, int row, t_vector *ray, t_cubed *game)
 {
 	float	tex[2];
 	int32_t	floor;
 	int32_t	roof;
 
-	while (++y < SCREEN_HEIGHT)
+	while (++row < SCREEN_HEIGHT)
 	{
-		calculate_draw(y, tex, ray, game);
-		floor = get_pixel_color(game->image[IMG_FL], tex[Y], tex[X]);
-		roof = get_pixel_color(game->image[IMG_RF], tex[Y], tex[X]);
-		ft_put_pixel(x, y, floor, game);
-		if (SCREEN_HEIGHT - y < MAPCELL * MAPGRID && x < MAPCELL * MAPGRID)
+		calculate_draw(row, tex, ray, game);
+		floor = get_pixel_color(game->image[IMG_FL], tex[X], tex[Y]);
+		ft_put_pixel(column, row, floor, game);
+		if (SCREEN_HEIGHT - row < MAPSIZE && column < MAPSIZE)
 			continue ;
-		ft_put_pixel(x, SCREEN_HEIGHT - y, roof, game);
+		roof = get_pixel_color(game->image[IMG_RF], tex[X], tex[Y]);
+		ft_put_pixel(column, SCREEN_HEIGHT - row, roof, game);
 	}
 }
 
-static void	draw_column(int x, int height, t_vector *ray, t_cubed *game)
+static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
 {
 	int		point[2];
 	int32_t	color;
@@ -53,14 +53,14 @@ static void	draw_column(int x, int height, t_vector *ray, t_cubed *game)
 	point[A] = SCREEN_HEIGHT / 2 - height / 2 - 1;
 	point[B] = SCREEN_HEIGHT / 2 + height / 2 - 1;
 	if (height != SCREEN_HEIGHT)
-		draw_background(x, point[B], ray, game);
+		draw_background(column, point[B], ray, game);
 	while (++point[A] < point[B])
 	{
 		color = get_pixel_color(game->image[ray->img], ray->x, ray->y);
 		ray->y += ray->d;
-		if (point[A] < MAPCELL * MAPGRID && x < MAPCELL * MAPGRID)
+		if (point[A] < MAPCELL * MAPGRID && column < MAPCELL * MAPGRID)
 			continue ;
-		ft_put_pixel(x, point[A], color, game);
+		ft_put_pixel(column, point[A], color, game);
 	}
 }
 
@@ -111,6 +111,16 @@ void	draw_worldspace(t_cubed *game)
 	}
 }
 
+/* floor = get_alpha_shade(floor, row); */
+/* static int32_t	get_alpha_shade(int32_t color, int height) */
+/* { */
+/* 	if (height == SCREEN_HEIGHT) */
+/* 		return (color); */
+/* 	else if (height < SCREEN_HEIGHT / 5) */
+/* 		return (get_rgba(0, 0, 0, 255)); */
+/* 	return (color); */
+/* } */
+
 /* static void	draw_background(int start, int end, int x, t_cubed *game) */
 /* { */
 /* 	int	floor; */
@@ -119,7 +129,7 @@ void	draw_worldspace(t_cubed *game)
 /* 	roof = -1; */
 /* 	while (++roof < start) */
 /* 	{ */
-/* 		if (roof < MAPCELL * MAPGRID && x < MAPCELL * MAPGRID) */
+/* 		if (roof < MAPSIZE && x < MAPSIZE) */
 /* 			continue ; */
 /* 		ft_put_pixel(x, roof, game->color[COL_C], game); */
 /* 	} */

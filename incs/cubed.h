@@ -100,7 +100,9 @@ typedef enum e_check
 	H = 0,
 	V = 1,
 	A = 0,
-	B = 1
+	B = 1,
+	G = 2,
+	R = 3
 }	t_check;
 
 typedef enum e_action
@@ -194,11 +196,11 @@ typedef struct s_camera
 
 typedef struct s_rgba
 {
-	int32_t		color;
-	int8_t		r;
-	int8_t		g;
-	int8_t		b;
-	int8_t		a;
+	uint32_t	color;
+	uint8_t		r;
+	uint8_t		g;
+	uint8_t		b;
+	uint8_t		a;
 }	t_rgba;
 
 typedef struct s_mapinfo
@@ -241,12 +243,12 @@ void	load_assets(t_cubed *game);
 
 //		Hook
 void	hook_movement(void *param);
-void	move_camera(t_cubed *game, t_action action);
-void	rotate_camera(t_cubed *game, t_action action);
 void	hook_action(mlx_key_data_t keydata, void *param);
 void	hook_mouse(void *param);
 void	draw_scene(void *param);
 void	hook_close(void *param);
+void	move_camera(t_cubed *game, t_action action);
+void	rotate_camera(t_cubed *game, t_action action);
 void	get_map_position(int *target, int x, int y);
 void	set_buffer(int *buffer, int size, t_cubed *game);
 
@@ -256,6 +258,7 @@ void	draw_minimap(t_cubed *game);
 void	calculate_ray(t_vector *ray, t_cubed *game);
 int32_t	get_channel_color(int32_t rgba, t_action action);
 int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
+int32_t	get_alpha_blend(int32_t source, int32_t current);
 int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 void	image_to_canvas(int dst_x, int dst_y, mlx_image_t *img, t_cubed *game);
 void	ft_put_pixel(int x, int y, int32_t color, t_cubed *game);
