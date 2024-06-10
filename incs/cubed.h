@@ -245,17 +245,21 @@ void	load_assets(t_cubed *game);
 void	hook_movement(void *param);
 void	hook_action(mlx_key_data_t keydata, void *param);
 void	hook_mouse(void *param);
-void	draw_scene(void *param);
 void	hook_close(void *param);
 void	move_camera(t_cubed *game, t_action action);
 void	rotate_camera(t_cubed *game, t_action action);
 void	get_map_position(int *target, int x, int y);
 void	set_buffer(int *buffer, int size, t_cubed *game);
 
-//		Draw
-void	draw_worldspace(t_cubed *game);
-void	draw_minimap(t_cubed *game);
+//		Render
+void	render_scenario(void *param);
+void	render_worldspace(t_cubed *game);
+void	render_background(t_cubed *game);
+void	render_minimap(t_cubed *game);
+
+//		Calc
 void	calculate_ray(t_vector *ray, t_cubed *game);
+
 int32_t	get_channel_color(int32_t rgba, t_action action);
 int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int32_t	get_alpha_blend(int32_t source, int32_t current);

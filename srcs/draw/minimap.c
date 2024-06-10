@@ -96,7 +96,7 @@ static void	draw_column(int column, int *player, t_cubed *game)
 	}
 }
 
-void	draw_minimap(t_cubed *game)
+void	render_minimap(t_cubed *game)
 {
 	int	column;
 	int	player[2];

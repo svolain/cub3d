@@ -52,7 +52,8 @@ SOURCES 	:= 	main.c \
 				rotate.c \
 				action.c \
 				misc.c \
-				world.c \
+				worldspace.c \
+				background.c \
 				minimap.c \
 				rays.c \
 				draw.c \

@@ -37,11 +37,12 @@ void	image_to_canvas(int dst_x, int dst_y, mlx_image_t *img, t_cubed *game)
 	}
 }
 
-void	draw_scene(void *param)
+void	render_scenario(void *param)
 {
 	t_cubed	*game;
 
 	game = param;
-	draw_minimap(game);
-	draw_worldspace(game);
+	render_minimap(game);
+	render_worldspace(game);
+	render_background(game);
 }

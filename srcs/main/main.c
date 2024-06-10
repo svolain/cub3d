@@ -18,7 +18,7 @@ static void	run_game(t_cubed *game)
 	mlx_key_hook(game->mlx, hook_action, game);
 	mlx_loop_hook(game->mlx, hook_movement, game);
 	mlx_loop_hook(game->mlx, hook_mouse, game);
-	mlx_loop_hook(game->mlx, draw_scene, game);
+	mlx_loop_hook(game->mlx, render_scenario, game);
 	mlx_loop(game->mlx);
 }
 
@@ -26,8 +26,8 @@ static void	load_scene(t_cubed *game)
 {
 	safe_draw(game->canvas, 0, 0, game);
 	load_assets(game);
-	draw_minimap(game);
-	draw_worldspace(game);
+	render_minimap(game);
+	render_worldspace(game);
 	safe_draw(game->anim[IMG_GO], 0, 0, game);
 }
 
