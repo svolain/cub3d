@@ -33,7 +33,6 @@
 # define SCREEN_HEIGHT 1080
 # define SCREEN_TITLE "cub3d"
 
-# define FPS 30.0f
 # define MAXSIZE 500
 # define CELLSIZE 64
 # define BUMP_BUFFER 20

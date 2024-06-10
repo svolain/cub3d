@@ -12,25 +12,40 @@
 
 #include <cubed.h>
 
+static int32_t	calculate_shade(int height)
+{
+	static int	treshold = 210;
+	static int	modifier = 300;
+	float		intensity;
+
+	if (height <= treshold)
+		return (get_rgba(0, 0, 0, 255));
+	else
+		intensity = (float)height / SCREEN_HEIGHT * 255.0f;
+	return (get_rgba(0, 0, 0, modifier - intensity));
+}
+
 static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
 {
 	int		point[2];
+	int32_t	shade;
 	int32_t	color;
 
 	point[A] = SCREEN_HEIGHT / 2 - height / 2 - 1;
 	point[B] = SCREEN_HEIGHT / 2 + height / 2 - 1;
+	shade = calculate_shade(height);
 	while (++point[A] < point[B])
 	{
-		color = get_pixel_color(game->image[ray->img], ray->x, ray->y);
+		color = get_alpha_blend(shade,
+			get_pixel_color(game->image[ray->img], ray->x, ray->y));
 		ray->y += ray->d;
 		if (point[A] < MAPCELL * MAPGRID && column < MAPCELL * MAPGRID)
 			continue ;
-		/* color = get_alpha_blend(get_rgba(0, 0, 0, temp), color); */
 		ft_put_pixel(column, point[A], color, game);
 	}
 }
 
-static void	calculate_texture(int *height, t_vector *ray, t_cubed *game)
+static void	calculate_draw(int *height, t_vector *ray, t_cubed *game)
 {
 	int map[2];
 
@@ -70,36 +85,9 @@ void	render_worldspace(t_cubed *game)
 		calculate_ray(&ray, game);
 		fix_fisheye(&ray, game);
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
-		calculate_texture(&height, &ray, game);
+		calculate_draw(&height, &ray, game);
 		draw_column(column, height, &ray, game);
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
 		column++;
 	}
 }
-
-/* floor = get_alpha_shade(floor, row); */
-/* static int32_t	get_alpha_shade(int32_t color, int height) */
-/* { */
-/* 	if (height == SCREEN_HEIGHT) */
-/* 		return (color); */
-/* 	else if (height < SCREEN_HEIGHT / 5) */
-/* 		return (get_rgba(0, 0, 0, 255)); */
-/* 	return (color); */
-/* } */
-
-/* static void	draw_background(int start, int end, int x, t_cubed *game) */
-/* { */
-/* 	int	floor; */
-/* 	int	roof; */
-/**/
-/* 	roof = -1; */
-/* 	while (++roof < start) */
-/* 	{ */
-/* 		if (roof < MAPSIZE && x < MAPSIZE) */
-/* 			continue ; */
-/* 		ft_put_pixel(x, roof, game->color[COL_C], game); */
-/* 	} */
-/* 	floor = SCREEN_HEIGHT + 1; */
-/* 	while (--floor > end) */
-/* 		ft_put_pixel(x, floor, game->color[COL_F], game); */
-/* } */
