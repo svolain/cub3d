@@ -12,7 +12,7 @@
 
 #include <cubed.h>
 
-static void	error_log(char *msg1, char *msg2, char *msg3)
+void	error_log(char *msg1, char *msg2, char *msg3)
 {
 	ft_putstr_fd(FMT_BOLD_RED, STDERR_FILENO);
 	ft_putendl_fd("Error", STDERR_FILENO);

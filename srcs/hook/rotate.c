@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:17:29 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/07 13:31:50 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/11 15:43:09 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	hook_mouse(void *param)
 			animate_shotgun(game, i);
 		}
 	}
-		
 }
 
 void	fix_fisheye(t_vector *ray, t_cubed *game)

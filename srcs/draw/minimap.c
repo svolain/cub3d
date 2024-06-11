@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/07 10:47:57 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/11 15:41:31 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	draw_fov(t_cubed *game)
 	float		angle;
 	int			i;
 
-	angle = game->cam->a;
+	angle = get_float(&game->cam->a, &game->mtx[MTX_CAM], game);
 	ft_rotate(&angle, FOV / 2, ROTATE_LEFT);
 	i = 0;
 	while (i < density * max_fov)
@@ -83,7 +83,7 @@ static void	draw_column(int column, int *player, t_cubed *game)
 	int		row;
 
 	row = 0;
-	player[Y] = game->cam->y - (float)MAPSIZE;
+	player[Y] = get_float(&game->cam->y, &game->mtx[MTX_CAM], game) - MAPSIZE;
 	while (row < MAPSIZE)
 	{
 		if (column % MAPCELL > 30 || row % MAPCELL > 30)
@@ -96,14 +96,14 @@ static void	draw_column(int column, int *player, t_cubed *game)
 	}
 }
 
-void	render_minimap(t_cubed *game)
+void	draw_minimap(t_cubed *game)
 {
-	int	column;
-	int	player[2];
-	int	position;
+	static int	position = MAPSIZE / SCALE_FACTOR - (MAPCELL / 2);
+	int			player[2];
+	int			column;
 
 	column = 0;
-	player[X] = game->cam->x - (float)MAPSIZE;
+	player[X] = get_float(&game->cam->x, &game->mtx[MTX_CAM], game) - MAPSIZE;
 	while (column < MAPSIZE)
 	{
 		draw_column(column, player, game);
@@ -111,6 +111,15 @@ void	render_minimap(t_cubed *game)
 		column++;
 	}
 	draw_fov(game);
-	position = MAPGRID * MAPCELL / SCALE_FACTOR - (MAPCELL / 2);
-	image_to_canvas(position, position, game->anim[IMG_MP], game);
+	image_to_canvas(position, position, game->image[IMG_PL], game);
+}
+
+void	*render_minimap(void *param)
+{
+	t_cubed	*game;
+
+	game = param;
+	while (!game_over(game))
+		draw_minimap(game);
+	return (NULL);
 }

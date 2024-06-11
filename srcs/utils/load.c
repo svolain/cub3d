@@ -83,13 +83,10 @@ void	load_sprite(t_image index, char *start, bool *loaded, t_cubed *game)
 
 void	load_assets(t_cubed *game)
 {
+	game->image[IMG_DR] = safe_img(0, 0, safe_tex(TEX_DOOR, 0, game), game);
 	game->image[IMG_FL] = safe_img(0, 0, safe_tex(TEX_FLOOR, 0, game), game);
 	game->image[IMG_RF] = safe_img(0, 0, safe_tex(TEX_ROOF, 0, game), game);
-	game->image[IMG_DR] = safe_img(0, 0, safe_tex(TEX_DOOR, 0, game), game);
-	game->anim[IMG_W1] = safe_img(0, 0, safe_tex(TEX_WALK1, 0, game), game);
-	game->anim[IMG_W2] = safe_img(0, 0, safe_tex(TEX_WALK2, 0, game), game);
-	game->anim[IMG_PS] = safe_img(0, 0, safe_tex(TEX_IDLE, 0, game), game);
-	game->anim[IMG_MP] = game->anim[IMG_PS];
+	game->image[IMG_PL] = safe_img(0, 0, safe_tex(TEX_PLAYER, 0, game), game);
 	game->anim[IMG_G1] = safe_img(0, 0, safe_tex(TEX_GUN1, 0, game), game);
 	game->anim[IMG_G2] = safe_img(0, 0, safe_tex(TEX_GUN2, 0, game), game);
 	game->anim[IMG_G3] = safe_img(0, 0, safe_tex(TEX_GUN3, 0, game), game);

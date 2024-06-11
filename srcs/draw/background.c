@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:23:09 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/10 11:23:12 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/11 15:40:08 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
 	}
 }
 
-void	render_background(t_cubed *game)
+void	draw_background(t_cubed *game)
 {
 	t_vector	ray;
 	float		angle;
@@ -84,4 +84,14 @@ void	render_background(t_cubed *game)
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
 		column++;
 	}
+}
+
+void	*render_background(void *param)
+{
+	t_cubed	*game;
+
+	game = param;
+	while (!game_over(game))
+		draw_background(game);
+	return (NULL);
 }

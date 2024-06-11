@@ -6,11 +6,35 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 18:51:45 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/04 18:52:08 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/11 06:13:54 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
+
+void	free_single(char **str)
+{
+	if (!str || !*str)
+		return ;
+	free(*str);
+	*str = NULL;
+}
+
+void	free_double(char ***arr)
+{
+	int	i;
+
+	if (!arr || !*arr)
+		return ;
+	i = 0;
+	while ((*arr)[i])
+	{
+		free_single(&(*arr)[i]);
+		i++;
+	}
+	free(*arr);
+	*arr = NULL;
+}
 
 char	*safe_strjoin(char *s1, char *s2, t_cubed *game)
 {

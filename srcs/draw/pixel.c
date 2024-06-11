@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pixel.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:17:16 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/07 10:45:46 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/11 15:41:43 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,29 @@ void	ft_put_pixel(int x, int y, int32_t color, t_cubed *game)
 		|| get_pixel_color(game->canvas, x, y) == color)
 		return ;
 	mlx_put_pixel(game->canvas, x, y, color);
+}
+
+void	image_to_canvas(int dst_x, int dst_y, mlx_image_t *img, t_cubed *game)
+{
+	uint32_t	color;
+	uint32_t	height;
+	uint32_t	i;
+	uint32_t	j;
+
+	i = 0;
+	height = dst_y;
+	while (i < img->width)
+	{
+		j = 0;
+		dst_y = height;
+		while (j < img->height)
+		{
+			color = get_pixel_color(img, i, j);
+			ft_put_pixel(dst_x, dst_y, color, game);
+			dst_y++;
+			j++;
+		}
+		dst_x++;
+		i++;
+	}
 }

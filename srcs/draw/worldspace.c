@@ -69,7 +69,7 @@ static void	calculate_draw(int *height, t_vector *ray, t_cubed *game)
 	}
 }
 
-void	render_worldspace(t_cubed *game)
+void	draw_worldspace(t_cubed *game)
 {
 	t_vector	ray;
 	float		angle;
@@ -90,4 +90,14 @@ void	render_worldspace(t_cubed *game)
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
 		column++;
 	}
+}
+
+void	*render_worldspace(void *param)
+{
+	t_cubed	*game;
+
+	game = param;
+	while (!game_over(game))
+		draw_worldspace(game);
+	return (NULL);
 }

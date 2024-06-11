@@ -6,7 +6,7 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/06/05 21:54:23 by jmertane         ###   ########.fr        #
+#    Updated: 2024/06/11 12:33:20 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ endif
 
 MODULES		:=	main \
 				parse \
+				thread \
 				hook \
 				draw \
 				utils
@@ -48,6 +49,10 @@ SOURCES 	:= 	main.c \
 				mapinfo.c \
 				checker.c \
 				utils.c \
+				thread.c \
+				mutex.c \
+				synchro.c \
+				getset.c \
 				move.c \
 				rotate.c \
 				action.c \
@@ -55,11 +60,10 @@ SOURCES 	:= 	main.c \
 				worldspace.c \
 				background.c \
 				minimap.c \
+				animation.c \
 				rays.c \
-				draw.c \
 				color.c \
 				pixel.c \
-				animation.c \
 				error.c \
 				free.c \
 				load.c \

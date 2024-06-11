@@ -3,14 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 12:30:49 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/07 10:12:26 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/11 15:42:16 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
+
+void	move_camera(t_cubed *game, t_action action)
+{
+	if (action == MOVE_UP)
+	{
+		game->cam->x += game->cam->dx;
+		game->cam->y += game->cam->dy;
+	}
+	else if (action == MOVE_DOWN)
+	{
+		game->cam->x -= game->cam->dx;
+		game->cam->y -= game->cam->dy;
+	}
+	else if (action == MOVE_LEFT)
+	{
+		game->cam->x -= -game->cam->dy;
+		game->cam->y -= game->cam->dx;
+	}
+	else
+	{
+		game->cam->x += -game->cam->dy;
+		game->cam->y += game->cam->dx;
+	}
+	/* check_collision(previous, game); */
+}
 
 /* static void	check_collision(int *dest, int *player, int *new, t_cubed *game) */
 /* { */
@@ -126,29 +151,3 @@
 /* 	if (ft_strchr(CHARSET_MOVEABLE, game->map->matrix[player[Y]][xa])) */
 /* 		game->cam->y = prev[Y]; */
 /* } */
-
-void	move_camera(t_cubed *game, t_action action)
-{
-	if (action == MOVE_UP)
-	{
-		game->cam->x += game->cam->dx;
-		game->cam->y += game->cam->dy;
-	}
-	else if (action == MOVE_DOWN)
-	{
-		game->cam->x -= game->cam->dx;
-		game->cam->y -= game->cam->dy;
-	}
-	else if (action == MOVE_LEFT)
-	{
-		game->cam->x -= -game->cam->dy;
-		game->cam->y -= game->cam->dx;
-	}
-	else
-	{
-		game->cam->x += -game->cam->dy;
-		game->cam->y += game->cam->dx;
-	}
-	/* check_collision(previous, game); */
-	animate_minimap(game);
-}
