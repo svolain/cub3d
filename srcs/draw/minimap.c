@@ -62,15 +62,15 @@ static int32_t	get_map_color(int cam_x, int cam_y, t_cubed *game)
 	get_map_position(map, cam_x, cam_y);
 	if (map[X] < 0 || map[X] >= game->map->width
 		|| map[Y] < 0 || map[Y] >= game->map->height)
-		return (get_rgba(150, 150, 150, 150));
+		return (COLOR_WALL);
 	else if (get_map_element(map[X], map[Y], game) == MAP_CLOSED)
-		return (get_rgba(50, 150, 150, 255));
+		return (COLOR_DOOR_C);
 	else if (get_map_element(map[X], map[Y], game) == MAP_OPENED)
-		return (get_rgba(100, 200, 50, 255));
+		return (COLOR_DOOR_O);
 	else if (get_map_element(map[X], map[Y], game) == MAP_FLOOR)
-		return (get_rgba(215, 255, 255, 200));
+		return (COLOR_FLOOR);
 	else
-		return (get_rgba(150, 150, 150, 150));
+		return (COLOR_WALL);
 }
 
 static void	draw_column(int column, int cam_x, int cam_y, t_cubed *game)
@@ -83,7 +83,7 @@ static void	draw_column(int column, int cam_x, int cam_y, t_cubed *game)
 	while (row < MAPSIZE)
 	{
 		if (column % MAPCELL > 30 || row % MAPCELL > 30)
-			color = get_rgba(50, 50, 50, 200);
+			color = COLOR_GRID;
 		else
 			color = get_map_color(cam_x, cam_y, game);
 		ft_put_pixel(column, row, color, game->minimap);

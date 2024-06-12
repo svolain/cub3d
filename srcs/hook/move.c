@@ -12,10 +12,11 @@
 
 #include <cubed.h>
 
-static bool	ft_is_collision(t_camera *cam, t_cubed *game)
+static bool	ft_is_collision(t_camera *cam, int prev[2], t_cubed *game)
 {
 	int	map[2];
 
+	(void)prev;
 	get_map_position(map, cam->x, cam->y);
 	if (!ft_strchr(CHARSET_MOVEABLE,
 		get_map_element(map[X], map[Y], game)))
@@ -32,17 +33,19 @@ static void update_position(t_camera *cam, float delta_x, float delta_y)
 void	move_camera(t_cubed *game, t_action action)
 {
 	t_camera	cam;
+	int			prev[2];
 
 	get_camera(&cam, &game->mtx[MTX_CAM], game);
+	get_map_position(prev, cam.x, cam.y);
 	if (action == MOVE_UP)
 		update_position(&cam, cam.dx, cam.dy);
 	else if (action == MOVE_DOWN)
 		update_position(&cam, -cam.dx, -cam.dy);
 	else if (action == MOVE_LEFT)
 		update_position(&cam, cam.dy, -cam.dx);
-	else
+	else if (action == MOVE_RIGHT)
 		update_position(&cam, -cam.dy, cam.dx);
-	if (!ft_is_collision(&cam, game))
+	if (!ft_is_collision(&cam, prev, game))
 		set_camera(&cam, &game->mtx[MTX_CAM], game);
 }
 

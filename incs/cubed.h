@@ -61,6 +61,13 @@
 
 # define BPP sizeof(int32_t)
 
+# define COLOR_RAY		get_rgba(255, 50, 50, 100)
+# define COLOR_GRID		get_rgba(50, 50, 50, 200)
+# define COLOR_WALL		get_rgba(150, 150, 150, 150)
+# define COLOR_FLOOR	get_rgba(215, 255, 255, 200)
+# define COLOR_DOOR_O	get_rgba(100, 200, 50, 255)
+# define COLOR_DOOR_C	get_rgba(50, 150, 150, 255)
+
 typedef enum e_check
 {
 	FAILURE = -1,
