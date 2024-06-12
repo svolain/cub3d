@@ -16,7 +16,6 @@ void	hook_mouse(void *param)
 {
 	t_cubed	*game;
 	int32_t	mouse[2];
-	int		i;
 
 	game = param;
 	mlx_get_mouse_pos(game->mlx, &mouse[X], &mouse[Y]);
@@ -25,33 +24,26 @@ void	hook_mouse(void *param)
 	else if (mouse[X] > game->mouse[X])
 		rotate_camera(game, ROTATE_RIGHT);
 	game->mouse[X] = mouse[X];
-	if (mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT))
-	{
-		i = IMG_G1;
-		while (++i < IMG_G15 + 2)
-		{
-			animate_shotgun(game, i);
-		}
-	}
 }
 
-void	fix_fisheye(t_vector *ray, t_cubed *game)
+void	fix_fisheye(t_vector *ray, float angle)
 {
-	float	angle;
-
-	angle = game->cam->a;
 	ft_rotate(&angle, ray->a, ROTATE_LEFT);
 	ray->d *= cos(angle);
 }
 
 void	rotate_camera(t_cubed *game, t_action action)
 {
+	t_camera	cam;
+
+	get_camera(&cam, &game->mtx[MTX_CAM], game);
 	if (action == ROTATE_LEFT)
-		ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_LEFT);
+		ft_rotate(&cam.a, STEP_ANGLE, ROTATE_LEFT);
 	else
-		ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_RIGHT);
-	game->cam->dx = cos(game->cam->a) * STEP_MOVEMENT;
-	game->cam->dy = sin(game->cam->a) * STEP_MOVEMENT;
+		ft_rotate(&cam.a, STEP_ANGLE, ROTATE_RIGHT);
+	cam.dx = cos(cam.a) * STEP_MOVEMENT;
+	cam.dy = sin(cam.a) * STEP_MOVEMENT;
+	set_camera(&cam, &game->mtx[MTX_CAM], game);
 }
 
 void	ft_rotate(float *target, float angle, t_action action)
@@ -74,3 +66,13 @@ float	ft_degtorad(float degree)
 {
 	return (degree * PI / 180);
 }
+
+/* int		i; */
+/* if (mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT)) */
+/* { */
+/* 	i = IMG_G1; */
+/* 	while (++i < IMG_G15 + 2) */
+/* 	{ */
+/* 		animate_shotgun(game, i); */
+/* 	} */
+/* } */

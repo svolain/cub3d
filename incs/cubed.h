@@ -51,12 +51,13 @@
 # define FOV ft_degtorad(66)
 # define DEGREE ft_degtorad(1)
 
-# define STEP_ANGLE 0.05f
-# define STEP_MOVEMENT 5.0f
+# define STEP_ANGLE 0.025f
+# define STEP_MOVEMENT 2.5f
 # define STEP_WINDOW FOV / SCREEN_WIDTH
 
 # define MAPCELL CELLSIZE / SCALE_FACTOR
 # define MAPSIZE MAPCELL * MAPGRID
+# define MAPCENTER MAPSIZE / SCALE_FACTOR - (MAPCELL / 2)
 
 # define BPP sizeof(int32_t)
 
@@ -70,8 +71,6 @@ typedef enum e_check
 	V = 1,
 	A = 0,
 	B = 1,
-	G = 2,
-	R = 3
 }	t_check;
 
 typedef enum e_action
@@ -141,6 +140,7 @@ typedef struct s_cubed
 	char		*gnl;
 	mlx_t		*mlx;
 	mlx_image_t	*canvas;
+	mlx_image_t	*minimap;
 	int32_t		mouse[2];
 	int32_t		color[GAME_COLORS];
 	mlx_image_t	*image[GAME_ASSETS];
@@ -172,13 +172,13 @@ void	hook_mouse(void *param);
 void	hook_close(void *param);
 void	move_camera(t_cubed *game, t_action action);
 void	rotate_camera(t_cubed *game, t_action action);
-void	get_map_position(int *target, int x, int y);
+void	get_map_position(int target[2], int x, int y);
 char	get_map_element(int x, int y, t_cubed *game);
 void	set_buffer(int *buffer, int size, t_cubed *game);
 
 //		Rotate
 void	ft_rotate(float *target, float angle, t_action action);
-void	fix_fisheye(t_vector *ray, t_cubed *game);
+void	fix_fisheye(t_vector *ray, float angle);
 float	ft_degtorad(float degree);
 
 //		Render
@@ -192,7 +192,7 @@ void	animate_shotgun(t_cubed *game, int i);
 void	wait_frame(t_cubed *game, float limit);
 
 //		Calculate
-void	calculate_ray(t_vector *ray, t_cubed *game);
+void	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game);
 
 //		Colors
 int32_t	get_channel_color(int32_t rgba, t_action action);
@@ -200,9 +200,9 @@ int32_t	get_alpha_blend(int32_t source, int32_t current);
 int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 //		Pixels
-void	image_to_canvas(int dst_x, int dst_y, mlx_image_t *img, t_cubed *game);
+void	image_to_canvas(int dst_x, int dst_y, mlx_image_t *img);
 int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
-void	ft_put_pixel(int x, int y, int32_t color, t_cubed *game);
+void	ft_put_pixel(int x, int y, int32_t color, mlx_image_t *img);
 
 //		Error
 void	error_log(char *msg1, char *msg2, char *msg3);
@@ -233,6 +233,7 @@ void	set_bool(bool *dst, bool val, t_mtx *mutex, t_cubed *game);
 float	get_float(float *val, t_mtx *mutex, t_cubed *game);
 void	set_float(float *dst, float val, t_mtx *mutex, t_cubed *game);
 void	get_camera(t_camera *cam, t_mtx *mutex, t_cubed *game);
+void	set_camera(t_camera *cam, t_mtx *mutex, t_cubed *game);
 void	set_finished(t_cubed *game);
 bool	game_over(t_cubed *game);
 

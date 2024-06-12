@@ -34,15 +34,15 @@ int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y)
 	return (get_rgba(*start, *(start + 1), *(start + 2), *(start + 3)));
 }
 
-void	ft_put_pixel(int x, int y, int32_t color, t_cubed *game)
+void	ft_put_pixel(int x, int y, int32_t color, mlx_image_t *img)
 {
-	if (!valid_pixel(game->canvas, x, y) || ft_istransparent(color)
-		|| get_pixel_color(game->canvas, x, y) == color)
+	if (!valid_pixel(img, x, y) || ft_istransparent(color)
+		|| get_pixel_color(img, x, y) == color)
 		return ;
-	mlx_put_pixel(game->canvas, x, y, color);
+	mlx_put_pixel(img, x, y, color);
 }
 
-void	image_to_canvas(int dst_x, int dst_y, mlx_image_t *img, t_cubed *game)
+void	image_to_canvas(int dst_x, int dst_y, mlx_image_t *img)
 {
 	uint32_t	color;
 	uint32_t	height;
@@ -58,7 +58,7 @@ void	image_to_canvas(int dst_x, int dst_y, mlx_image_t *img, t_cubed *game)
 		while (j < img->height)
 		{
 			color = get_pixel_color(img, i, j);
-			ft_put_pixel(dst_x, dst_y, color, game);
+			ft_put_pixel(dst_x, dst_y, color, img);
 			dst_y++;
 			j++;
 		}

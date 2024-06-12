@@ -39,6 +39,7 @@ static void	clean_images(t_cubed *game)
 		i++;
 	}
 	mlx_delete_image(game->mlx, game->canvas);
+	mlx_delete_image(game->mlx, game->minimap);
 }
 
 static void	destroy_mutexes(t_cubed *game)

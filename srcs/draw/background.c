@@ -45,39 +45,40 @@ static void	calculate_draw(int row, float *tex, t_vector *ray, t_cubed *game)
 static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
 {
 	float	tex[2];
+	int32_t	shade;
 	int32_t	floor;
 	int32_t	roof;
+	int		row;
 
-	int row = SCREEN_HEIGHT / 2 + height / 2 - 1;
+	row = SCREEN_HEIGHT / 2 + height / 2 - 1;
 	while (++row < SCREEN_HEIGHT)
 	{
 		calculate_draw(row, tex, ray, game);
-		floor = get_alpha_blend(calculate_shade(row),
-			get_pixel_color(game->image[IMG_FL], tex[X], tex[Y]));
-		ft_put_pixel(column, row, floor, game);
+		shade = calculate_shade(row);
+		floor = get_alpha_blend(shade, get_pixel_color
+			(game->image[IMG_FL], tex[X], tex[Y]));
+		ft_put_pixel(column, row, floor, game->canvas);
 		if (SCREEN_HEIGHT - row < MAPSIZE && column < MAPSIZE)
 			continue ;
-		roof = get_alpha_blend(calculate_shade(row),
-			get_pixel_color(game->image[IMG_RF], tex[X], tex[Y]));
-		ft_put_pixel(column, SCREEN_HEIGHT - row, roof, game);
+		roof = get_alpha_blend(shade, get_pixel_color
+			(game->image[IMG_RF], tex[X], tex[Y]));
+		ft_put_pixel(column, SCREEN_HEIGHT - row, roof, game->canvas);
 	}
 }
 
-void	draw_background(t_cubed *game)
+void	draw_background(t_camera *cam, float angle, t_cubed *game)
 {
 	t_vector	ray;
-	float		angle;
 	int			height;
 	int			column;
 
 	column = 0;
-	angle = game->cam->a;
 	ft_rotate(&angle, FOV / 2, ROTATE_LEFT);
 	while (column < SCREEN_WIDTH)
 	{
 		ray.a = angle;
-		calculate_ray(&ray, game);
-		fix_fisheye(&ray, game);
+		calculate_ray(&ray, cam, game);
+		fix_fisheye(&ray, cam->a);
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
 		if (height <= SCREEN_HEIGHT)
 			draw_column(column, height, &ray, game);
@@ -88,10 +89,14 @@ void	draw_background(t_cubed *game)
 
 void	*render_background(void *param)
 {
-	t_cubed	*game;
+	t_cubed		*game;
+	t_camera	cam;
 
 	game = param;
 	while (!game_over(game))
-		draw_background(game);
+	{
+		get_camera(&cam, &game->mtx[MTX_CAM], game);
+		draw_background(&cam, cam.a, game);
+	}
 	return (NULL);
 }

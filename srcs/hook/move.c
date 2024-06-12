@@ -12,29 +12,38 @@
 
 #include <cubed.h>
 
+static bool	ft_is_collision(t_camera *cam, t_cubed *game)
+{
+	int	map[2];
+
+	get_map_position(map, cam->x, cam->y);
+	if (!ft_strchr(CHARSET_MOVEABLE,
+		get_map_element(map[X], map[Y], game)))
+		return (true);
+	return (false);
+}
+
+static void update_position(t_camera *cam, float delta_x, float delta_y)
+{
+	cam->x += delta_x;
+	cam->y += delta_y;
+}
+
 void	move_camera(t_cubed *game, t_action action)
 {
+	t_camera	cam;
+
+	get_camera(&cam, &game->mtx[MTX_CAM], game);
 	if (action == MOVE_UP)
-	{
-		game->cam->x += game->cam->dx;
-		game->cam->y += game->cam->dy;
-	}
+		update_position(&cam, cam.dx, cam.dy);
 	else if (action == MOVE_DOWN)
-	{
-		game->cam->x -= game->cam->dx;
-		game->cam->y -= game->cam->dy;
-	}
+		update_position(&cam, -cam.dx, -cam.dy);
 	else if (action == MOVE_LEFT)
-	{
-		game->cam->x -= -game->cam->dy;
-		game->cam->y -= game->cam->dx;
-	}
+		update_position(&cam, cam.dy, -cam.dx);
 	else
-	{
-		game->cam->x += -game->cam->dy;
-		game->cam->y += game->cam->dx;
-	}
-	/* check_collision(previous, game); */
+		update_position(&cam, -cam.dy, cam.dx);
+	if (!ft_is_collision(&cam, game))
+		set_camera(&cam, &game->mtx[MTX_CAM], game);
 }
 
 /* static void	check_collision(int *dest, int *player, int *new, t_cubed *game) */

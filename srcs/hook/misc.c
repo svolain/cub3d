@@ -30,7 +30,7 @@ void	set_buffer(int *buffer, int size, t_cubed *game)
 		buffer[Y] = -buffer[Y];
 }
 
-void	get_map_position(int *target, int x, int y)
+void	get_map_position(int target[2], int x, int y)
 {
 	target[X] = x / CELLSIZE;
 	target[Y] = y / CELLSIZE;
