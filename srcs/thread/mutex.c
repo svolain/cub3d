@@ -53,7 +53,7 @@ static void	init_mutexes(t_operation action, t_cubed *game)
 	int		i;
 
 	i = 0;
-	while (i < GAME_MUTEXS)
+	while (i < GAME_MUTEXES)
 	{
 		mutex = game->mtx[i];
 		err_chkr(pthread_mutex_init(&mutex, NULL), action, game);

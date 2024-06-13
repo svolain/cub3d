@@ -38,34 +38,27 @@ static void	clean_images(t_cubed *game)
 			mlx_delete_image(game->mlx, game->image[i]);
 		i++;
 	}
-	mlx_delete_image(game->mlx, game->canvas);
-	mlx_delete_image(game->mlx, game->minimap);
 }
 
-static void	destroy_mutexes(t_cubed *game)
-{
-	t_mtx	mutex;
-	int		i;
-
-	i = 0;
-	while (i < GAME_MUTEXS)
-	{
-		mutex = game->mtx[i];
-		safe_mutex(&mutex, MTX_DESTROY, game);
-		i++;
-	}
-}
-
-static void	join_threads(t_cubed *game)
+static void	set_game_over(t_cubed *game)
 {
 	pthread_t	tid;
+	t_mtx		mutex;
 	int			i;
 
 	i = 0;
+	set_finished(game);
 	while (i < GAME_THREADS)
 	{
 		tid = game->tid[i];
 		safe_thread(&tid, THD_JOIN, game);
+		i++;
+	}
+	i = 0;
+	while (i < GAME_MUTEXES)
+	{
+		mutex = game->mtx[i];
+		safe_mutex(&mutex, MTX_DESTROY, game);
 		i++;
 	}
 }
@@ -74,11 +67,9 @@ void	free_exit(t_cubed *game, int excode)
 {
 	if (!game)
 		exit(excode);
-	set_finished(game);
-	join_threads(game);
-	destroy_mutexes(game);
 	if (game->mlx != NULL)
 	{
+		set_game_over(game);
 		mlx_close_window(game->mlx);
 		clean_images(game);
 		mlx_terminate(game->mlx);

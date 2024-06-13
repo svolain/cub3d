@@ -57,12 +57,10 @@ static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
 		shade = calculate_shade(row);
 		floor = get_alpha_blend(shade, get_pixel_color
 			(game->image[IMG_FL], tex[X], tex[Y]));
-		ft_put_pixel(column, row, floor, game->canvas);
-		if (SCREEN_HEIGHT - row < MAPSIZE && column < MAPSIZE)
-			continue ;
+		ft_put_pixel(column, row, floor, game->image[IMG_WS]);
 		roof = get_alpha_blend(shade, get_pixel_color
 			(game->image[IMG_RF], tex[X], tex[Y]));
-		ft_put_pixel(column, SCREEN_HEIGHT - row, roof, game->canvas);
+		ft_put_pixel(column, SCREEN_HEIGHT - row, roof, game->image[IMG_WS]);
 	}
 }
 
@@ -95,7 +93,7 @@ void	*render_background(void *param)
 	game = param;
 	while (!game_over(game))
 	{
-		get_camera(&cam, &game->mtx[MTX_CAM], game);
+		get_camera(&cam, game);
 		draw_background(&cam, cam.a, game);
 	}
 	return (NULL);

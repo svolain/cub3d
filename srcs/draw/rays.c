@@ -38,7 +38,7 @@ static float	calc_horizontal(t_vector *ray, t_camera *cam, float angle, t_cubed 
 	atan = 1 / -tan(angle);
 	if (angle > WEST)
 	{
-		ray->y = (int)cam->y / CELLSIZE * CELLSIZE - 0.0001f;
+		ray->y = (int)cam->y / CELLSIZE * CELLSIZE - 0.001f;
 		offset[Y] = -CELLSIZE;
 	}
 	else
@@ -60,7 +60,7 @@ static float	calc_vertical(t_vector *ray, t_camera *cam, float angle, t_cubed *g
 	ntan = -tan(angle);
 	if (angle > NORTH && angle < SOUTH)
 	{
-		ray->x = (int)cam->x / CELLSIZE * CELLSIZE - 0.0001f;
+		ray->x = (int)cam->x / CELLSIZE * CELLSIZE - 0.001f;
 		offset[X] = -CELLSIZE;
 	}
 	else

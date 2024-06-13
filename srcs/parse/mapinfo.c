@@ -22,7 +22,8 @@ static void	parse_map(char *joined, t_cubed *game)
 	check_walls(game, duplex);
 	free_double(&duplex);
 	check_inward(game, game->map->matrix);
-	if (game->map->height > MAXSIZE || game->map->width > MAXSIZE)
+	if (game->map->height > MAPLIMIT
+		|| game->map->width > MAPLIMIT)
 		error_exit(ERR_MAP, MSG_SIZE, game);
 }
 

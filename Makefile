@@ -56,7 +56,7 @@ SOURCES 	:= 	main.c \
 				move.c \
 				rotate.c \
 				action.c \
-				misc.c \
+				mouse.c \
 				worldspace.c \
 				background.c \
 				minimap.c \

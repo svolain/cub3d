@@ -39,9 +39,7 @@ static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
 		color = get_alpha_blend(shade, get_pixel_color
 			(game->image[ray->img], ray->x, ray->y));
 		ray->y += ray->d;
-		if (point[A] < MAPSIZE && column < MAPSIZE)
-			continue ;
-		ft_put_pixel(column, point[A], color, game->canvas);
+		ft_put_pixel(column, point[A], color, game->image[IMG_WS]);
 	}
 }
 
@@ -50,9 +48,8 @@ static void	calculate_draw(int *height, t_vector *ray, t_cubed *game)
 	int map[2];
 
 	get_map_position(map, ray->x, ray->y);
-	ray->d = (float)game->image[ray->img]->width / *height;
 	if (ray->img == IMG_EA)
-		ray->x = (int)(ray->y) % game->image[ray->img]->width;
+		ray->x = (int)(ray->y) % game->image[ray->img]->height;
 	else
 		ray->x = (int)(ray->x) % game->image[ray->img]->width;
 	if (get_map_element(map[X], map[Y], game) == MAP_CLOSED)
@@ -61,6 +58,7 @@ static void	calculate_draw(int *height, t_vector *ray, t_cubed *game)
 		ray->img = IMG_WE;
 	else if (ray->img == IMG_SO && ray->a > WEST)
 		ray->img = IMG_NO;
+	ray->d = (float)game->image[ray->img]->width / *height;
 	if (*height > SCREEN_HEIGHT)
 	{
 		ray->y = (float)(*height - SCREEN_HEIGHT) / 2 * ray->d;
@@ -99,7 +97,7 @@ void	*render_worldspace(void *param)
 	game = param;
 	while (!game_over(game))
 	{
-		get_camera(&cam, &game->mtx[MTX_CAM], game);
+		get_camera(&cam, game);
 		draw_worldspace(&cam, cam.a, game);
 	}
 	return (NULL);

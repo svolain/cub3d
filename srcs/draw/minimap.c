@@ -17,20 +17,22 @@ static void	draw_ray(t_vector *ray, float alpha, t_cubed *game)
 	float	delta[2];
 	float	pixel[2];
 	int		pixels;
-	int32_t	color;
+	/* int32_t	color; */
 
-	pixel[X] = (float)MAPSIZE / SCALE_FACTOR;
-	pixel[Y] = (float)MAPSIZE / SCALE_FACTOR;
-	delta[X] = (ray->x - game->cam->x) / SCALE_FACTOR;
-	delta[Y] = (ray->y - game->cam->y) / SCALE_FACTOR;
-	pixels = ray->d / SCALE_FACTOR;
+	(void)alpha;
+	pixel[X] = (float)MAPSIZE / MAPSCALE;
+	pixel[Y] = (float)MAPSIZE / MAPSCALE;
+	delta[X] = (ray->x - game->cam->x) / MAPSCALE;
+	delta[Y] = (ray->y - game->cam->y) / MAPSCALE;
+	pixels = ray->d / MAPSCALE;
 	delta[X] /= pixels;
 	delta[Y] /= pixels;
-	while(pixels-- >= 0)
+	while(--pixels >= 0)
 	{
-		color = get_alpha_blend(get_rgba(225, 100, 100, alpha--),
-			get_pixel_color(game->canvas, pixel[X], pixel[Y]));
-		ft_put_pixel(pixel[X], pixel[Y], color, game->minimap);
+		/* color = get_alpha_blend(get_rgba(225, 100, 100, alpha--), */
+		/* 	get_pixel_color(game->image[IMG_MM], pixel[X], pixel[Y])); */
+		/* ft_put_pixel(pixel[X], pixel[Y], color, game->image[IMG_MM]); */
+		ft_put_pixel(pixel[X], pixel[Y], COLOR_RAY, game->image[IMG_MM]);
 		pixel[X] += delta[X];
 		pixel[Y] += delta[Y];
 	}
@@ -39,7 +41,7 @@ static void	draw_ray(t_vector *ray, float alpha, t_cubed *game)
 static void	draw_fov(t_camera *cam, float angle, t_cubed *game)
 {
 	static int	max_fov = 66;
-	static int	density = 3;
+	static int	density = 5;
 	t_vector	ray;
 	int			i;
 
@@ -86,22 +88,22 @@ static void	draw_column(int column, int cam_x, int cam_y, t_cubed *game)
 			color = COLOR_GRID;
 		else
 			color = get_map_color(cam_x, cam_y, game);
-		ft_put_pixel(column, row, color, game->minimap);
-		cam_y += SCALE_FACTOR;
+		ft_put_pixel(column, row, color, game->image[IMG_MM]);
+		cam_y += MAPSCALE;
 		row++;
 	}
 }
 
 void	draw_minimap(int cam_x, int cam_y, t_cubed *game)
 {
-	int			column;
+	int	column;
 
 	column = 0;
 	cam_x -= (float)MAPSIZE;
 	while (column < MAPSIZE)
 	{
 		draw_column(column, cam_x, cam_y, game);
-		cam_x += SCALE_FACTOR;
+		cam_x += MAPSCALE;
 		column++;
 	}
 }
@@ -114,7 +116,7 @@ void	*render_minimap(void *param)
 	game = param;
 	while (!game_over(game))
 	{
-		get_camera(&cam, &game->mtx[MTX_CAM], game);
+		get_camera(&cam, game);
 		draw_minimap(cam.x, cam.y, game);
 		draw_fov(&cam, cam.a, game);
 	}

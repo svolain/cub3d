@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/11 14:19:17 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/13 09:04:10 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,19 @@
 # include <asset.h>
 # include <multi.h>
 
+# include <pthread.h>
 # include <stdbool.h>
 # include <fcntl.h>
-# include <pthread.h>
-# include <string.h>
-# include <errno.h>
 # include <math.h>
+# include <errno.h>
+# include <string.h>
 # include <stdio.h>
 
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
 # define SCREEN_TITLE "cub3d"
 
-# define MAXSIZE 500
-# define CELLSIZE 64
-# define BUMP_BUFFER 20
-# define SCALE_FACTOR 2
-# define MAPGRID 10
+# define BUMP_BUFFER CELLSIZE / 4
 
 # define CHARSET_ALLOWED	"01CONSEW "
 # define CHARSET_PLAYER		"NSEW"
@@ -51,13 +47,21 @@
 # define FOV ft_degtorad(66)
 # define DEGREE ft_degtorad(1)
 
-# define STEP_ANGLE 0.025f
-# define STEP_MOVEMENT 2.5f
+# define CELLSIZE 256
+# define ANGLE_MODIFIER 0.0002f
+# define MOVE_MODIFIER 16.0f
+
+# define STEP_ANGLE CELLSIZE * ANGLE_MODIFIER
+# define STEP_MOVEMENT CELLSIZE / MOVE_MODIFIER
 # define STEP_WINDOW FOV / SCREEN_WIDTH
 
-# define MAPCELL CELLSIZE / SCALE_FACTOR
+# define MAPLIMIT 500
+# define MAPSCALE 8
+# define MAPGRID 10
+
+# define MAPCELL CELLSIZE / MAPSCALE
 # define MAPSIZE MAPCELL * MAPGRID
-# define MAPCENTER MAPSIZE / SCALE_FACTOR - (MAPCELL / 2)
+# define MAPCENTER MAPSIZE / 2 - (MAPCELL / 2)
 
 # define BPP sizeof(int32_t)
 
@@ -146,14 +150,12 @@ typedef struct s_cubed
 	t_mapinfo	*map;
 	char		*gnl;
 	mlx_t		*mlx;
-	mlx_image_t	*canvas;
-	mlx_image_t	*minimap;
 	int32_t		mouse[2];
 	int32_t		color[GAME_COLORS];
 	mlx_image_t	*image[GAME_ASSETS];
 	mlx_image_t	*anim[GAME_ANIMS];
 	pthread_t	tid[GAME_THREADS];
-	t_mtx		mtx[GAME_MUTEXS];
+	t_mtx		mtx[GAME_MUTEXES];
 	bool		stt[GAME_STATS];
 }	t_cubed;
 
@@ -177,13 +179,12 @@ void	hook_movement(void *param);
 void	hook_action(mlx_key_data_t keydata, void *param);
 void	hook_mouse(void *param);
 void	hook_close(void *param);
+
+//		Move
 void	move_camera(t_cubed *game, t_action action);
-void	rotate_camera(t_cubed *game, t_action action);
-void	get_map_position(int target[2], int x, int y);
-char	get_map_element(int x, int y, t_cubed *game);
-void	set_buffer(int *buffer, int size, t_cubed *game);
 
 //		Rotate
+void	rotate_camera(t_cubed *game, t_action action);
 void	ft_rotate(float *target, float angle, t_action action);
 void	fix_fisheye(t_vector *ray, float angle);
 float	ft_degtorad(float degree);
@@ -207,7 +208,6 @@ int32_t	get_alpha_blend(int32_t source, int32_t current);
 int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 //		Pixels
-void	image_to_canvas(int dst_x, int dst_y, mlx_image_t *img);
 int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
 void	ft_put_pixel(int x, int y, int32_t color, mlx_image_t *img);
 
@@ -218,13 +218,13 @@ void	error_fatal(int errcode, char *errmsg, t_cubed *game);
 
 //		Free
 void	free_exit(t_cubed *game, int excode);
+void	free_double(char ***str);
+void	free_single(char **str);
 
 //		String
 char	*safe_substr(char *stt, char *end, t_cubed *game);
 char	*safe_strjoin(char *s1, char *s2, t_cubed *game);
 char	**safe_split(char * str, char c, t_cubed *game);
-void	free_double(char ***str);
-void	free_single(char **str);
 
 //		Safe
 void	*safe_calloc(size_t n, t_cubed *game);
@@ -235,12 +235,13 @@ void	*safe_img(uint32_t w, uint32_t h, mlx_texture_t *t, t_cubed *game);
 //		Threads
 void	safe_thread(pthread_t *tid, t_operation action, t_cubed *game);
 void	safe_mutex(t_mtx *mutex, t_operation action, t_cubed *game);
+void	get_map_position(int target[2], int x, int y);
+char	get_map_element(int x, int y, t_cubed *game);
+void	set_map_element(int x, int y, char c, t_cubed *game);
+void	get_camera(t_camera *cam, t_cubed *game);
+void	set_camera(t_camera *cam, t_cubed *game);
 bool	get_bool(bool *val, t_mtx *mutex, t_cubed *game);
 void	set_bool(bool *dst, bool val, t_mtx *mutex, t_cubed *game);
-float	get_float(float *val, t_mtx *mutex, t_cubed *game);
-void	set_float(float *dst, float val, t_mtx *mutex, t_cubed *game);
-void	get_camera(t_camera *cam, t_mtx *mutex, t_cubed *game);
-void	set_camera(t_camera *cam, t_mtx *mutex, t_cubed *game);
 void	set_finished(t_cubed *game);
 bool	game_over(t_cubed *game);
 

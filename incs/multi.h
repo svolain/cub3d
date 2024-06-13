@@ -14,7 +14,7 @@
 # define MULTI_H
 
 # define GAME_THREADS 3
-# define GAME_MUTEXS 4
+# define GAME_MUTEXES 4
 # define GAME_STATS 1
 
 typedef pthread_mutex_t	t_mtx;
