@@ -17,9 +17,9 @@ static void	draw_ray(t_vector *ray, float alpha, t_cubed *game)
 	float	delta[2];
 	float	pixel[2];
 	int		pixels;
-	/* int32_t	color; */
+	int32_t	color;
 
-	(void)alpha;
+	/* (void)alpha; */
 	pixel[X] = (float)MAPSIZE / MAPSCALE;
 	pixel[Y] = (float)MAPSIZE / MAPSCALE;
 	delta[X] = (ray->x - game->cam->x) / MAPSCALE;
@@ -29,10 +29,10 @@ static void	draw_ray(t_vector *ray, float alpha, t_cubed *game)
 	delta[Y] /= pixels;
 	while(--pixels >= 0)
 	{
-		/* color = get_alpha_blend(get_rgba(225, 100, 100, alpha--), */
-		/* 	get_pixel_color(game->image[IMG_MM], pixel[X], pixel[Y])); */
-		/* ft_put_pixel(pixel[X], pixel[Y], color, game->image[IMG_MM]); */
-		ft_put_pixel(pixel[X], pixel[Y], COLOR_RAY, game->image[IMG_MM]);
+		color = get_alpha_blend(get_rgba(225, 100, 100, alpha--),
+			get_pixel_color(game->image[IMG_MM], pixel[X], pixel[Y]));
+		ft_put_pixel(pixel[X], pixel[Y], color, game->image[IMG_MM]);
+		/* ft_put_pixel(pixel[X], pixel[Y], COLOR_RAY, game->image[IMG_MM]); */
 		pixel[X] += delta[X];
 		pixel[Y] += delta[Y];
 	}
