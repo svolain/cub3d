@@ -26,7 +26,7 @@ void	*render_minimap(void *param)
 	return (NULL);
 }
 
-void	*render_background(void *param)
+void	*render_floor(void *param)
 {
 	t_cubed		*game;
 	t_camera	cam;
@@ -35,12 +35,12 @@ void	*render_background(void *param)
 	while (!game_over(game))
 	{
 		get_camera(&cam, game);
-		draw_background(&cam, cam.a, game);
+		draw_floor(&cam, cam.a, game);
 	}
 	return (NULL);
 }
 
-void	*render_foreground(void *param)
+void	*render_walls(void *param)
 {
 	t_cubed		*game;
 	t_camera	cam;
@@ -49,7 +49,7 @@ void	*render_foreground(void *param)
 	while (!game_over(game))
 	{
 		get_camera(&cam, game);
-		draw_foreground(&cam, cam.a, game);
+		draw_walls(&cam, cam.a, game);
 	}
 	return (NULL);
 }

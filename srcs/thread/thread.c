@@ -50,9 +50,9 @@ static void	err_chkr(int exitcode, t_operation action, t_cubed *game)
 static void	create_threads(t_operation action, t_cubed *game)
 {
 	err_chkr(pthread_create(&game->tid[THD_WS],
-		NULL, render_foreground, game), action, game);
+		NULL, render_walls, game), action, game);
 	err_chkr(pthread_create(&game->tid[THD_BG],
-		NULL, render_background, game), action, game);
+		NULL, render_floor, game), action, game);
 	err_chkr(pthread_create(&game->tid[THD_MM],
 		NULL, render_minimap, game), action, game);
 }

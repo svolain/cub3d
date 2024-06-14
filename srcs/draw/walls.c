@@ -86,7 +86,7 @@ static void	calculate_draw(int *height, t_vector *ray, t_cubed *game)
 		ray->y = 0;
 }
 
-void	draw_foreground(t_camera *cam, float angle, t_cubed *game)
+void	draw_walls(t_camera *cam, float angle, t_cubed *game)
 {
 	t_vector	ray;
 	int			height;

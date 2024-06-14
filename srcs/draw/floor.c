@@ -65,7 +65,7 @@ static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
 	}
 }
 
-void	draw_background(t_camera *cam, float angle, t_cubed *game)
+void	draw_floor(t_camera *cam, float angle, t_cubed *game)
 {
 	t_vector	ray;
 	int			height;

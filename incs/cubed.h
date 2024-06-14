@@ -65,7 +65,7 @@
 
 # define BPP sizeof(int32_t)
 
-# define COLOR_RAY		get_rgba(255, 50, 50, 100)
+# define COLOR_BORDER	get_rgba(255, 50, 50, 100)
 # define COLOR_GRID		get_rgba(50, 50, 50, 200)
 # define COLOR_WALL		get_rgba(150, 150, 150, 150)
 # define COLOR_FLOOR	get_rgba(215, 255, 255, 200)
@@ -191,13 +191,13 @@ void	fix_fisheye(t_vector *ray, float angle);
 float	ft_degtorad(float degree);
 
 //		Render
-void	*render_foreground(void *param);
-void	*render_background(void *param);
+void	*render_walls(void *param);
+void	*render_floor(void *param);
 void	*render_minimap(void *param);
 
 //		Draw
-void	draw_foreground(t_camera *cam, float angle, t_cubed *game);
-void	draw_background(t_camera *cam, float angle, t_cubed *game);
+void	draw_walls(t_camera *cam, float angle, t_cubed *game);
+void	draw_floor(t_camera *cam, float angle, t_cubed *game);
 void	draw_minimap(t_camera *cam, int cam_x, int cam_y, t_cubed *game);
 
 //		Animate
