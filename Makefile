@@ -57,10 +57,11 @@ SOURCES 	:= 	main.c \
 				rotate.c \
 				action.c \
 				mouse.c \
-				worldspace.c \
+				foreground.c \
 				background.c \
 				minimap.c \
 				animation.c \
+				render.c \
 				rays.c \
 				color.c \
 				pixel.c \

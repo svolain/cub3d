@@ -12,6 +12,21 @@
 
 #include <cubed.h>
 
+static void	void_empty_space(int column, int height, t_cubed *game)
+{
+	int32_t	color;
+
+	color = get_rgba(0, 0, 0, 0);
+	while (height < SCREEN_HEIGHT)
+	{
+		mlx_put_pixel(game->image[IMG_FG],
+				column, height, color);
+		mlx_put_pixel(game->image[IMG_FG],
+				column, SCREEN_HEIGHT - height, color);
+		height++;
+	}
+}
+
 static int32_t	calculate_shade(int height)
 {
 	static int	treshold = 210;
@@ -34,12 +49,15 @@ static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
 	shade = calculate_shade(height);
 	point[A] = SCREEN_HEIGHT / 2 - height / 2;
 	point[B] = SCREEN_HEIGHT / 2 + height / 2;
-	while (++point[A] < point[B])
+	if (height < SCREEN_HEIGHT)
+		void_empty_space(column, point[B], game);
+	while (point[A] < point[B])
 	{
 		color = get_alpha_blend(shade, get_pixel_color
 			(game->image[ray->img], ray->x, ray->y));
 		ray->y += ray->d;
-		ft_put_pixel(column, point[A], color, game->image[IMG_WS]);
+		ft_put_pixel(column, point[A], color, game->image[IMG_FG]);
+		point[A]++;
 	}
 }
 
@@ -68,7 +86,7 @@ static void	calculate_draw(int *height, t_vector *ray, t_cubed *game)
 		ray->y = 0;
 }
 
-void	draw_worldspace(t_camera *cam, float angle, t_cubed *game)
+void	draw_foreground(t_camera *cam, float angle, t_cubed *game)
 {
 	t_vector	ray;
 	int			height;
@@ -87,18 +105,4 @@ void	draw_worldspace(t_camera *cam, float angle, t_cubed *game)
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
 		column++;
 	}
-}
-
-void	*render_worldspace(void *param)
-{
-	t_cubed		*game;
-	t_camera	cam;
-
-	game = param;
-	while (!game_over(game))
-	{
-		get_camera(&cam, game);
-		draw_worldspace(&cam, cam.a, game);
-	}
-	return (NULL);
 }

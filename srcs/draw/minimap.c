@@ -94,7 +94,7 @@ static void	draw_column(int column, int cam_x, int cam_y, t_cubed *game)
 	}
 }
 
-void	draw_minimap(int cam_x, int cam_y, t_cubed *game)
+void	draw_minimap(t_camera *cam, int cam_x, int cam_y, t_cubed *game)
 {
 	int	column;
 
@@ -106,19 +106,5 @@ void	draw_minimap(int cam_x, int cam_y, t_cubed *game)
 		cam_x += MAPSCALE;
 		column++;
 	}
-}
-
-void	*render_minimap(void *param)
-{
-	t_cubed		*game;
-	t_camera	cam;
-
-	game = param;
-	while (!game_over(game))
-	{
-		get_camera(&cam, game);
-		draw_minimap(cam.x, cam.y, game);
-		draw_fov(&cam, cam.a, game);
-	}
-	return (NULL);
+	draw_fov(cam, cam->a, game);
 }

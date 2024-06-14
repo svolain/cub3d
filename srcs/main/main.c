@@ -18,13 +18,15 @@ static void	run_game(t_cubed *game)
 	mlx_key_hook(game->mlx, hook_action, game);
 	mlx_loop_hook(game->mlx, hook_movement, game);
 	mlx_loop_hook(game->mlx, hook_mouse, game);
+	mlx_loop_hook(game->mlx, hook_click, game);
 	mlx_loop(game->mlx);
 }
 
 static void	load_scene(t_cubed *game)
 {
 	load_assets(game);
-	safe_draw(game->image[IMG_WS], 0, 0, game);
+	safe_draw(game->image[IMG_BG], 0, 0, game);
+	safe_draw(game->image[IMG_FG], 0, 0, game);
 	safe_draw(game->image[IMG_MM], 0, 0, game);
 	safe_draw(game->image[IMG_PL], MAPCENTER, MAPCENTER, game);
 	safe_draw(game->anim[IMG_GO], 0, 0, game);
@@ -50,7 +52,8 @@ static void	init_game(t_cubed *game, char *file)
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, false);
 	if (!game->mlx)
 		error_exit(ERR_MLX, MSG_MLX, game);
-	game->image[IMG_WS] = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
+	game->image[IMG_FG] = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
+	game->image[IMG_BG] = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
 	game->image[IMG_MM] = safe_img(MAPSIZE, MAPSIZE, NULL, game);
 	mlx_get_mouse_pos(game->mlx, &game->mouse[X], &game->mouse[Y]);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);

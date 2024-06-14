@@ -25,3 +25,12 @@ void	hook_mouse(void *param)
 		rotate_camera(game, ROTATE_RIGHT);
 	game->mouse[X] = mouse[X];
 }
+
+void	hook_click(void *param)
+{
+	t_cubed	*game;
+
+	game = param;
+	if (mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT))
+		printf("Shoot!\n");
+}

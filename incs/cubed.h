@@ -178,6 +178,7 @@ void	load_assets(t_cubed *game);
 void	hook_movement(void *param);
 void	hook_action(mlx_key_data_t keydata, void *param);
 void	hook_mouse(void *param);
+void	hook_click(void *param);
 void	hook_close(void *param);
 
 //		Move
@@ -190,9 +191,14 @@ void	fix_fisheye(t_vector *ray, float angle);
 float	ft_degtorad(float degree);
 
 //		Render
-void	*render_worldspace(void *param);
+void	*render_foreground(void *param);
 void	*render_background(void *param);
 void	*render_minimap(void *param);
+
+//		Draw
+void	draw_foreground(t_camera *cam, float angle, t_cubed *game);
+void	draw_background(t_camera *cam, float angle, t_cubed *game);
+void	draw_minimap(t_camera *cam, int cam_x, int cam_y, t_cubed *game);
 
 //		Animate
 void	animate_minimap(t_cubed *game);

@@ -13,7 +13,7 @@
 #ifndef ASSET_H
 # define ASSET_H
 
-# define GAME_ASSETS 10
+# define GAME_ASSETS 11
 # define GAME_COLORS 2
 # define GAME_ANIMS 16
 
@@ -48,7 +48,8 @@ typedef enum e_image
 	IMG_FL,
 	IMG_RF,
 	IMG_PL,
-	IMG_WS,
+	IMG_FG,
+	IMG_BG,
 	IMG_MM
 }	t_image;
 
