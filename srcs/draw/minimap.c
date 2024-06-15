@@ -6,33 +6,28 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/11 15:41:31 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/15 10:01:11 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-static void	draw_ray(t_vector *ray, float alpha, t_cubed *game)
+static void	draw_ray(t_vector *ray, t_camera *cam, int8_t alpha, t_cubed *game)
 {
-	float	delta[2];
-	float	pixel[2];
-	int		pixels;
 	int32_t	color;
 
-	pixel[X] = (float)MAPSIZE / MAPSCALE;
-	pixel[Y] = (float)MAPSIZE / MAPSCALE;
-	delta[X] = (ray->x - game->cam->x) / MAPSCALE;
-	delta[Y] = (ray->y - game->cam->y) / MAPSCALE;
-	pixels = ray->d / MAPSCALE;
-	delta[X] /= pixels;
-	delta[Y] /= pixels;
-	while(--pixels >= 0)
+	ray->d /= MAPSCALE;
+	cam->dx = (ray->x - cam->x) / ray->d / MAPSCALE;
+	cam->dy = (ray->y - cam->y) / ray->d / MAPSCALE;
+	ray->x = (float)MAPSIZE / 2;
+	ray->y = (float)MAPSIZE / 2;
+	while(ray->d-- >= 0)
 	{
 		color = get_alpha_blend(get_rgba(225, 100, 100, alpha--),
-			get_pixel_color(game->image[IMG_MM], pixel[X], pixel[Y]));
-		ft_put_pixel(pixel[X], pixel[Y], color, game->image[IMG_MM]);
-		pixel[X] += delta[X];
-		pixel[Y] += delta[Y];
+			get_pixel_color(game->image[IMG_MM], ray->x, ray->y));
+		ft_put_pixel(ray->x, ray->y, color, game->image[IMG_MM]);
+		ray->x += cam->dx;
+		ray->y += cam->dy;
 	}
 }
 
@@ -49,7 +44,7 @@ static void	draw_fov(t_camera *cam, float angle, t_cubed *game)
 	{
 		ray.a = angle;
 		calculate_ray(&ray, cam, game);
-		draw_ray(&ray, 255, game);
+		draw_ray(&ray, cam, 255, game);
 		ft_rotate(&angle, DEGREE / density, ROTATE_RIGHT);
 		i++;
 	}
@@ -79,12 +74,13 @@ static void	draw_column(int column, int cam_x, int cam_y, t_cubed *game)
 	int		row;
 
 	row = 0;
-	cam_y -= MAPSIZE;
+	cam_y -= MAPGRID / 2 * CELLSIZE;
 	while (row < MAPSIZE)
 	{
-		if (column < 3 || column > MAPSIZE - 3 || row < 3 || row > MAPSIZE - 3)
+		if (column < MAPBORDER || column > MAPSIZE - MAPBORDER
+			|| row < MAPBORDER || row > MAPSIZE - MAPBORDER)
 			color = COLOR_BORDER;
-		else if (column % (MAPCELL) == 0 || row % (MAPCELL) == 0)
+		else if (column % MAPCELL == 0 || row % MAPCELL == 0)
 			color = COLOR_GRID;
 		else
 			color = get_map_color(cam_x, cam_y, game);
@@ -99,7 +95,7 @@ void	draw_minimap(t_camera *cam, int cam_x, int cam_y, t_cubed *game)
 	int	column;
 
 	column = 0;
-	cam_x -= MAPSIZE;
+	cam_x -= MAPGRID / 2 * CELLSIZE;
 	while (column < MAPSIZE)
 	{
 		draw_column(column, cam_x, cam_y, game);

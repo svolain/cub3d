@@ -58,14 +58,16 @@
 # define MAPLIMIT 500
 # define MAPSCALE 8
 # define MAPGRID 10
+# define MAPBORDER 5
 
-# define MAPCELL CELLSIZE / MAPSCALE
-# define MAPSIZE MAPCELL * MAPGRID
+# define MAPCELL (CELLSIZE / MAPSCALE)
+# define MAPSIZE (MAPCELL * MAPGRID)
 # define MAPCENTER MAPSIZE / 2 - (MAPCELL / 2)
 
 # define BPP sizeof(int32_t)
 
-# define COLOR_BORDER	get_rgba(255, 50, 50, 100)
+# define COLOR_BORDER	get_rgba(50, 100, 200, 100)
+# define COLOR_RAY		get_rgba(255, 50, 150, 200)
 # define COLOR_GRID		get_rgba(50, 50, 50, 200)
 # define COLOR_WALL		get_rgba(150, 150, 150, 150)
 # define COLOR_FLOOR	get_rgba(215, 255, 255, 200)
