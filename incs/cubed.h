@@ -66,8 +66,9 @@
 
 # define BPP sizeof(int32_t)
 
+# define TRANSPARENT	get_rgba(0, 0, 0, 0)
 # define COLOR_BORDER	get_rgba(50, 100, 200, 100)
-# define COLOR_RAY		get_rgba(255, 50, 150, 200)
+# define COLOR_RAY		get_rgba(225, 100, 100, 150)
 # define COLOR_GRID		get_rgba(50, 50, 50, 200)
 # define COLOR_WALL		get_rgba(150, 150, 150, 150)
 # define COLOR_FLOOR	get_rgba(215, 255, 255, 200)
@@ -196,11 +197,13 @@ float	ft_degtorad(float degree);
 void	*render_walls(void *param);
 void	*render_floor(void *param);
 void	*render_minimap(void *param);
+void	*render_fov(void *param);
 
 //		Draw
 void	draw_walls(t_camera *cam, float angle, t_cubed *game);
 void	draw_floor(t_camera *cam, float angle, t_cubed *game);
-void	draw_minimap(t_camera *cam, int cam_x, int cam_y, t_cubed *game);
+void	draw_minimap(int cam_x, int cam_y, t_cubed *game);
+void	draw_fov(t_camera *cam, float angle, t_cubed *game);
 
 //		Animate
 void	animate_minimap(t_cubed *game);

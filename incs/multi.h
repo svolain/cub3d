@@ -13,17 +13,18 @@
 #ifndef MULTI_H
 # define MULTI_H
 
-# define GAME_THREADS 3
-# define GAME_MUTEXES 4
+# define GAME_THREADS 4
+# define GAME_MUTEXES 3
 # define GAME_STATS 1
 
 typedef pthread_mutex_t	t_mtx;
 
 typedef enum e_thread
 {
+	THD_BG,
+	THD_FG,
 	THD_MM,
-	THD_WS,
-	THD_BG
+	THD_MR
 }	t_thread;
 
 typedef enum e_mutex
@@ -31,7 +32,6 @@ typedef enum e_mutex
 	MTX_DONE,
 	MTX_CAM,
 	MTX_MAP,
-	MTX_PXL
 }	t_mutex;
 
 typedef enum e_status

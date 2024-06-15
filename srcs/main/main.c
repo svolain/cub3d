@@ -28,6 +28,7 @@ static void	load_scene(t_cubed *game)
 	safe_draw(game->image[IMG_BG], 0, 0, game);
 	safe_draw(game->image[IMG_FG], 0, 0, game);
 	safe_draw(game->image[IMG_MM], 0, 0, game);
+	safe_draw(game->image[IMG_MR], 0, 0, game);
 	safe_draw(game->image[IMG_PL], MAPCENTER, MAPCENTER, game);
 	safe_draw(game->anim[IMG_GO], 0, 0, game);
 	safe_mutex(0, MTX_INIT, game);
@@ -55,6 +56,7 @@ static void	init_game(t_cubed *game, char *file)
 	game->image[IMG_FG] = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
 	game->image[IMG_BG] = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
 	game->image[IMG_MM] = safe_img(MAPSIZE, MAPSIZE, NULL, game);
+	game->image[IMG_MR] = safe_img(MAPSIZE, MAPSIZE, NULL, game);
 	mlx_get_mouse_pos(game->mlx, &game->mouse[X], &game->mouse[Y]);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
 }

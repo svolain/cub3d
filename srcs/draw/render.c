@@ -12,6 +12,20 @@
 
 #include <cubed.h>
 
+void	*render_fov(void *param)
+{
+	t_cubed		*game;
+	t_camera	cam;
+
+	game = param;
+	while (!game_over(game))
+	{
+		get_camera(&cam, game);
+		draw_fov(&cam, cam.a, game);
+	}
+	return (NULL);
+}
+
 void	*render_minimap(void *param)
 {
 	t_cubed		*game;
@@ -21,7 +35,7 @@ void	*render_minimap(void *param)
 	while (!game_over(game))
 	{
 		get_camera(&cam, game);
-		draw_minimap(&cam, cam.x, cam.y, game);
+		draw_minimap(cam.x, cam.y, game);
 	}
 	return (NULL);
 }

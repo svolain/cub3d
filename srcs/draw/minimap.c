@@ -12,26 +12,23 @@
 
 #include <cubed.h>
 
-static void	draw_ray(t_vector *ray, t_camera *cam, int8_t alpha, t_cubed *game)
+static void	draw_ray(t_vector *ray, t_camera *cam, t_cubed *game)
 {
-	int32_t	color;
-
 	ray->d /= MAPSCALE;
 	cam->dx = (ray->x - cam->x) / ray->d / MAPSCALE;
 	cam->dy = (ray->y - cam->y) / ray->d / MAPSCALE;
-	ray->x = (float)MAPSIZE / 2;
-	ray->y = (float)MAPSIZE / 2;
-	while(ray->d-- >= 0)
+	ray->x = MAPSIZE / 2;
+	ray->y = MAPSIZE / 2;
+	while(ray->d >= 0)
 	{
-		color = get_alpha_blend(get_rgba(225, 100, 100, alpha--),
-			get_pixel_color(game->image[IMG_MM], ray->x, ray->y));
-		ft_put_pixel(ray->x, ray->y, color, game->image[IMG_MM]);
+		ft_put_pixel(ray->x, ray->y, COLOR_RAY, game->image[IMG_MR]);
 		ray->x += cam->dx;
 		ray->y += cam->dy;
+		ray->d--;
 	}
 }
 
-static void	draw_fov(t_camera *cam, float angle, t_cubed *game)
+void	draw_fov(t_camera *cam, float angle, t_cubed *game)
 {
 	static int	max_fov = 66;
 	static int	density = 5;
@@ -39,12 +36,15 @@ static void	draw_fov(t_camera *cam, float angle, t_cubed *game)
 	int			i;
 
 	i = 0;
+	ft_memset(game->image[IMG_MR]->pixels, 0,
+		game->image[IMG_MR]->height *
+		game->image[IMG_MR]->width * BPP);
 	ft_rotate(&angle, FOV / 2, ROTATE_LEFT);
 	while (i < density * max_fov)
 	{
 		ray.a = angle;
 		calculate_ray(&ray, cam, game);
-		draw_ray(&ray, cam, 255, game);
+		draw_ray(&ray, cam, game);
 		ft_rotate(&angle, DEGREE / density, ROTATE_RIGHT);
 		i++;
 	}
@@ -90,7 +90,7 @@ static void	draw_column(int column, int cam_x, int cam_y, t_cubed *game)
 	}
 }
 
-void	draw_minimap(t_camera *cam, int cam_x, int cam_y, t_cubed *game)
+void	draw_minimap(int cam_x, int cam_y, t_cubed *game)
 {
 	int	column;
 
@@ -102,5 +102,4 @@ void	draw_minimap(t_camera *cam, int cam_x, int cam_y, t_cubed *game)
 		cam_x += MAPSCALE;
 		column++;
 	}
-	draw_fov(cam, cam->a, game);
 }

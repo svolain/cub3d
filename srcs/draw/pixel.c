@@ -41,3 +41,29 @@ void	ft_put_pixel(int x, int y, int32_t color, mlx_image_t *img)
 		return ;
 	mlx_put_pixel(img, x, y, color);
 }
+
+void	image_to_image(int x, int y, mlx_image_t *src, mlx_image_t *dst)
+{
+	uint32_t	color;
+	uint32_t	height;
+	uint32_t	i;
+	uint32_t	j;
+
+	i = -1;
+	height = y;
+	while (++i < src->width)
+	{
+		j = -1;
+		y = height;
+		while (++j < src->height)
+		{
+			if (!src)
+				color =  TRANSPARENT;
+			else
+				color = get_pixel_color(src, i, j);
+			ft_put_pixel(x, y, color, dst);
+			y++;
+		}
+		x++;
+	}
+}
