@@ -33,9 +33,9 @@ static void	set_map_buffer(int buffer[2], int size, t_camera *cam)
 static void	active_door(t_cubed *game)
 {
 	t_camera	cam;
+	int			map[2];
 	int			player[2];
 	int			buffer[2];
-	int			map[2];
 
 	get_camera(&cam, game);
 	set_map_buffer(buffer, BUMP_BUFFER, &cam);

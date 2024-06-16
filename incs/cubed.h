@@ -31,8 +31,6 @@
 # define SCREEN_HEIGHT 1080
 # define SCREEN_TITLE "cub3d"
 
-# define BUMP_BUFFER CELLSIZE / 4
-
 # define CHARSET_ALLOWED	"01CONSEW "
 # define CHARSET_PLAYER		"NSEW"
 # define CHARSET_MOVEABLE	"0O"
@@ -48,6 +46,7 @@
 # define DEGREE ft_degtorad(1)
 
 # define CELLSIZE 256
+# define BUMP_BUFFER CELLSIZE / 2
 # define ANGLE_MODIFIER 0.0002f
 # define MOVE_MODIFIER 16.0f
 
