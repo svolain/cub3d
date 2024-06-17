@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubed.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/07 15:38:12 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/17 15:20:40 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,20 @@
 # include <MLX42.h>
 # include <libft.h>
 # include <error.h>
+# include <asset.h>
+# include <multi.h>
 
+# include <pthread.h>
 # include <stdbool.h>
 # include <fcntl.h>
-# include <string.h>
-# include <errno.h>
 # include <math.h>
+# include <errno.h>
+# include <string.h>
 # include <stdio.h>
-
-# define GAME_ASSETS 7
-# define GAME_COLORS 2
-# define GAME_ANIMS 20
-# define GAME_STATS 2
 
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
 # define SCREEN_TITLE "cub3d"
-
-# define FPS 30.0f
-# define MAXSIZE 500
-# define CELLSIZE 64
-# define BUMP_BUFFER 20
-# define SCALE_FACTOR 2
-# define MAPGRID 10
 
 # define CHARSET_ALLOWED	"01CONSEW "
 # define CHARSET_PLAYER		"NSEW"
@@ -54,42 +45,34 @@
 # define FOV ft_degtorad(66)
 # define DEGREE ft_degtorad(1)
 
-# define STEP_ANGLE 0.02f
-# define STEP_MOVEMENT 2.0f
+# define CELLSIZE 256
+# define BUMP_BUFFER CELLSIZE / 2
+# define ANGLE_MODIFIER 0.0002f
+# define MOVE_MODIFIER 16.0f
+
+# define STEP_ANGLE CELLSIZE * ANGLE_MODIFIER
+# define STEP_MOVEMENT CELLSIZE / MOVE_MODIFIER
 # define STEP_WINDOW FOV / SCREEN_WIDTH
 
-# define MAPCELL CELLSIZE / SCALE_FACTOR
-# define MAPSIZE MAPCELL * MAPGRID
+# define MAPLIMIT 500
+# define MAPSCALE 8
+# define MAPGRID 10
+# define MAPBORDER 5
+
+# define MAPCELL (CELLSIZE / MAPSCALE)
+# define MAPSIZE (MAPCELL * MAPGRID)
+# define MAPCENTER MAPSIZE / 2 - (MAPCELL / 2)
 
 # define BPP sizeof(int32_t)
 
-# define TEX_FLOOR		"./textures/floor.png"
-# define TEX_ROOF		"./textures/roof.png"
-# define TEX_DOOR		"./textures/door.png"
-
-# define TEX_IDLE		"./textures/player_stand.png"
-# define TEX_WALK1		"./textures/player_walk1.png"
-# define TEX_WALK2		"./textures/player_walk2.png"
-
-# define TEX_GUN1		"./textures/gun/gun_idle.png"
-# define TEX_GUN2		"./textures/gun/gun_shoot1.png"
-# define TEX_GUN3		"./textures/gun/gun_shoot2.png"
-# define TEX_GUN4		"./textures/gun/gun_shoot3.png"
-# define TEX_GUN5		"./textures/gun/gun_shoot4.png"
-# define TEX_GUN6		"./textures/gun/gun_reload1.png"
-# define TEX_GUN7		"./textures/gun/gun_reload2.png"
-# define TEX_GUN8		"./textures/gun/gun_reload3.png"
-# define TEX_GUN9		"./textures/gun/gun_reload4.png"
-# define TEX_GUN10		"./textures/gun/gun_reload5.png"
-# define TEX_GUN11		"./textures/gun/gun_reload6.png"
-# define TEX_GUN12		"./textures/gun/gun_reload7.png"
-# define TEX_GUN13		"./textures/gun/gun_reload8.png"
-# define TEX_GUN14		"./textures/gun/gun_reload9.png"
-# define TEX_GUN15		"./textures/gun/gun_reload10.png"
-
-# define FMT_BOLD_RED	"\033[1;31m"
-# define FMT_YELLOW		"\033[0;33m"
-# define FMT_RESET		"\033[0m"
+# define TRANSPARENT	get_rgba(0, 0, 0, 0)
+# define COLOR_BORDER	get_rgba(50, 100, 200, 100)
+# define COLOR_RAY		get_rgba(225, 100, 100, 150)
+# define COLOR_GRID		get_rgba(50, 50, 50, 200)
+# define COLOR_WALL		get_rgba(150, 150, 150, 150)
+# define COLOR_FLOOR	get_rgba(215, 255, 255, 200)
+# define COLOR_DOOR_O	get_rgba(100, 200, 50, 255)
+# define COLOR_DOOR_C	get_rgba(50, 150, 150, 255)
 
 typedef enum e_check
 {
@@ -100,7 +83,7 @@ typedef enum e_check
 	H = 0,
 	V = 1,
 	A = 0,
-	B = 1
+	B = 1,
 }	t_check;
 
 typedef enum e_action
@@ -116,7 +99,7 @@ typedef enum e_action
 	GET_RED,
 	GET_GREEN,
 	GET_BLUE,
-	GET_ALPHA
+	GET_ALPHA,
 }	t_action;
 
 typedef enum e_minimap
@@ -126,53 +109,6 @@ typedef enum e_minimap
 	MAP_OPENED = 79,
 	MAP_CLOSED = 67,
 }	t_minimap;
-
-typedef enum e_image
-{
-	IMG_NO,
-	IMG_SO,
-	IMG_WE,
-	IMG_EA,
-	IMG_DR,
-	IMG_FL,
-	IMG_RF
-}	t_image;
-
-typedef enum e_color
-{
-	COL_F,
-	COL_C
-}	t_color;
-
-typedef enum e_status
-{
-	STAT_OPEN,
-	STAT_CLOSE
-}	t_status;
-
-typedef enum e_animation
-{
-	IMG_MP,
-	IMG_PS,
-	IMG_W1,
-	IMG_W2,
-	IMG_GO,
-	IMG_G1,
-	IMG_G2,
-	IMG_G3,
-	IMG_G4,
-	IMG_G5,
-	IMG_G6,
-	IMG_G7,
-	IMG_G8,
-	IMG_G9,
-	IMG_G10,
-	IMG_G11,
-	IMG_G12,
-	IMG_G13,
-	IMG_G14,
-	IMG_G15
-}	t_animation;
 
 typedef struct s_vector
 {
@@ -194,11 +130,11 @@ typedef struct s_camera
 
 typedef struct s_rgba
 {
-	int32_t		color;
-	int8_t		r;
-	int8_t		g;
-	int8_t		b;
-	int8_t		a;
+	uint32_t	color;
+	uint8_t		r;
+	uint8_t		g;
+	uint8_t		b;
+	uint8_t		a;
 }	t_rgba;
 
 typedef struct s_mapinfo
@@ -210,18 +146,29 @@ typedef struct s_mapinfo
 	int			filefd;
 }	t_mapinfo;
 
+typedef struct s_anim
+{
+	int			active;
+	int			current_frame;
+	int			frame_count;
+	double		timer;
+	double		delay;
+}	t_anim;
+
 typedef struct s_cubed
 {
 	t_camera	*cam;
 	t_mapinfo	*map;
 	char		*gnl;
 	mlx_t		*mlx;
-	mlx_image_t	*canvas;
+	t_anim		*animation;
 	int32_t		mouse[2];
-	bool		status[GAME_STATS];
 	int32_t		color[GAME_COLORS];
 	mlx_image_t	*image[GAME_ASSETS];
 	mlx_image_t	*anim[GAME_ANIMS];
+	pthread_t	tid[GAME_THREADS];
+	t_mtx		mtx[GAME_MUTEXES];
+	bool		stt[GAME_STATS];
 }	t_cubed;
 
 //		Parse
@@ -241,46 +188,59 @@ void	load_assets(t_cubed *game);
 
 //		Hook
 void	hook_movement(void *param);
-void	move_camera(t_cubed *game, t_action action);
-void	rotate_camera(t_cubed *game, t_action action);
 void	hook_action(mlx_key_data_t keydata, void *param);
 void	hook_mouse(void *param);
-void	draw_scene(void *param);
+void	hook_click(void *param);
 void	hook_close(void *param);
-void	get_map_position(int *target, int x, int y);
-void	set_buffer(int *buffer, int size, t_cubed *game);
+void	hook_animation(void *param);
+
+//		Move
+void	move_camera(t_cubed *game, t_action action);
+
+//		Rotate
+void	rotate_camera(t_cubed *game, t_action action);
+void	ft_rotate(float *target, float angle, t_action action);
+void	fix_fisheye(t_vector *ray, float angle);
+float	ft_degtorad(float degree);
+
+//		Render
+void	*render_walls(void *param);
+void	*render_floor(void *param);
+void	*render_minimap(void *param);
+void	*render_fov(void *param);
 
 //		Draw
-void	draw_worldspace(t_cubed *game);
-void	draw_minimap(t_cubed *game);
-void	calculate_ray(t_vector *ray, t_cubed *game);
-int32_t	get_channel_color(int32_t rgba, t_action action);
-int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
-int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
-void	image_to_canvas(int dst_x, int dst_y, mlx_image_t *img, t_cubed *game);
-void	ft_put_pixel(int x, int y, int32_t color, t_cubed *game);
+void	draw_walls(t_camera *cam, float angle, t_cubed *game);
+void	draw_floor(t_camera *cam, float angle, t_cubed *game);
+void	draw_minimap(int cam_x, int cam_y, t_cubed *game);
+void	draw_fov(t_camera *cam, float angle, t_cubed *game);
 
-//		Anim
+//		Animate
 void	animate_minimap(t_cubed *game);
 void	animate_shotgun(t_cubed *game);
 void	wait_frame(t_cubed *game, float limit);
-void	calculate_ray(t_vector *ray, t_cubed *game);
-int32_t	get_color(mlx_image_t *img, uint32_t x, uint32_t y);
+
+//		Calculate
+void	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game);
+
+//		Colors
+int32_t	get_channel_color(int32_t rgba, t_action action);
+int32_t	get_alpha_blend(int32_t source, int32_t current);
 int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
-//		Rotate
-void	ft_rotate(float *target, float angle, t_action action);
-void	fix_fisheye(t_vector *ray, t_cubed *game);
-float	ft_degtorad(float degree);
+//		Pixels
+int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
+void	ft_put_pixel(int x, int y, int32_t color, mlx_image_t *img);
 
 //		Error
+void	error_log(char *msg1, char *msg2, char *msg3);
 void	error_exit(int errcode, char *errmsg, t_cubed *game);
 void	error_fatal(int errcode, char *errmsg, t_cubed *game);
 
 //		Free
 void	free_exit(t_cubed *game, int excode);
-void	free_single(char **str);
 void	free_double(char ***str);
+void	free_single(char **str);
 
 //		String
 char	*safe_substr(char *stt, char *end, t_cubed *game);
@@ -292,5 +252,18 @@ void	*safe_calloc(size_t n, t_cubed *game);
 void	safe_draw(mlx_image_t *img, int x, int y, t_cubed *game);
 void	*safe_tex(char *file, bool allocated, t_cubed *game);
 void	*safe_img(uint32_t w, uint32_t h, mlx_texture_t *t, t_cubed *game);
+
+//		Threads
+void	safe_thread(pthread_t *tid, t_operation action, t_cubed *game);
+void	safe_mutex(t_mtx *mutex, t_operation action, t_cubed *game);
+void	get_map_position(int target[2], int x, int y);
+char	get_map_element(int x, int y, t_cubed *game);
+void	set_map_element(int x, int y, char c, t_cubed *game);
+void	get_camera(t_camera *cam, t_cubed *game);
+void	set_camera(t_camera *cam, t_cubed *game);
+bool	get_bool(bool *val, t_mtx *mutex, t_cubed *game);
+void	set_bool(bool *dst, bool val, t_mtx *mutex, t_cubed *game);
+void	set_finished(t_cubed *game);
+bool	game_over(t_cubed *game);
 
 #endif

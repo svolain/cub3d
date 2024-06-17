@@ -18,28 +18,34 @@ static void	run_game(t_cubed *game)
 	mlx_key_hook(game->mlx, hook_action, game);
 	mlx_loop_hook(game->mlx, hook_movement, game);
 	mlx_loop_hook(game->mlx, hook_mouse, game);
-	mlx_loop_hook(game->mlx, draw_scene, game);
+	mlx_loop_hook(game->mlx, hook_click, game);
+	mlx_loop_hook(game->mlx, hook_animation, game);
 	mlx_loop(game->mlx);
 }
 
 void	draw_shotgun(t_cubed *game)
 {
+	
 	int i = IMG_G15 + 1;
 	while(--i > IMG_G1)
 	{
 		safe_draw(game->anim[i], 0, 0, game);
 		game->anim[i]->instances->enabled = false;
 	}
-	safe_draw(game->anim[IMG_G1], 0, 0, game);
+	safe_draw(game->anim[IMG_GO], 0, 0, game);
 }
 
 static void	load_scene(t_cubed *game)
 {
-	safe_draw(game->canvas, 0, 0, game);
 	load_assets(game);
-	draw_minimap(game);
-	draw_worldspace(game);
-	draw_shotgun(game);
+	safe_draw(game->image[IMG_BG], 0, 0, game);
+	safe_draw(game->image[IMG_FG], 0, 0, game);
+	safe_draw(game->image[IMG_MM], 0, 0, game);
+	safe_draw(game->image[IMG_MR], 0, 0, game);
+	safe_draw(game->image[IMG_PL], MAPCENTER, MAPCENTER, game);
+	safe_draw(game->anim[IMG_GO], 0, 0, game);
+	safe_mutex(0, MTX_INIT, game);
+	safe_thread(0, THD_CREATE, game);
 }
 
 static void	parse_file(t_cubed *game)
@@ -60,9 +66,17 @@ static void	init_game(t_cubed *game, char *file)
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, false);
 	if (!game->mlx)
 		error_exit(ERR_MLX, MSG_MLX, game);
-	game->canvas = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
+	game->image[IMG_FG] = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
+	game->image[IMG_BG] = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
+	game->image[IMG_MM] = safe_img(MAPSIZE, MAPSIZE, NULL, game);
+	game->image[IMG_MR] = safe_img(MAPSIZE, MAPSIZE, NULL, game);
 	mlx_get_mouse_pos(game->mlx, &game->mouse[X], &game->mouse[Y]);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
+	game->animation = safe_calloc(sizeof(t_anim), game);
+	game->animation->active = 0;
+	game->animation->delay = 0.01;
+	game->animation->frame_count = GAME_ANIMS;
+	game->animation->current_frame = IMG_GO;
 }
 
 int	main(int argc, char **argv)

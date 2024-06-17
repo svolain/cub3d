@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pixel.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:17:16 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/07 10:45:46 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/13 08:55:14 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,42 @@ int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y)
 {
 	uint8_t	*start;
 
+	if (!valid_pixel(img, x, y))
+		return (0xFF000000);
 	start = img->pixels + (y * img->width + x) * BPP;
 	return (get_rgba(*start, *(start + 1), *(start + 2), *(start + 3)));
 }
 
-void	ft_put_pixel(int x, int y, int32_t color, t_cubed *game)
+void	ft_put_pixel(int x, int y, int32_t color, mlx_image_t *img)
 {
-	if (!valid_pixel(game->canvas, x, y) || ft_istransparent(color)
-		|| get_pixel_color(game->canvas, x, y) == color)
+	if (!valid_pixel(img, x, y) || ft_istransparent(color)
+		|| get_pixel_color(img, x, y) == color)
 		return ;
-	mlx_put_pixel(game->canvas, x, y, color);
+	mlx_put_pixel(img, x, y, color);
+}
+
+void	image_to_image(int x, int y, mlx_image_t *src, mlx_image_t *dst)
+{
+	uint32_t	color;
+	uint32_t	height;
+	uint32_t	i;
+	uint32_t	j;
+
+	i = -1;
+	height = y;
+	while (++i < src->width)
+	{
+		j = -1;
+		y = height;
+		while (++j < src->height)
+		{
+			if (!src)
+				color =  TRANSPARENT;
+			else
+				color = get_pixel_color(src, i, j);
+			ft_put_pixel(x, y, color, dst);
+			y++;
+		}
+		x++;
+	}
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
+#    By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/06/05 21:54:23 by jmertane         ###   ########.fr        #
+#    Updated: 2024/06/17 15:28:35 by vsavolai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ endif
 
 MODULES		:=	main \
 				parse \
+				thread \
 				hook \
 				draw \
 				utils
@@ -48,22 +49,27 @@ SOURCES 	:= 	main.c \
 				mapinfo.c \
 				checker.c \
 				utils.c \
+				thread.c \
+				mutex.c \
+				synchro.c \
+				getset.c \
 				move.c \
 				rotate.c \
 				action.c \
-				misc.c \
-				world.c \
+				mouse.c \
+				walls.c \
+				floor.c \
 				minimap.c \
+				animation.c \
+				render.c \
 				rays.c \
-				draw.c \
 				color.c \
 				pixel.c \
-				animation.c \
 				error.c \
 				free.c \
 				load.c \
 				safe.c \
-				string.c
+				string.c \
 
 SOURCEDIR	:=	$(addprefix $(SRCSDIR)/, $(MODULES))
 BUILDDIR	:=	$(addprefix $(OBJSDIR)/, $(MODULES))

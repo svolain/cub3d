@@ -23,9 +23,9 @@ static int	load_element(bool *elements, char *id, t_cubed *game)
 	else if (!elements[3] && !ft_strncmp(id, "EA ", 3))
 		load_sprite(IMG_EA, id + 2, &elements[3], game);
 	else if (!elements[4] && !ft_strncmp(id, "F ", 2))
-		load_color(COL_F, id + 1, &elements[4], game);
+		load_color(COL_FL, id + 1, &elements[4], game);
 	else if (!elements[5] && !ft_strncmp(id, "C ", 2))
-		load_color(COL_C, id + 1, &elements[5], game);
+		load_color(COL_RF, id + 1, &elements[5], game);
 	else
 		error_exit(ERR_ELEM, MSG_ELEM, game);
 	return (1);

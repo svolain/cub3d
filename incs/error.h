@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:28:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/04 18:38:54 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/11 09:25:09 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,14 @@
 # define MSG_WALL	"Map has no properly closed walls"
 # define MSG_PLAY	"Map has no or more than one player(s)"
 # define MSG_CHAR	"Map has invalid character(s)"
+
 # define MSG_MEM	"Could not malloc"
 # define MSG_MLX	"MLX42 error"
+# define MSG_SYSC	"System call error in "
+
+# define FMT_BOLD_RED	"\033[1;31m"
+# define FMT_YELLOW		"\033[0;33m"
+# define FMT_RESET		"\033[0m"
 
 enum e_errcodes
 {

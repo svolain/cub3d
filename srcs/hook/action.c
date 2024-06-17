@@ -3,31 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 06:47:11 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/07 14:27:35 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:54:21 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
+void	hook_close(void *param)
+{
+	t_cubed	*game;
+
+	game = param;
+	free_exit(game, NOERROR);
+}
+
+static void	set_map_buffer(int buffer[2], int size, t_camera *cam)
+{
+	buffer[X] = size;
+	buffer[Y] = size;
+	if (cam->dx < 0)
+		buffer[X] = -buffer[X];
+	if (cam->dy < 0)
+		buffer[Y] = -buffer[Y];
+}
+
 static void	active_door(t_cubed *game)
 {
-	int	buffer[2];
-	int	cam[2];
-	int	map[2];
+	t_camera	cam;
+	int			map[2];
+	int			player[2];
+	int			buffer[2];
 
-	get_map_position(cam, game->cam->x, game->cam->y);
-	set_buffer(buffer, BUMP_BUFFER, game);
-	map[X] = (game->cam->x + game->cam->dx + buffer[X]) / CELLSIZE;
-	map[Y] = (game->cam->y + game->cam->dy + buffer[Y]) / CELLSIZE;
-	if (game->map->matrix[cam[Y]][cam[X]] != MAP_OPENED)
+	get_camera(&cam, game);
+	set_map_buffer(buffer, BUMP_BUFFER, &cam);
+	get_map_position(player, cam.x, cam.y);
+	get_map_position(map, cam.x + buffer[X], cam.y + buffer[Y]);
+	if (get_map_element(player[X], player[Y], game) != MAP_OPENED)
 	{
-		if (game->map->matrix[map[Y]][map[X]] == MAP_CLOSED)
-			game->map->matrix[map[Y]][map[X]] = MAP_OPENED;
-		else if (game->map->matrix[map[Y]][map[X]] == MAP_OPENED)
-			game->map->matrix[map[Y]][map[X]] = MAP_CLOSED;
+		if (get_map_element(map[X], map[Y], game) == MAP_CLOSED)
+			set_map_element(map[X], map[Y], MAP_OPENED, game);
+		else if (get_map_element(map[X], map[Y], game) == MAP_OPENED)
+			set_map_element(map[X], map[Y], MAP_CLOSED, game);
 	}
 }
 

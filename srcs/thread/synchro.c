@@ -1,37 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   misc.c                                             :+:      :+:    :+:   */
+/*   synchro.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/03 09:21:50 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/05 21:53:26 by jmertane         ###   ########.fr       */
+/*   Created: 2024/06/11 08:11:52 by jmertane          #+#    #+#             */
+/*   Updated: 2024/06/11 08:21:41 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed.h>
 
-void	hook_close(void *param)
+bool	game_over(t_cubed *game)
 {
-	t_cubed	*game;
-
-	game = param;
-	free_exit(game, NOERROR);
+	return (get_bool(&game->stt[STT_DONE], &game->mtx[MTX_DONE], game));
 }
 
-void	set_buffer(int *buffer, int size, t_cubed *game)
+void	set_finished(t_cubed *game)
 {
-	buffer[X] = size;
-	buffer[Y] = size;
-	if (game->cam->dx < 0)
-		buffer[X] = -buffer[X];
-	if (game->cam->dy < 0)
-		buffer[Y] = -buffer[Y];
-}
-
-void	get_map_position(int *target, int x, int y)
-{
-	target[X] = x / CELLSIZE;
-	target[Y] = y / CELLSIZE;
+	set_bool(&game->stt[STT_DONE], true, &game->mtx[MTX_DONE], game);
 }
