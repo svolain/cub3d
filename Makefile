@@ -6,12 +6,13 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/06/11 12:33:20 by jmertane         ###   ########.fr        #
+#    Updated: 2024/06/17 19:49:49 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		:=	cub3d
 ERRTXT		:=	error.txt
+LOGTXT		:=	vglog.txt
 OBJSDIR		:=	build
 INCSDIR		:=	incs
 SRCSDIR		:=	srcs
@@ -21,11 +22,22 @@ LIBFTBIN	:=	$(LIBFTDIR)/libft.a
 
 RM			:=	rm -rf
 AR			:=	ar -rcs
-CC			:=	cc
-CFLAGS		:=	-Wall -Werror -Wextra -Ofast
-DEBUGFLAGS	=	-g -fsanitize=address
-DEPFLAGS	=	-c -MT $$@ -MMD -MP -MF $(DEPSDIR)/$$*.d
 SCREENCLR	:=	printf "\033c"
+
+CC			:=	cc
+CFLAGS		:=	-Wall -Werror -Wextra
+OFLAGS		=	-Ofast
+DBGFLAGS	=	-g #-fsanitize=XXX
+DEPFLAGS	=	-c -MT $$@ -MMD -MP -MF $(DEPSDIR)/$$*.d
+
+VLG			:=	valgrind
+VLGFLAGS	:=	--leak-check=full \
+				--show-leak-kinds=all \
+				--track-origins=yes \
+				--track-fds=yes \
+				--log-file=$(LOGTXT) \
+				--verbose \
+				--quiet
 
 MLXDIR		:=	mlx
 MLXLIB		:=	$(MLXDIR)/$(OBJSDIR)/libmlx42.a
@@ -101,7 +113,7 @@ $1/%.o: %.c | $(BUILDDIR) $(DEPENDDIR)
 		printf "$(Y)\n"; sed '$$d' $(ERRTXT); \
 		printf "$(R)$(B)\n$(F)\nExiting...$(T)\n"; exit 1 ; \
 	else \
-		printf "$(C)$(B)☑$(T)$(V) $(CC) $(CFLAGS) $$<$ \n    $(C)⮑\t$(G)$(B)$$@$(T) \t\n"; \
+		printf "$(C)$(B)☑$(T)$(V) $(CC) $(CFLAGS) $(OFLAGS) $$<$ \n    $(C)⮑\t$(G)$(B)$$@$(T) \t\n"; \
 	fi
 endef
 
@@ -123,11 +135,15 @@ $(LIBFTBIN):
 	@make title
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(INCS) $^ $(LIBFTBIN) $(MLXLIB) $(MLXFLAGS) -o $@
-	@make finish
+	@$(CC) $(CFLAGS) $(OFLAGS) $(INCS) $^ $(LIBFTBIN) $(MLXLIB) $(MLXFLAGS) -o $@
 
-db: CFLAGS += $(DEBUGFLAGS)
+re: fclean all
+
+db: CFLAGS += $(DBGFLAGS)
 db: re
+
+vg: db
+	@$(VLG) $(VLGFLAGS) ./$(NAME) ./maps/map.cub
 
 clean:
 	@make --quiet -C $(LIBFTDIR) clean
@@ -138,7 +154,8 @@ fclean: clean
 	@$(RM) $(MLXDIR)/$(OBJSDIR)
 	@$(RM) $(NAME)
 
-re: fclean all
+vclean: fclean
+	@$(RM) $(LOGTXT)
 
 nm:
 	@$(foreach header, $(INCSDIR), norminette -R CheckDefine $(header))
@@ -165,4 +182,4 @@ $(DEPS):
 
 $(foreach build, $(BUILDDIR), $(eval $(call build_cmd, $(build))))
 
-.PHONY: all clean fclean re db nm title finish
+.PHONY: all clean fclean vclean re db vg nm title finish
