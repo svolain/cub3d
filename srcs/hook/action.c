@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 06:47:11 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/17 14:54:21 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/17 20:07:47 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,40 +20,42 @@ void	hook_close(void *param)
 	free_exit(game, NOERROR);
 }
 
-static void	set_map_buffer(int buffer[2], int size, t_camera *cam)
+static void	get_map_buffer(int buffer[2], t_camera *cam)
 {
-	buffer[X] = size;
-	buffer[Y] = size;
+	buffer[X] = BUMP_BUFFER;
+	buffer[Y] = BUMP_BUFFER;
 	if (cam->dx < 0)
 		buffer[X] = -buffer[X];
 	if (cam->dy < 0)
 		buffer[Y] = -buffer[Y];
+	buffer[X] += cam->x;
+	buffer[Y] += cam->y;
+	buffer[X] /= CELLSIZE;
+	buffer[Y] /= CELLSIZE;
 }
 
 static void	active_door(t_cubed *game)
 {
 	t_camera	cam;
-	int			map[2];
 	int			player[2];
 	int			buffer[2];
 
 	get_camera(&cam, game);
-	set_map_buffer(buffer, BUMP_BUFFER, &cam);
 	get_map_position(player, cam.x, cam.y);
-	get_map_position(map, cam.x + buffer[X], cam.y + buffer[Y]);
+	get_map_buffer(buffer, &cam);
 	if (get_map_element(player[X], player[Y], game) != MAP_OPENED)
 	{
-		if (get_map_element(map[X], map[Y], game) == MAP_CLOSED)
-			set_map_element(map[X], map[Y], MAP_OPENED, game);
-		else if (get_map_element(map[X], map[Y], game) == MAP_OPENED)
-			set_map_element(map[X], map[Y], MAP_CLOSED, game);
+		if (get_map_element(buffer[X], buffer[Y], game) == MAP_CLOSED)
+			set_map_element(buffer[X], buffer[Y], MAP_OPENED, game);
+		else if (get_map_element(buffer[X], buffer[Y], game) == MAP_OPENED)
+			set_map_element(buffer[X], buffer[Y], MAP_CLOSED, game);
 	}
 }
 
 void	hook_action(mlx_key_data_t keydata, void *param)
 {
 	t_cubed		*game;
-	
+
 	game = param;
 	if (keydata.action == MLX_PRESS)
 	{
