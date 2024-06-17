@@ -6,7 +6,7 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/06/17 19:49:49 by jmertane         ###   ########.fr        #
+#    Updated: 2024/06/17 19:58:07 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SCREENCLR	:=	printf "\033c"
 CC			:=	cc
 CFLAGS		:=	-Wall -Werror -Wextra
 OFLAGS		=	-Ofast
-DBGFLAGS	=	-g #-fsanitize=XXX
+DBGFLAGS	=	-g -fsanitize=address
 DEPFLAGS	=	-c -MT $$@ -MMD -MP -MF $(DEPSDIR)/$$*.d
 
 VLG			:=	valgrind
@@ -72,7 +72,7 @@ SOURCES 	:= 	main.c \
 				walls.c \
 				floor.c \
 				minimap.c \
-				anim.c \
+				animation.c \
 				render.c \
 				rays.c \
 				color.c \
@@ -81,7 +81,7 @@ SOURCES 	:= 	main.c \
 				free.c \
 				load.c \
 				safe.c \
-				string.c
+				string.c \
 
 SOURCEDIR	:=	$(addprefix $(SRCSDIR)/, $(MODULES))
 BUILDDIR	:=	$(addprefix $(OBJSDIR)/, $(MODULES))

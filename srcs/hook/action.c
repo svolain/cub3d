@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 06:47:11 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/13 08:44:01 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:54:21 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	active_door(t_cubed *game)
 void	hook_action(mlx_key_data_t keydata, void *param)
 {
 	t_cubed		*game;
-
+	
 	game = param;
 	if (keydata.action == MLX_PRESS)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:01:07 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/11 06:14:08 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/17 15:22:56 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,7 @@ void	free_exit(t_cubed *game, int excode)
 		free(game->cam);
 	if (game->gnl != NULL)
 		free_single(&game->gnl);
+	if (game->animation != NULL)
+		free(game->animation);
 	exit(excode);
 }

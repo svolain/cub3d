@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubed.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/13 09:04:10 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/17 15:20:40 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,12 +146,22 @@ typedef struct s_mapinfo
 	int			filefd;
 }	t_mapinfo;
 
+typedef struct s_anim
+{
+	int			active;
+	int			current_frame;
+	int			frame_count;
+	double		timer;
+	double		delay;
+}	t_anim;
+
 typedef struct s_cubed
 {
 	t_camera	*cam;
 	t_mapinfo	*map;
 	char		*gnl;
 	mlx_t		*mlx;
+	t_anim		*animation;
 	int32_t		mouse[2];
 	int32_t		color[GAME_COLORS];
 	mlx_image_t	*image[GAME_ASSETS];
@@ -182,6 +192,7 @@ void	hook_action(mlx_key_data_t keydata, void *param);
 void	hook_mouse(void *param);
 void	hook_click(void *param);
 void	hook_close(void *param);
+void	hook_animation(void *param);
 
 //		Move
 void	move_camera(t_cubed *game, t_action action);
@@ -206,7 +217,7 @@ void	draw_fov(t_camera *cam, float angle, t_cubed *game);
 
 //		Animate
 void	animate_minimap(t_cubed *game);
-void	animate_shotgun(t_cubed *game, int i);
+void	animate_shotgun(t_cubed *game);
 void	wait_frame(t_cubed *game, float limit);
 
 //		Calculate
