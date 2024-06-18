@@ -25,24 +25,24 @@ static int32_t	calculate_shade(int row)
 	return (get_rgba(0, 0, 0, modifier - intensity));
 }
 
-static void	calculate_draw(int row, float *tex, t_vector *ray, t_cubed *game)
+static void	calculate_draw(int row, float *tex, t_camera *cam, t_cubed *game)
 {
 	float	pp;
 	float	dy;
 	float	angle;
 
-	angle = cos(fabs(game->cam->a - ray->a));
+	angle = cos(fabs(cam->a - cam->dy));
 	pp = (float)SCREEN_WIDTH / tan(FOV / 2);
 	dy = row - (float)SCREEN_HEIGHT / 2.0f;
-	tex[X] = game->cam->x * 1.4f;
-	tex[Y] = -game->cam->y * 1.4f;
-	tex[X] += cos(ray->a) * pp * 64 / dy / angle;
-	tex[Y] -= sin(ray->a) * pp * 64 / dy / angle;
+	tex[X] = cam->x * 1.4f;
+	tex[Y] = -cam->y * 1.4f;
+	tex[X] += cos(cam->dy) * pp * 64 / dy / angle;
+	tex[Y] -= sin(cam->dy) * pp * 64 / dy / angle;
 	tex[X] = (int)tex[X] % game->image[IMG_FL]->width;
 	tex[Y] = (int)tex[Y] % game->image[IMG_FL]->height;
 }
 
-static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
+static void	draw_column(int column, int height, t_camera *cam, t_cubed *game)
 {
 	float	tex[2];
 	int32_t	shade;
@@ -53,7 +53,7 @@ static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
 	row = SCREEN_HEIGHT / 2 + height / 2 - 1;
 	while (row < SCREEN_HEIGHT)
 	{
-		calculate_draw(row, tex, ray, game);
+		calculate_draw(row, tex, cam, game);
 		shade = calculate_shade(row);
 		floor = get_alpha_blend(shade, get_pixel_color
 				(game->image[IMG_FL], tex[X], tex[Y]));
@@ -76,11 +76,12 @@ void	draw_floor(t_camera *cam, float angle, t_cubed *game)
 	while (column < SCREEN_WIDTH)
 	{
 		ray.a = angle;
+		cam->dy = angle;
 		calculate_ray(&ray, cam, game);
 		fix_fisheye(&ray, cam->a);
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
 		if (height < SCREEN_HEIGHT)
-			draw_column(column, height, &ray, game);
+			draw_column(column, height, cam, game);
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
 		column++;
 	}
