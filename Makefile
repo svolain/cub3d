@@ -14,6 +14,7 @@ NAME 		:=	cub3d
 ERRLOG		:=	error.txt
 TESTMAP 	:=	maps/map.cub
 
+ROOTDIR		:=	mandatory
 OBJSDIR		:=	build
 INCSDIR		:=	incs
 SRCSDIR		:=	srcs
@@ -56,6 +57,15 @@ ifeq ($(shell uname), Darwin)
 	MLXFLAGS += $(MLXBREW)
 endif
 
+F			=	=================================
+B			=	\033[1m
+T			=	\033[0m
+G			=	\033[32m
+V			=	\033[35m
+C			=	\033[36m
+R			=	\033[31m
+Y			=	\033[33m
+
 MODULES		:=	main \
 				parse \
 				thread \
@@ -94,21 +104,14 @@ SOURCES 	:= 	main.c \
 SOURCEDIR	:=	$(addprefix $(SRCSDIR)/, $(MODULES))
 BUILDDIR	:=	$(addprefix $(OBJSDIR)/, $(MODULES))
 DEPENDDIR	:=	$(addprefix $(DEPSDIR)/, $(MODULES))
-SRCS		:=	$(foreach file, $(SOURCES), $(shell find $(SOURCEDIR) -name $(file)))
+
+SRCS		:=	$(foreach source, $(SOURCES), $(shell find $(SOURCEDIR) -name $(source)))
 OBJS		:=	$(patsubst $(SRCSDIR)/%.c, $(OBJSDIR)/%.o, $(SRCS))
 DEPS		:=	$(patsubst $(SRCSDIR)/%.c, $(DEPSDIR)/%.d, $(SRCS))
+
 INCS	 	:=	$(foreach header, $(INCSDIR), -I $(header))
 INCS	 	+=	$(foreach header, $(LIBFTDIR)/$(INCSDIR), -I $(header))
 INCS	 	+=	$(foreach header, $(MLXDIR)/include/MLX42, -I $(header))
-
-F			=	=================================
-B			=	\033[1m
-T			=	\033[0m
-G			=	\033[32m
-V			=	\033[35m
-C			=	\033[36m
-R			=	\033[31m
-Y			=	\033[33m
 
 vpath %.c $(SOURCEDIR)
 
@@ -140,11 +143,11 @@ endif
 
 $(LIBFT):
 	@make --quiet -C $(LIBFTDIR) all
-	@make title
+	@make --quiet title
 
 $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OFLAGS) $(INCS) $^ $(LIBFT) $(LIBMLX) $(MLXFLAGS) -o $@
-	@make finish
+	@make --quiet finish
 
 re: fclean all
 
