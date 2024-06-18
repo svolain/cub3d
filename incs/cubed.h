@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubed.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/17 15:20:40 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/18 07:21:55 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@
 
 # define MAPCELL (CELLSIZE / MAPSCALE)
 # define MAPSIZE (MAPCELL * MAPGRID)
-# define MAPCENTER MAPSIZE / 2 - (MAPCELL / 2)
+# define MAPCENTER (MAPSIZE / 2) - (MAPCELL / 2)
 
 # define BPP sizeof(int32_t)
 
@@ -168,7 +168,7 @@ typedef struct s_cubed
 	mlx_image_t	*anim[GAME_ANIMS];
 	pthread_t	tid[GAME_THREADS];
 	t_mtx		mtx[GAME_MUTEXES];
-	bool		stt[GAME_STATS];
+	bool		status[GAME_STATS];
 }	t_cubed;
 
 //		Parse

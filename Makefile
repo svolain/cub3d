@@ -6,19 +6,22 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/06/17 19:58:07 by jmertane         ###   ########.fr        #
+#    Updated: 2024/06/18 07:28:03 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		:=	cub3d
-ERRTXT		:=	error.txt
-LOGTXT		:=	vglog.txt
+ERRLOG		:=	error.txt
+TESTMAP 	:=	maps/map.cub
+
 OBJSDIR		:=	build
 INCSDIR		:=	incs
 SRCSDIR		:=	srcs
 DEPSDIR		:=	.deps
+
 LIBFTDIR	:=	libft
-LIBFTBIN	:=	$(LIBFTDIR)/libft.a
+LIBFTBIN	:=	libft.a
+LIBFT		:=	$(LIBFTDIR)/$(LIBFTBIN)
 
 RM			:=	rm -rf
 AR			:=	ar -rcs
@@ -27,22 +30,27 @@ SCREENCLR	:=	printf "\033c"
 CC			:=	cc
 CFLAGS		:=	-Wall -Werror -Wextra
 OFLAGS		=	-Ofast
-DBGFLAGS	=	-g -fsanitize=address
+DBGFLAGS	=	-g #-fsanitize=address
 DEPFLAGS	=	-c -MT $$@ -MMD -MP -MF $(DEPSDIR)/$$*.d
 
 VLG			:=	valgrind
+VLGLOG		:=	vglog.txt
+VLGSUPP		:=	mlx.supp
 VLGFLAGS	:=	--leak-check=full \
 				--show-leak-kinds=all \
 				--track-origins=yes \
 				--track-fds=yes \
-				--log-file=$(LOGTXT) \
+				--gen-suppressions=all \
+				--suppressions=$(VLGSUPP) \
+				--log-file=$(VLGLOG) \
 				--verbose \
 				--quiet
 
 MLXDIR		:=	mlx
-MLXLIB		:=	$(MLXDIR)/$(OBJSDIR)/libmlx42.a
+MLXBIN		:=	libmlx42.a
 MLXBREW		=	-L "$(HOME)/.brew/opt/glfw/lib/"
 MLXFLAGS	=	-ldl -lglfw -pthread -lm
+LIBMLX		:=	$(MLXDIR)/$(OBJSDIR)/$(MLXBIN)
 
 ifeq ($(shell uname), Darwin)
 	MLXFLAGS += $(MLXBREW)
@@ -106,20 +114,20 @@ vpath %.c $(SOURCEDIR)
 
 define build_cmd
 $1/%.o: %.c | $(BUILDDIR) $(DEPENDDIR)
-	@if ! $(CC) $(CFLAGS) $(INCS) $(DEPFLAGS) $$< -o $$@ 2> $(ERRTXT); then \
+	@if ! $(CC) $(CFLAGS) $(OFLAGS) $(INCS) $(DEPFLAGS) $$< -o $$@ 2> $(ERRLOG); then \
 		printf "$(R)$(B)\nERROR!\n$(F)$(T)\n"; \
 		printf "$(V)Unable to create object file:$(T)\n\n"; \
 		printf "$(R)$(B)$$@$(T)\n"; \
-		printf "$(Y)\n"; sed '$$d' $(ERRTXT); \
+		printf "$(Y)\n"; sed '$$d' $(ERRLOG); \
 		printf "$(R)$(B)\n$(F)\nExiting...$(T)\n"; exit 1 ; \
 	else \
-		printf "$(C)$(B)☑$(T)$(V) $(CC) $(CFLAGS) $(OFLAGS) $$<$ \n    $(C)⮑\t$(G)$(B)$$@$(T) \t\n"; \
+		printf "$(C)$(B)☑$(T)$(V) $(CC) $(CFLAGS) $(OFLAGS) $$<$ \n   $(C)⮑  $(G)$(B)$$@$(T)\n"; \
 	fi
 endef
 
-all: $(MLXLIB) $(LIBFTBIN) $(NAME)
+all: $(LIBMLX) $(LIBFT) $(NAME)
 
-$(MLXLIB):
+$(LIBMLX):
 	@$(SCREENCLR)
 ifeq ("$(wildcard $(MLXDIR))", "")
 	@echo "$(G)$(B)$(MLXDIR)$(T)$(V) not found, commencing download.$(T)\n"
@@ -130,12 +138,13 @@ endif
 	@echo "\n$(V)Building $(G)$(B)MLX42$(T)$(V) binary...$(T)\n"
 	@cmake $(MLXDIR) -B $(MLXDIR)/build && make -C $(MLXDIR)/build -j4
 
-$(LIBFTBIN):
+$(LIBFT):
 	@make --quiet -C $(LIBFTDIR) all
 	@make title
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(OFLAGS) $(INCS) $^ $(LIBFTBIN) $(MLXLIB) $(MLXFLAGS) -o $@
+	@$(CC) $(CFLAGS) $(OFLAGS) $(INCS) $^ $(LIBFT) $(LIBMLX) $(MLXFLAGS) -o $@
+	@make finish
 
 re: fclean all
 
@@ -143,11 +152,14 @@ db: CFLAGS += $(DBGFLAGS)
 db: re
 
 vg: db
-	@$(VLG) $(VLGFLAGS) ./$(NAME) ./maps/map.cub
+	@$(VLG) $(VLGFLAGS) ./$(NAME) $(TESTMAP)
+
+run: all
+	./$(NAME) $(TESTMAP)
 
 clean:
 	@make --quiet -C $(LIBFTDIR) clean
-	@$(RM) $(OBJSDIR) $(DEPSDIR) $(ERRTXT)
+	@$(RM) $(OBJSDIR) $(DEPSDIR) $(ERRLOG)
 
 fclean: clean
 	@make --quiet -C $(LIBFTDIR) fclean
@@ -155,7 +167,7 @@ fclean: clean
 	@$(RM) $(NAME)
 
 vclean: fclean
-	@$(RM) $(LOGTXT)
+	@$(RM) $(VLGLOG)
 
 nm:
 	@$(foreach header, $(INCSDIR), norminette -R CheckDefine $(header))
@@ -182,4 +194,4 @@ $(DEPS):
 
 $(foreach build, $(BUILDDIR), $(eval $(call build_cmd, $(build))))
 
-.PHONY: all clean fclean vclean re db vg nm title finish
+.PHONY: all clean fclean vclean re db vg run nm title finish

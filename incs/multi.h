@@ -36,7 +36,7 @@ typedef enum e_mutex
 
 typedef enum e_status
 {
-	STT_DONE
+	STAT_DONE
 }	t_status;
 
 typedef enum e_operation

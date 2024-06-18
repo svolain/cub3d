@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   worldspace.c                                       :+:      :+:    :+:   */
+/*   walls.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 13:35:51 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/10 11:23:14 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/18 06:46:41 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,12 @@
 
 static void	void_empty_space(int column, int height, t_cubed *game)
 {
-	int32_t	color;
-
-	color = get_rgba(0, 0, 0, 0);
 	while (height < SCREEN_HEIGHT)
 	{
 		mlx_put_pixel(game->image[IMG_FG],
-				column, height, color);
+				column, height, TRANSPARENT);
 		mlx_put_pixel(game->image[IMG_FG],
-				column, SCREEN_HEIGHT - height, color);
+				column, SCREEN_HEIGHT - height, TRANSPARENT);
 		height++;
 	}
 }
@@ -46,11 +43,10 @@ static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
 	int32_t	shade;
 	int32_t	color;
 
-	shade = calculate_shade(height);
 	point[A] = SCREEN_HEIGHT / 2 - height / 2;
 	point[B] = SCREEN_HEIGHT / 2 + height / 2;
-	if (height < SCREEN_HEIGHT)
-		void_empty_space(column, point[B], game);
+	void_empty_space(column, point[B], game);
+	shade = calculate_shade(height);
 	while (point[A] < point[B])
 	{
 		color = get_alpha_blend(shade, get_pixel_color
