@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/17 15:20:40 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:01:42 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,9 +216,10 @@ void	draw_minimap(int cam_x, int cam_y, t_cubed *game);
 void	draw_fov(t_camera *cam, float angle, t_cubed *game);
 
 //		Animate
-void	animate_minimap(t_cubed *game);
 void	animate_shotgun(t_cubed *game);
 void	wait_frame(t_cubed *game, float limit);
+void	draw_shotgun(t_cubed *game);
+void	init_animation(t_cubed *game);
 
 //		Calculate
 void	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game);
