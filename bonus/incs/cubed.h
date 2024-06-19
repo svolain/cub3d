@@ -67,6 +67,8 @@
 # define BPP sizeof(int32_t)
 
 # define TRANSPARENT	get_rgba(0, 0, 0, 0)
+# define COLOR_BLACK	get_rgba(0, 0, 0, 255)
+
 # define COLOR_BORDER	get_rgba(50, 100, 200, 100)
 # define COLOR_RAY		get_rgba(225, 100, 100, 150)
 # define COLOR_GRID		get_rgba(50, 50, 50, 200)

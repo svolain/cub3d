@@ -12,17 +12,17 @@
 
 #include <cubed.h>
 
-static int32_t	calculate_shade(int row)
+static int32_t	calculate_shade(int row, int32_t color)
 {
 	static int	treshold = 450;
 	static int	modifier = 140;
 	float		intensity;
 
 	if (row <= SCREEN_HEIGHT - treshold)
-		return (get_rgba(0, 0, 0, 255));
+		return (COLOR_BLACK);
 	else
 		intensity = (float)row / SCREEN_HEIGHT * 255.0f;
-	return (get_rgba(0, 0, 0, modifier - intensity));
+	return (get_alpha_blend(get_rgba(0, 0, 0, modifier - intensity), color));
 }
 
 static void	calculate_draw(int row, float *tex, t_camera *cam, t_cubed *game)
@@ -54,10 +54,11 @@ static void	draw_column(int column, int height, t_camera *cam, t_cubed *game)
 	while (row < SCREEN_HEIGHT)
 	{
 		calculate_draw(row, tex, cam, game);
-		shade = calculate_shade(row);
+		shade = calculate_shade(row, game->color[COL_FL]);
 		floor = get_alpha_blend(shade, get_pixel_color
 				(game->image[IMG_FL], tex[X], tex[Y]));
 		ft_put_pixel(column, row, floor, game->image[IMG_BG]);
+		shade = calculate_shade(row, game->color[COL_RF]);
 		roof = get_alpha_blend(shade, get_pixel_color
 				(game->image[IMG_RF], tex[X], tex[Y]));
 		ft_put_pixel(column, SCREEN_HEIGHT - row, roof, game->image[IMG_BG]);
