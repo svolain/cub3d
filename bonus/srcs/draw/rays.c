@@ -40,7 +40,7 @@ static void	get_collosion_point(t_vector *vec, t_camera *cam, t_cubed *game, cha
 	}
 }
 
-static void	calculate_vertical( t_vector *vec, t_camera *cam, float angle)
+static void	calculate_vertical(t_vector *vec, t_camera *cam, float angle)
 {
 	float	ntan;
 
@@ -59,7 +59,7 @@ static void	calculate_vertical( t_vector *vec, t_camera *cam, float angle)
 	cam->dy = -cam->dx * ntan;
 }
 
-static void	calculate_horizontal( t_vector *vec, t_camera *cam, float angle)
+static void	calculate_horizontal(t_vector *vec, t_camera *cam, float angle)
 {
 	float	atan;
 
