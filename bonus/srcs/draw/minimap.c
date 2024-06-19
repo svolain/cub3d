@@ -14,6 +14,10 @@
 
 static void	draw_ray(t_vector *ray, t_camera *cam, t_cubed *game)
 {
+	t_rgba	src;
+
+	src.r = 210;
+	src.a = 225;
 	ray->d /= MAPSCALE;
 	cam->dx = (ray->x - cam->x) / ray->d / MAPSCALE;
 	cam->dy = (ray->y - cam->y) / ray->d / MAPSCALE;
@@ -21,7 +25,10 @@ static void	draw_ray(t_vector *ray, t_camera *cam, t_cubed *game)
 	ray->y = MAPSIZE / 2;
 	while (ray->d >= 0)
 	{
-		ft_put_pixel(ray->x, ray->y, COLOR_RAY, game->image[IMG_MR]);
+		src.color = get_rgba(src.r--, 75, 75, src.a--);
+		if (ray->x > MAPBORDER && ray->x < MAPSIZE - MAPBORDER
+			&& ray->y > MAPBORDER && ray->y < MAPSIZE - MAPBORDER)
+			ft_put_pixel(ray->x, ray->y, src.color, game->image[IMG_MR]);
 		ray->x += cam->dx;
 		ray->y += cam->dy;
 		ray->d--;
@@ -31,7 +38,7 @@ static void	draw_ray(t_vector *ray, t_camera *cam, t_cubed *game)
 void	draw_fov(t_camera *cam, float angle, t_cubed *game)
 {
 	static int	max_fov = 66;
-	static int	density = 5;
+	static int	density = 6;
 	t_vector	ray;
 	int			i;
 
