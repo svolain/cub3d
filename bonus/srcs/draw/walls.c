@@ -93,7 +93,7 @@ void	draw_walls(t_camera *cam, float angle, t_cubed *game)
 	while (column < SCREEN_WIDTH)
 	{
 		ray.a = angle;
-		calculate_ray(&ray, cam, game);
+		calculate_ray(&ray, cam, game, CHARSET_WALL);
 		fix_fisheye(&ray, cam->a);
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
 		calculate_draw(&height, &ray, game);

@@ -223,7 +223,7 @@ void	animate_shotgun(t_cubed *game);
 void	wait_frame(t_cubed *game, float ms_limit);
 
 //		Calculate
-void	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game);
+bool	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game, char *set);
 
 //		Colors
 int32_t	get_channel_color(int32_t rgba, t_action action);

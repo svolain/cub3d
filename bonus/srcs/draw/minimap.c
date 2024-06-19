@@ -43,7 +43,7 @@ void	draw_fov(t_camera *cam, float angle, t_cubed *game)
 	while (i < density * max_fov)
 	{
 		ray.a = angle;
-		calculate_ray(&ray, cam, game);
+		calculate_ray(&ray, cam, game, CHARSET_WALL);
 		draw_ray(&ray, cam, game);
 		ft_rotate(&angle, DEGREE / density, ROTATE_RIGHT);
 		i++;
