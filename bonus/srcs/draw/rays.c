@@ -12,7 +12,7 @@
 
 #include <cubed.h>
 
-static void	calc_collosion(t_vector *ray, float *offset, t_cubed *game)
+static float	get_collosion_point(t_vector *ray, t_camera *cam, t_cubed *game)
 {
 	int	map[2];
 
@@ -22,80 +22,76 @@ static void	calc_collosion(t_vector *ray, float *offset, t_cubed *game)
 		if (map[X] < 0 || map[X] >= game->map->width
 			|| map[Y] < 0 || map[Y] >= game->map->height)
 			break ;
-		else if (!ft_strchr(CHARSET_MOVEABLE,
+		else if (ft_strchr(CHARSET_WALL,
 				get_map_element(map[X], map[Y], game)))
 			break ;
-		ray->x += offset[X];
-		ray->y += offset[Y];
+		ray->x += cam->dx;
+		ray->y += cam->dy;
 	}
-}
-
-static float	calc_horizontal(
-	t_vector *ray, t_camera *cam, float angle, t_cubed *game)
-{
-	float		offset[2];
-	float		atan;
-
-	atan = 1 / -tan(angle);
-	if (angle > WEST)
-	{
-		ray->y = (int)cam->y / CELLSIZE * CELLSIZE - 0.001f;
-		offset[Y] = -CELLSIZE;
-	}
-	else
-	{
-		ray->y = (int)cam->y / CELLSIZE * CELLSIZE + CELLSIZE;
-		offset[Y] = CELLSIZE;
-	}
-	ray->x = (cam->y - ray->y) * atan + cam->x;
-	offset[X] = -offset[Y] * atan;
-	calc_collosion(ray, offset, game);
 	return (sqrtf(powf((ray->x - cam->x), 2) + powf((ray->y - cam->y), 2)));
 }
 
 static float	calc_vertical(
 	t_vector *ray, t_camera *cam, float angle, t_cubed *game)
 {
-	float		offset[2];
-	float		ntan;
+	float	ntan;
 
 	ntan = -tan(angle);
 	if (angle > NORTH && angle < SOUTH)
 	{
 		ray->x = (int)cam->x / CELLSIZE * CELLSIZE - 0.001f;
-		offset[X] = -CELLSIZE;
+		cam->dx = -CELLSIZE;
 	}
 	else
 	{
 		ray->x = (int)cam->x / CELLSIZE * CELLSIZE + CELLSIZE;
-		offset[X] = CELLSIZE;
+		cam->dx = CELLSIZE;
 	}
 	ray->y = (cam->x - ray->x) * ntan + cam->y;
-	offset[Y] = -offset[X] * ntan;
-	calc_collosion(ray, offset, game);
-	return (sqrtf(powf((ray->x - cam->x), 2) + powf((ray->y - cam->y), 2)));
+	cam->dy = -cam->dx * ntan;
+	return (get_collosion_point(ray, cam, game));
+}
+
+static float	calc_horizontal(
+	t_vector *ray, t_camera *cam, float angle, t_cubed *game)
+{
+	float	atan;
+
+	atan = 1 / -tan(angle);
+	if (angle > WEST)
+	{
+		ray->y = (int)cam->y / CELLSIZE * CELLSIZE - 0.001f;
+		cam->dy = -CELLSIZE;
+	}
+	else
+	{
+		ray->y = (int)cam->y / CELLSIZE * CELLSIZE + CELLSIZE;
+		cam->dy = CELLSIZE;
+	}
+	ray->x = (cam->y - ray->y) * atan + cam->x;
+	cam->dx = -cam->dy * atan;
+	return (get_collosion_point(ray, cam, game));
 }
 
 void	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game)
 {
 	t_vector	horizontal;
 	t_vector	vertical;
-	float		distance[2];
 
-	distance[H] = calc_horizontal(&horizontal, cam, ray->a, game);
-	distance[V] = calc_vertical(&vertical, cam, ray->a, game);
-	if (distance[H] < distance[V])
+	horizontal.d = calc_horizontal(&horizontal, cam, ray->a, game);
+	vertical.d = calc_vertical(&vertical, cam, ray->a, game);
+	if (horizontal.d < vertical.d)
 	{
 		ray->x = horizontal.x;
 		ray->y = horizontal.y;
-		ray->d = distance[H];
+		ray->d = horizontal.d;
 		ray->img = IMG_SO;
 	}
 	else
 	{
 		ray->x = vertical.x;
 		ray->y = vertical.y;
-		ray->d = distance[V];
+		ray->d = vertical.d;
 		ray->img = IMG_EA;
 	}
 }

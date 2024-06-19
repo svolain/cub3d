@@ -34,6 +34,7 @@
 # define CHARSET_ALLOWED	"01CONSEW "
 # define CHARSET_PLAYER		"NSEW"
 # define CHARSET_MOVEABLE	"0O"
+# define CHARSET_WALL		"C1"
 
 # define PI 3.1415926535898f
 

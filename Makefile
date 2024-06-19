@@ -15,18 +15,17 @@
 # **************************************************************************** #
 
 NAME 		:=	cub3d
-
+ERRLOG		:=	error.txt
+TESTMAP 	:=	map.cub
+MAPSDIR		:=	maps
 ROOTDIR 	:=	mandatory
-BONUSDIR 	:=	bonus
+BONUSDIR	:=	bonus
+BNSFLAG		:=	b
 
 OBJSDIR		:=	build
 INCSDIR		:=	incs
 SRCSDIR		:=	srcs
 DEPSDIR		:=	.deps
-
-MAPSDIR		:=	maps
-TESTMAP 	:=	map.cub
-ERRLOG		:=	error.txt
 
 LIBFTDIR	:=	libft
 LIBFTBIN	:=	libft.a
@@ -122,20 +121,20 @@ BONUSES 	:= 	thread.c \
 # **************************************************************************** #
 
 ifeq ($(MAKECMDGOALS), bonus)
-	_b = b
-else ifeq ($(MAKECMDGOALS), reb)
-	_b = b
-else ifeq ($(MAKECMDGOALS), dbb)
-	_b = b
-else ifeq ($(MAKECMDGOALS), vgb)
-	_b = b
-else ifeq ($(MAKECMDGOALS), rnb)
-	_b = b
-else ifeq ($(MAKECMDGOALS), nmb)
-	_b = b
+	_b = $(BNSFLAG)
+else ifeq ($(MAKECMDGOALS), re$(BNSFLAG))
+	_b = $(BNSFLAG)
+else ifeq ($(MAKECMDGOALS), db$(BNSFLAG))
+	_b = $(BNSFLAG)
+else ifeq ($(MAKECMDGOALS), vg$(BNSFLAG))
+	_b = $(BNSFLAG)
+else ifeq ($(MAKECMDGOALS), rn$(BNSFLAG))
+	_b = $(BNSFLAG)
+else ifeq ($(MAKECMDGOALS), nm$(BNSFLAG))
+	_b = $(BNSFLAG)
 endif
 
-ifeq ($(_b), b)
+ifeq ($(_b), $(BNSFLAG))
 	ROOTDIR := $(BONUSDIR)
 	MODULES += $(EXTRAS)
 	SOURCES += $(BONUSES)
@@ -149,13 +148,13 @@ SOURCEDIR	:=	$(addprefix $(ROOTDIR)/$(SRCSDIR)/, $(MODULES))
 BUILDDIR	:=	$(addprefix $(OBJSDIR)/, $(MODULES))
 DEPENDDIR	:=	$(addprefix $(DEPSDIR)/, $(MODULES))
 
-SRCS		:=	$(foreach source, $(SOURCES), $(shell find $(SOURCEDIR) -name $(source)))
-OBJS		:=	$(patsubst $(ROOTDIR)/$(SRCSDIR)/%.c, $(OBJSDIR)/%.o, $(SRCS))
-DEPS		:=	$(patsubst $(ROOTDIR)/$(SRCSDIR)/%.c, $(DEPSDIR)/%.d, $(SRCS))
+SRCS	:=	$(foreach source, $(SOURCES), $(shell find $(SOURCEDIR) -name $(source)))
+OBJS	:=	$(patsubst $(ROOTDIR)/$(SRCSDIR)/%.c, $(OBJSDIR)/%.o, $(SRCS))
+DEPS	:=	$(patsubst $(ROOTDIR)/$(SRCSDIR)/%.c, $(DEPSDIR)/%.d, $(SRCS))
 
-INCS	 	:=	$(foreach header, $(ROOTDIR)/$(INCSDIR), -I $(header))
-INCS	 	+=	$(foreach header, $(LIBFTDIR)/$(INCSDIR), -I $(header))
-INCS	 	+=	$(foreach header, $(MLXDIR)/include/MLX42, -I $(header))
+INCS	:=	$(foreach header, $(ROOTDIR)/$(INCSDIR), -I $(header))
+INCS	+=	$(foreach header, $(LIBFTDIR)/$(INCSDIR), -I $(header))
+INCS	+=	$(foreach header, $(MLXDIR)/include/MLX42, -I $(header))
 
 vpath %.c $(SOURCEDIR)
 
