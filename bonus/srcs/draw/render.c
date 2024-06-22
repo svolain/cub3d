@@ -40,6 +40,20 @@ void	*render_minimap(void *param)
 	return (NULL);
 }
 
+void	*render_sprites(void *param)
+{
+	t_cubed		*game;
+	t_camera	cam;
+
+	game = param;
+	while (!game_over(game))
+	{
+		get_camera(&cam, game);
+		draw_sprites(&cam, cam.a, game);
+	}
+	return (NULL);
+}
+
 void	*render_floor(void *param)
 {
 	t_cubed		*game;

@@ -12,37 +12,37 @@
 
 #include <cubed.h>
 
-void	wait_frame(t_cubed *game, float ms_limit)
+void	wait_frame(t_cubed *game, float limit)
 {
 	double	frame;
 
 	frame = 0;
-	while (frame < ms_limit)
-		frame += game->mlx->delta_time * 1000;
+	while (frame < limit)
+		frame += game->mlx->delta_time;
 }
 
-void	animate_shotgun(t_cubed *game)
+void	animate_weapon(t_cubed *game)
 {
-	if (game->animation->active == 0)
+	if (game->wpn->active == false)
 		return ;
-	game->animation->timer = game->mlx->delta_time * 1000;
-	if (game->animation->timer < game->animation->delay)
+	game->wpn->timer = game->mlx->delta_time;
+	if (game->wpn->timer < game->wpn->delay)
 		return ;
-	(*game->anim[game->animation->current_frame]).enabled = false;
-	game->animation->current_frame += 1;
-	game->animation->timer = 0;
-	if (game->animation->current_frame == game->animation->frame_count)
+	(*game->anim[game->wpn->current_frame]).enabled = false;
+	game->wpn->current_frame += 1;
+	game->wpn->timer = 0;
+	if (game->wpn->current_frame == game->wpn->frame_count)
 	{
-		game->animation->active = 0;
-		game->animation->current_frame = IMG_GO;
+		game->wpn->active = false;
+		game->wpn->current_frame = IMG_GO;
 		(*game->anim[IMG_GO]).enabled = true;
 		return ;
 	}
-	(*game->anim[game->animation->current_frame]).enabled = true;
-	wait_frame(game, 500);
+	(*game->anim[game->wpn->current_frame]).enabled = true;
+	wait_frame(game, 200);
 }
 
-void	draw_shotgun(t_cubed *game)
+void	draw_weapon(t_cubed *game)
 {
 	int	i;
 
@@ -58,9 +58,9 @@ void	draw_shotgun(t_cubed *game)
 
 void	init_animation(t_cubed *game)
 {
-	game->animation = safe_calloc(sizeof(t_anim), game);
-	game->animation->active = 0;
-	game->animation->delay = 0.02;
-	game->animation->frame_count = GAME_ANIMS;
-	game->animation->current_frame = IMG_GO;
+	game->wpn = safe_calloc(sizeof(t_anim), game);
+	game->wpn->active = 0;
+	game->wpn->delay = 0.02f;
+	game->wpn->frame_count = GAME_ANIMS;
+	game->wpn->current_frame = IMG_GO;
 }

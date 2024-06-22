@@ -13,7 +13,7 @@
 #ifndef ASSET_H
 # define ASSET_H
 
-# define GAME_ASSETS 12
+# define GAME_ASSETS 15
 # define GAME_COLORS 2
 # define GAME_ANIMS 16
 
@@ -21,22 +21,24 @@
 # define TEX_ROOF		"./textures/roof.png"
 # define TEX_DOOR		"./textures/door.png"
 # define TEX_PLAYER		"./textures/player.png"
+# define TEX_HEALTH		"./textures/pickup/health.png"
+# define TEX_AMMO		"./textures/pickup/ammo.png"
 
-# define TEX_GUN1		"./textures/gun/gun_idle.png"
-# define TEX_GUN2		"./textures/gun/gun_shoot1.png"
-# define TEX_GUN3		"./textures/gun/gun_shoot2.png"
-# define TEX_GUN4		"./textures/gun/gun_shoot3.png"
-# define TEX_GUN5		"./textures/gun/gun_shoot4.png"
-# define TEX_GUN6		"./textures/gun/gun_reload1.png"
-# define TEX_GUN7		"./textures/gun/gun_reload2.png"
-# define TEX_GUN8		"./textures/gun/gun_reload3.png"
-# define TEX_GUN9		"./textures/gun/gun_reload4.png"
-# define TEX_GUN10		"./textures/gun/gun_reload5.png"
-# define TEX_GUN11		"./textures/gun/gun_reload6.png"
-# define TEX_GUN12		"./textures/gun/gun_reload7.png"
-# define TEX_GUN13		"./textures/gun/gun_reload8.png"
-# define TEX_GUN14		"./textures/gun/gun_reload9.png"
-# define TEX_GUN15		"./textures/gun/gun_reload10.png"
+# define TEX_GUN1		"./textures/gun/idle.png"
+# define TEX_GUN2		"./textures/gun/shoot0.png"
+# define TEX_GUN3		"./textures/gun/shoot1.png"
+# define TEX_GUN4		"./textures/gun/shoot2.png"
+# define TEX_GUN5		"./textures/gun/shoot3.png"
+# define TEX_GUN6		"./textures/gun/reload0.png"
+# define TEX_GUN7		"./textures/gun/reload1.png"
+# define TEX_GUN8		"./textures/gun/reload2.png"
+# define TEX_GUN9		"./textures/gun/reload3.png"
+# define TEX_GUN10		"./textures/gun/reload4.png"
+# define TEX_GUN11		"./textures/gun/reload5.png"
+# define TEX_GUN12		"./textures/gun/reload6.png"
+# define TEX_GUN13		"./textures/gun/reload7.png"
+# define TEX_GUN14		"./textures/gun/reload8.png"
+# define TEX_GUN15		"./textures/gun/reload9.png"
 
 typedef enum e_image
 {
@@ -49,9 +51,12 @@ typedef enum e_image
 	IMG_RF,
 	IMG_BG,
 	IMG_FG,
+	IMG_OL,
 	IMG_MM,
-	IMG_MR,
-	IMG_PL
+	IMG_FV,
+	IMG_PL,
+	IMG_AM,
+	IMG_HL
 }	t_image;
 
 typedef enum e_color

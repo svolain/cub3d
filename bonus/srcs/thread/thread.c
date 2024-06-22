@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 05:43:41 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/11 09:39:32 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/21 09:57:58 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,11 @@ static void	create_threads(t_operation action, t_cubed *game)
 			NULL, render_walls, game), action, game);
 	err_chkr(pthread_create(&game->tid[THD_BG],
 			NULL, render_floor, game), action, game);
+	err_chkr(pthread_create(&game->tid[THD_OL],
+			NULL, render_sprites, game), action, game);
 	err_chkr(pthread_create(&game->tid[THD_MM],
 			NULL, render_minimap, game), action, game);
-	err_chkr(pthread_create(&game->tid[THD_MR],
+	err_chkr(pthread_create(&game->tid[THD_FV],
 			NULL, render_fov, game), action, game);
 }
 

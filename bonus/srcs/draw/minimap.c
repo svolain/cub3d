@@ -12,49 +12,15 @@
 
 #include <cubed.h>
 
-static void	draw_ray(t_vector *ray, t_camera *cam, t_cubed *game)
+static int	ft_isgrid(int x, int y)
 {
-	t_rgba	src;
-
-	src.r = 210;
-	src.a = 225;
-	ray->d /= MAPSCALE;
-	cam->dx = (ray->x - cam->x) / ray->d / MAPSCALE;
-	cam->dy = (ray->y - cam->y) / ray->d / MAPSCALE;
-	ray->x = MAPSIZE / 2;
-	ray->y = MAPSIZE / 2;
-	while (ray->d >= 0)
-	{
-		src.color = get_rgba(src.r--, 75, 75, src.a--);
-		if (ray->x > MAPBORDER && ray->x < MAPSIZE - MAPBORDER
-			&& ray->y > MAPBORDER && ray->y < MAPSIZE - MAPBORDER)
-			ft_put_pixel(ray->x, ray->y, src.color, game->image[IMG_MR]);
-		ray->x += cam->dx;
-		ray->y += cam->dy;
-		ray->d--;
-	}
+	return (x % MAPCELL == 0 || y % MAPCELL == 0);
 }
 
-void	draw_fov(t_camera *cam, float angle, t_cubed *game)
+static int	ft_isborder(int x, int y)
 {
-	static int	max_fov = 66;
-	static int	density = 6;
-	t_vector	ray;
-	int			i;
-
-	i = 0;
-	ft_memset(game->image[IMG_MR]->pixels,
-		0, game->image[IMG_MR]->height
-		* game->image[IMG_MR]->width * BPP);
-	ft_rotate(&angle, FOV / 2, ROTATE_LEFT);
-	while (i < density * max_fov)
-	{
-		ray.a = angle;
-		calculate_ray(&ray, cam, game, CHARSET_WALL);
-		draw_ray(&ray, cam, game);
-		ft_rotate(&angle, DEGREE / density, ROTATE_RIGHT);
-		i++;
-	}
+	return (y < MAPBORDER || y > MAPSIZE - MAPBORDER
+		|| x < MAPBORDER || x > MAPSIZE - MAPBORDER);
 }
 
 static int32_t	get_map_color(int cam_x, int cam_y, t_cubed *game)
@@ -84,14 +50,13 @@ static void	draw_column(int column, int cam_x, int cam_y, t_cubed *game)
 	cam_y -= MAPGRID / 2 * CELLSIZE;
 	while (row < MAPSIZE)
 	{
-		if (column < MAPBORDER || column > MAPSIZE - MAPBORDER
-			|| row < MAPBORDER || row > MAPSIZE - MAPBORDER)
+		if (ft_isborder(column, row))
 			color = COLOR_BORDER;
-		else if (column % MAPCELL == 0 || row % MAPCELL == 0)
+		else if (ft_isgrid(column, row))
 			color = COLOR_GRID;
 		else
 			color = get_map_color(cam_x, cam_y, game);
-		ft_put_pixel(column, row, color, game->image[IMG_MM]);
+		ft_put_pixel(column, row, color, game->asset[IMG_MM]);
 		cam_y += MAPSCALE;
 		row++;
 	}

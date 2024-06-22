@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   background.c                                       :+:      :+:    :+:   */
+/*   sprite.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/10 11:23:09 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/11 15:40:08 by jmertane         ###   ########.fr       */
+/*   Created: 2024/06/21 09:39:35 by jmertane          #+#    #+#             */
+/*   Updated: 2024/06/21 09:39:54 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ static void	draw_column(int column, int height, t_camera *cam, t_cubed *game)
 {
 	float	tex[2];
 	int32_t	shade;
-	int32_t	floor;
-	int32_t	roof;
+	int32_t	item;
 	int		row;
 
 	row = SCREEN_HEIGHT / 2 + height / 2 - 1;
@@ -55,35 +54,72 @@ static void	draw_column(int column, int height, t_camera *cam, t_cubed *game)
 	{
 		calculate_draw(row, tex, cam, game);
 		shade = calculate_shade(row, game->color[COL_FL]);
-		floor = get_alpha_blend(shade, get_pixel_color
-				(game->asset[IMG_FL], tex[X], tex[Y]));
-		ft_put_pixel(column, row, floor, game->asset[IMG_BG]);
-		shade = calculate_shade(row, game->color[COL_RF]);
-		roof = get_alpha_blend(shade, get_pixel_color
-				(game->asset[IMG_RF], tex[X], tex[Y]));
-		ft_put_pixel(column, SCREEN_HEIGHT - row, roof, game->asset[IMG_BG]);
+		item = get_alpha_blend(shade, get_pixel_color
+				(game->asset[IMG_HL], tex[X], tex[Y]));
+		ft_put_pixel(column, row, item, game->asset[IMG_BG]);
 		row++;
 	}
 }
 
-void	draw_floor(t_camera *cam, float angle, t_cubed *game)
+void	draw_sprites(t_camera *cam, float angle, t_cubed *game)
 {
 	t_vector	ray;
 	int			height;
 	int			column;
 
-	column = 0;
+	column = -1;
 	ft_rotate(&angle, FOV / 2, ROTATE_LEFT);
-	while (column < SCREEN_WIDTH)
+	while (++column < SCREEN_WIDTH)
 	{
 		ray.a = angle;
-		calculate_ray(&ray, cam, game, CHARSET_WALL);
+		if (!calculate_ray(&ray, cam, game, CHARSET_SPRITE))
+			continue ;
 		fix_fisheye(&ray, cam->a);
 		cam->dy = ray.a;
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
 		if (height < SCREEN_HEIGHT)
 			draw_column(column, height, cam, game);
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
-		column++;
 	}
 }
+
+/* void	draw_sprites(t_camera *cam, float angle, t_cubed *game) */
+/* { */
+/* 	(void)angle; */
+/**/
+/* 	float spx = 23 * CELLSIZE; */
+/* 	float spy = 3 * CELLSIZE; */
+/* 	float spz = 20; */
+/**/
+/* 	float sx=spx-cam->x; */
+/* 	float sy=spy-cam->y; */
+/* 	float sz=spz; */
+/**/
+/* 	float CS=cos(cam->a); */
+/* 	float SN=sin(cam->a); */
+/**/
+/* 	float a=sy*CS+sx*SN; */
+/* 	float b=sx*CS-sy*SN; */
+/**/
+/* 	sx=a; */
+/* 	sy=b; */
+/**/
+/* 	sx=(sx*100.0/sy)+(SCREEN_HEIGHT/2); */
+/* 	sy=(sz*100.0/sy)+(SCREEN_WIDTH/2); */
+/**/
+/* 	float scale = CELLSIZE / b * 100.0f; */
+/* 	int x; */
+/* 	int y; */
+/**/
+/* 	ft_memset(game->asset[IMG_OL]->pixels, */
+/* 		0, game->asset[IMG_OL]->height */
+/* 		* game->asset[IMG_OL]->width * BPP); */
+/**/
+/* 	for(x=sx-scale/2;x<sx+scale/2;x++) */
+/* 	{ */
+/* 		for(y=0;y<scale;y++) */
+/* 		{ */
+/* 			ft_put_pixel(x, sy-y, COLOR_RAY, game->asset[IMG_OL]); */
+/* 		} */
+/* 	} */
+/* } */

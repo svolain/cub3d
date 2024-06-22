@@ -19,7 +19,6 @@
 # include <asset.h>
 # include <multi.h>
 
-# include <pthread.h>
 # include <stdbool.h>
 # include <fcntl.h>
 # include <math.h>
@@ -31,10 +30,11 @@
 # define SCREEN_HEIGHT 1080
 # define SCREEN_TITLE "cub3d"
 
-# define CHARSET_ALLOWED	"01CONSEW "
+# define CHARSET_ALLOWED	"01COHANSEW "
 # define CHARSET_PLAYER		"NSEW"
 # define CHARSET_MOVEABLE	"0O"
 # define CHARSET_WALL		"C1"
+# define CHARSET_SPRITE		"HA"
 
 # define PI 3.1415926535898f
 
@@ -43,17 +43,18 @@
 # define WEST PI
 # define SOUTH 3.0f * PI / 2.0f
 
-# define FOV ft_degtorad(66)
+# define FOV_IN_DEG 66
+# define FOV ft_degtorad(FOV_IN_DEG)
 # define DEGREE ft_degtorad(1)
 
 # define CELLSIZE 256
-# define BUMP_BUFFER CELLSIZE / 2
-# define ANGLE_MODIFIER 0.0002f
-# define MOVE_MODIFIER 16.0f
+# define BUMP_BUFFER (CELLSIZE / 2)
+# define ANGLE_MODIFIER 0.0004f
+# define MOVE_MODIFIER 0.1500f
 
-# define STEP_ANGLE CELLSIZE * ANGLE_MODIFIER
-# define STEP_MOVEMENT CELLSIZE / MOVE_MODIFIER
-# define STEP_WINDOW FOV / SCREEN_WIDTH
+# define STEP_ANGLE (CELLSIZE * ANGLE_MODIFIER)
+# define STEP_MOVEMENT (CELLSIZE * MOVE_MODIFIER)
+# define STEP_WINDOW (FOV / SCREEN_WIDTH)
 
 # define MAPLIMIT 500
 # define MAPSCALE 8
@@ -62,7 +63,7 @@
 
 # define MAPCELL (CELLSIZE / MAPSCALE)
 # define MAPSIZE (MAPCELL * MAPGRID)
-# define MAPCENTER (MAPSIZE / 2) - (MAPCELL / 2)
+# define MAPCENTER ((MAPSIZE / 2) - (MAPCELL / 2))
 
 # define BPP sizeof(int32_t)
 
@@ -107,10 +108,16 @@ typedef enum e_action
 
 typedef enum e_minimap
 {
+	MAP_NORTH = 78,
+	MAP_SOUTH = 83,
+	MAP_EAST = 69,
+	MAP_WEST = 87,
 	MAP_FLOOR = 48,
 	MAP_WALL = 49,
 	MAP_OPENED = 79,
 	MAP_CLOSED = 67,
+	MAP_HEALTH = 72,
+	MAP_AMMO = 65,
 }	t_minimap;
 
 typedef struct s_vector
@@ -151,7 +158,7 @@ typedef struct s_mapinfo
 
 typedef struct s_anim
 {
-	int			active;
+	bool		active;
 	int			current_frame;
 	int			frame_count;
 	double		timer;
@@ -164,10 +171,10 @@ typedef struct s_cubed
 	t_mapinfo	*map;
 	char		*gnl;
 	mlx_t		*mlx;
-	t_anim		*animation;
+	t_anim		*wpn;
 	int32_t		mouse[2];
 	int32_t		color[GAME_COLORS];
-	mlx_image_t	*image[GAME_ASSETS];
+	mlx_image_t	*asset[GAME_ASSETS];
 	mlx_image_t	*anim[GAME_ANIMS];
 	pthread_t	tid[GAME_THREADS];
 	t_mtx		mtx[GAME_MUTEXES];
@@ -188,6 +195,7 @@ bool	ft_isemptyline(char *str);
 void	load_sprite(t_image index, char *start, bool *loaded, t_cubed *game);
 void	load_color(t_color index, char *start, bool *loaded, t_cubed *game);
 void	load_assets(t_cubed *game);
+void	load_weapon(t_cubed *game);
 
 //		Hook
 void	hook_movement(void *param);
@@ -209,19 +217,21 @@ float	ft_degtorad(float degree);
 //		Render
 void	*render_walls(void *param);
 void	*render_floor(void *param);
+void	*render_sprites(void *param);
 void	*render_minimap(void *param);
 void	*render_fov(void *param);
 
 //		Draw
 void	draw_walls(t_camera *cam, float angle, t_cubed *game);
 void	draw_floor(t_camera *cam, float angle, t_cubed *game);
+void	draw_sprites(t_camera *cam, float angle, t_cubed *game);
 void	draw_minimap(int cam_x, int cam_y, t_cubed *game);
 void	draw_fov(t_camera *cam, float angle, t_cubed *game);
 
 //		Animate
 void	init_animation(t_cubed *game);
-void	draw_shotgun(t_cubed *game);
-void	animate_shotgun(t_cubed *game);
+void	draw_weapon(t_cubed *game);
+void	animate_weapon(t_cubed *game);
 void	wait_frame(t_cubed *game, float ms_limit);
 
 //		Calculate
@@ -268,7 +278,9 @@ void	set_map_element(int x, int y, char c, t_cubed *game);
 void	get_camera(t_camera *cam, t_cubed *game);
 void	set_camera(t_camera *cam, t_cubed *game);
 
-//		Synchro
+//		Status
+void	set_status(bool *dst, bool val, t_mtx *mutex, t_cubed *game);
+bool	get_status(bool *val, t_mtx *mutex, t_cubed *game);
 void	set_game_over(t_cubed *game);
 bool	game_over(t_cubed *game);
 

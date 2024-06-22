@@ -12,13 +12,13 @@
 
 #include <cubed.h>
 
-static void	void_empty_space(int column, int height, t_cubed *game)
+static void	transparent_void(int column, int height, t_cubed *game)
 {
 	while (height < SCREEN_HEIGHT)
 	{
-		mlx_put_pixel(game->image[IMG_FG],
+		mlx_put_pixel(game->asset[IMG_FG],
 			column, height, TRANSPARENT);
-		mlx_put_pixel(game->image[IMG_FG],
+		mlx_put_pixel(game->asset[IMG_FG],
 			column, SCREEN_HEIGHT - height, TRANSPARENT);
 		height++;
 	}
@@ -45,14 +45,14 @@ static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
 
 	point[A] = SCREEN_HEIGHT / 2 - height / 2;
 	point[B] = SCREEN_HEIGHT / 2 + height / 2;
-	void_empty_space(column, point[B], game);
+	transparent_void(column, point[B], game);
 	shade = calculate_shade(height);
 	while (point[A] < point[B])
 	{
 		color = get_alpha_blend(shade, get_pixel_color
-				(game->image[ray->img], ray->x, ray->y));
+				(game->asset[ray->img], ray->x, ray->y));
 		ray->y += ray->d;
-		ft_put_pixel(column, point[A], color, game->image[IMG_FG]);
+		ft_put_pixel(column, point[A], color, game->asset[IMG_FG]);
 		point[A]++;
 	}
 }
@@ -63,16 +63,16 @@ static void	calculate_draw(int *height, t_vector *ray, t_cubed *game)
 
 	get_map_position(map, ray->x, ray->y);
 	if (ray->img == IMG_EA)
-		ray->x = (int)(ray->y) % game->image[ray->img]->height;
+		ray->x = (int)(ray->y) % game->asset[ray->img]->height;
 	else
-		ray->x = (int)(ray->x) % game->image[ray->img]->width;
+		ray->x = (int)(ray->x) % game->asset[ray->img]->width;
 	if (get_map_element(map[X], map[Y], game) == MAP_CLOSED)
 		ray->img = IMG_DR;
 	else if (ray->img == IMG_EA && ray->a > NORTH && ray->a < SOUTH)
 		ray->img = IMG_WE;
 	else if (ray->img == IMG_SO && ray->a > WEST)
 		ray->img = IMG_NO;
-	ray->d = (float)game->image[ray->img]->width / *height;
+	ray->d = (float)game->asset[ray->img]->width / *height;
 	if (*height > SCREEN_HEIGHT)
 	{
 		ray->y = (float)(*height - SCREEN_HEIGHT) / 2 * ray->d;

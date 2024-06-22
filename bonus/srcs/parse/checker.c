@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 19:59:50 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/31 19:59:56 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/22 15:26:50 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,18 @@ static int	load_player(t_cubed *game, char c, int i, int j)
 		error_exit(ERR_MAP, MSG_PLAY, game);
 	game->cam->x = j * CELLSIZE;
 	game->cam->y = i * CELLSIZE;
-	if (c == 'N')
-		game->cam->a = NORTH - STEP_ANGLE;
-	else if (c == 'S')
-		game->cam->a = SOUTH - STEP_ANGLE;
-	else if (c == 'E')
-		game->cam->a = EAST - STEP_ANGLE;
-	else if (c == 'W')
-		game->cam->a = WEST - STEP_ANGLE;
+	if (c == MAP_NORTH)
+		game->cam->a = NORTH;
+	else if (c == MAP_SOUTH)
+		game->cam->a = SOUTH;
+	else if (c == MAP_EAST)
+		game->cam->a = EAST;
+	else if (c == MAP_WEST)
+		game->cam->a = WEST;
 	game->map->matrix[i][j] = MAP_FLOOR;
-	ft_rotate(&game->cam->a, PI, ROTATE_LEFT);
+	if (c == MAP_NORTH || c == MAP_SOUTH)
+		ft_rotate(&game->cam->a, PI, ROTATE_LEFT);
+	ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_RIGHT);
 	loaded = true;
 	return (1);
 }
@@ -68,9 +70,9 @@ static int	flood_fill(char **map, int i, int j)
 	r = 0;
 	if (i < 0 || j < 0 || (map[i] && !map[i][j]))
 		return (1);
-	else if (map[i][j] == '1')
+	else if (map[i][j] == MAP_WALL)
 		return (0);
-	map[i][j] = '1';
+	map[i][j] = MAP_WALL;
 	r += flood_fill(map, i - 1, j);
 	r += flood_fill(map, i + 1, j);
 	r += flood_fill(map, i, j - 1);
@@ -89,7 +91,7 @@ void	check_walls(t_cubed *game, char **duplex)
 		j = 0;
 		while (duplex[i][j])
 		{
-			if (duplex[i][j] == '0' && flood_fill(duplex, i, j))
+			if (duplex[i][j] == MAP_FLOOR && flood_fill(duplex, i, j))
 			{
 				free_double(&duplex);
 				error_exit(ERR_MAP, MSG_WALL, game);

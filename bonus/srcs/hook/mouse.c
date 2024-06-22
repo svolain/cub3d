@@ -24,7 +24,7 @@ void	hook_mouse(void *param)
 	else if (mouse[X] > game->mouse[X])
 		rotate_camera(game, ROTATE_RIGHT);
 	else if (mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT))
-		game->animation->active = 1;
+		game->wpn->active = true;
 	game->mouse[X] = mouse[X];
 }
 
@@ -33,5 +33,5 @@ void	hook_animation(void *param)
 	t_cubed	*game;
 
 	game = (t_cubed *) param;
-	animate_shotgun(game);
+	animate_weapon(game);
 }

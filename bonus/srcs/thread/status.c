@@ -12,14 +12,14 @@
 
 #include <cubed.h>
 
-static void	set_bool(bool *dst, bool val, t_mtx *mutex, t_cubed *game)
+void	set_status(bool *dst, bool val, t_mtx *mutex, t_cubed *game)
 {
 	safe_mutex(mutex, MTX_LOCK, game);
 	*dst = val;
 	safe_mutex(mutex, MTX_UNLOCK, game);
 }
 
-static bool	get_bool(bool *val, t_mtx *mutex, t_cubed *game)
+bool	get_status(bool *val, t_mtx *mutex, t_cubed *game)
 {
 	bool	ret;
 
@@ -31,10 +31,10 @@ static bool	get_bool(bool *val, t_mtx *mutex, t_cubed *game)
 
 bool	game_over(t_cubed *game)
 {
-	return (get_bool(&game->status[STAT_DONE], &game->mtx[MTX_DONE], game));
+	return (get_status(&game->status[STAT_DONE], &game->mtx[MTX_DONE], game));
 }
 
 void	set_game_over(t_cubed *game)
 {
-	set_bool(&game->status[STAT_DONE], true, &game->mtx[MTX_DONE], game);
+	set_status(&game->status[STAT_DONE], true, &game->mtx[MTX_DONE], game);
 }

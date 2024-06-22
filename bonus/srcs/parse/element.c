@@ -33,9 +33,11 @@ static int	load_element(bool *elements, char *id, t_cubed *game)
 
 void	parse_elements(t_cubed *game)
 {
-	static bool	elements[6];
-	static int	loaded = 0;
+	bool	elements[6];
+	int		loaded;
 
+	loaded = 0;
+	ft_bzero(&elements, 6);
 	while (true)
 	{
 		free_single(&game->gnl);

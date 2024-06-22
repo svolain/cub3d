@@ -106,13 +106,16 @@ EXTRAS		:=	thread
 
 BONUSES 	:= 	thread.c \
 				mutex.c \
-				synchro.c \
 				getset.c \
+				status.c \
 				action.c \
 				mouse.c \
 				floor.c \
+				sprite.c \
 				minimap.c \
+				fov.c \
 				animation.c \
+				asset.c \
 				render.c \
 				color.c
 

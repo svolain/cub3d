@@ -27,38 +27,34 @@ static void	clean_images(t_cubed *game)
 	i = 0;
 	while (i < GAME_ASSETS)
 	{
-		if (game->image[i] != NULL)
-			mlx_delete_image(game->mlx, game->image[i]);
+		if (game->asset[i] != NULL)
+			mlx_delete_image(game->mlx, game->asset[i]);
 		i++;
 	}
 	i = 0;
 	while (i < GAME_ANIMS)
 	{
 		if (game->anim[i] != NULL)
-			mlx_delete_image(game->mlx, game->image[i]);
+			mlx_delete_image(game->mlx, game->asset[i]);
 		i++;
 	}
 }
 
 static void	join_threads(t_cubed *game)
 {
-	pthread_t	tid;
-	t_mtx		mutex;
-	int			i;
+	int	i;
 
 	i = 0;
 	set_game_over(game);
 	while (i < GAME_THREADS)
 	{
-		tid = game->tid[i];
-		safe_thread(&tid, THD_JOIN, game);
+		safe_thread(&game->tid[i], THD_JOIN, game);
 		i++;
 	}
 	i = 0;
 	while (i < GAME_MUTEXES)
 	{
-		mutex = game->mtx[i];
-		safe_mutex(&mutex, MTX_DESTROY, game);
+		safe_mutex(&game->mtx[i], MTX_DESTROY, game);
 		i++;
 	}
 }
@@ -67,9 +63,9 @@ void	free_exit(t_cubed *game, int excode)
 {
 	if (!game)
 		exit(excode);
+	join_threads(game);
 	if (game->mlx != NULL)
 	{
-		join_threads(game);
 		mlx_close_window(game->mlx);
 		clean_images(game);
 		mlx_terminate(game->mlx);
@@ -78,9 +74,9 @@ void	free_exit(t_cubed *game, int excode)
 		destruct_map(game->map);
 	if (game->cam != NULL)
 		free(game->cam);
+	if (game->wpn != NULL)
+		free(game->wpn);
 	if (game->gnl != NULL)
 		free_single(&game->gnl);
-	if (game->animation != NULL)
-		free(game->animation);
 	exit(excode);
 }

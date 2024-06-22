@@ -23,7 +23,8 @@ static void	update_ray_data(t_vector *vec, t_vector *ray, bool horizontal)
 		ray->img = IMG_EA;
 }
 
-static void	get_collosion_point(t_vector *vec, t_camera *cam, t_cubed *game, char *set)
+static void	get_collosion_point(
+	t_vector *vec, t_camera *cam, t_cubed *game, char *set)
 {
 	int	map[2];
 
@@ -87,8 +88,10 @@ bool	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game, char *set)
 	get_collosion_point(&vec[H], cam, game, set);
 	calculate_vertical(&vec[V], cam, ray->a);
 	get_collosion_point(&vec[V], cam, game, set);
-	vec[H].d = sqrtf(powf((vec[H].x - cam->x), 2) + powf((vec[H].y - cam->y), 2));
-	vec[V].d = sqrtf(powf((vec[V].x - cam->x), 2) + powf((vec[V].y - cam->y), 2));
+	vec[H].d = sqrtf(powf((vec[H].x - cam->x), 2)
+			+ powf((vec[H].y - cam->y), 2));
+	vec[V].d = sqrtf(powf((vec[V].x - cam->x), 2)
+			+ powf((vec[V].y - cam->y), 2));
 	if (vec[H].d < vec[V].d)
 		update_ray_data(&vec[H], ray, true);
 	else

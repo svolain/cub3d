@@ -6,7 +6,7 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:01:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/17 19:53:12 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/22 15:31:43 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	open_infile(t_cubed *game)
 	t_mapinfo	*map;
 	char		*file;
 	char		buffer;
-	int			r;
 
 	map = game->map;
 	file = map->filename;
@@ -27,8 +26,8 @@ void	open_infile(t_cubed *game)
 	map->filefd = open(file, O_RDONLY);
 	if (map->filefd == FAILURE)
 		error_exit(ERR_MAP, strerror(errno), game);
-	r = read(map->filefd, &buffer, sizeof(char));
-	if (!buffer || r == FAILURE)
+	(void)read(map->filefd, &buffer, sizeof(char));
+	if (!buffer)
 		error_exit(ERR_MAP, MSG_VOID, game);
 	close(map->filefd);
 	map->filefd = open(file, O_RDONLY);
