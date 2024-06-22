@@ -15,12 +15,13 @@
 # **************************************************************************** #
 
 NAME 		:=	cub3d
-ERRLOG		:=	error.txt
-TESTMAP 	:=	map.cub
-MAPSDIR		:=	maps
+ERRORLOG	:=	error.txt
 ROOTDIR 	:=	mandatory
-BONUSDIR	:=	bonus
-BNSFLAG		:=	b
+FILETYPE	:=	.c
+BONUSGOAL	:=	b
+
+MAPSDIR		:=	maps
+TESTMAP 	:=	map.cub
 
 OBJSDIR		:=	build
 INCSDIR		:=	incs
@@ -85,60 +86,61 @@ MODULES		:=	main \
 				draw \
 				utils
 
-SOURCES 	:= 	main.c \
-				infile.c \
-				element.c \
-				mapinfo.c \
-				checker.c \
-				utils.c \
-				move.c \
-				rotate.c \
-				walls.c \
-				rays.c \
-				pixel.c \
-				error.c \
-				free.c \
-				load.c \
-				safe.c \
-				string.c
+SOURCES 	:= 	main \
+				infile \
+				element \
+				mapinfo \
+				checker \
+				utils \
+				move \
+				rotate \
+				walls \
+				rays \
+				pixel \
+				error \
+				free \
+				load \
+				safe \
+				string
 
 EXTRAS		:=	thread
 
-BONUSES 	:= 	thread.c \
-				mutex.c \
-				getset.c \
-				status.c \
-				action.c \
-				mouse.c \
-				floor.c \
-				sprite.c \
-				minimap.c \
-				fov.c \
-				animation.c \
-				asset.c \
-				render.c \
-				color.c
+BONUSES 	:= 	thread \
+				mutex \
+				getset \
+				status \
+				action \
+				mouse \
+				floor \
+				sprite \
+				minimap \
+				fov \
+				animation \
+				asset \
+				render \
+				color
 
 # **************************************************************************** #
 #    GOALS
 # **************************************************************************** #
 
 ifeq ($(MAKECMDGOALS), bonus)
-	_b = $(BNSFLAG)
-else ifeq ($(MAKECMDGOALS), re$(BNSFLAG))
-	_b = $(BNSFLAG)
-else ifeq ($(MAKECMDGOALS), db$(BNSFLAG))
-	_b = $(BNSFLAG)
-else ifeq ($(MAKECMDGOALS), vg$(BNSFLAG))
-	_b = $(BNSFLAG)
-else ifeq ($(MAKECMDGOALS), rn$(BNSFLAG))
-	_b = $(BNSFLAG)
-else ifeq ($(MAKECMDGOALS), nm$(BNSFLAG))
-	_b = $(BNSFLAG)
+	_b = $(BONUSGOAL)
+else ifeq ($(MAKECMDGOALS), re$(BONUSGOAL))
+	_b = $(BONUSGOAL)
+else ifeq ($(MAKECMDGOALS), db$(BONUSGOAL))
+	_b = $(BONUSGOAL)
+else ifeq ($(MAKECMDGOALS), vg$(BONUSGOAL))
+	_b = $(BONUSGOAL)
+else ifeq ($(MAKECMDGOALS), rn$(BONUSGOAL))
+	_b = $(BONUSGOAL)
+else ifeq ($(MAKECMDGOALS), nm$(BONUSGOAL))
+	_b = $(BONUSGOAL)
 endif
 
-ifeq ($(_b), $(BNSFLAG))
-	ROOTDIR := $(BONUSDIR)
+ifeq ($(_b), $(BONUSGOAL))
+	ROOTDIR := bonus
+	FILETYPE := _bonus.c
 	MODULES += $(EXTRAS)
 	SOURCES += $(BONUSES)
 endif
@@ -147,6 +149,7 @@ endif
 #    TARGETS
 # **************************************************************************** #
 
+SOURCES		:=	$(addsuffix $(FILETYPE), $(SOURCES))
 SOURCEDIR	:=	$(addprefix $(ROOTDIR)/$(SRCSDIR)/, $(MODULES))
 BUILDDIR	:=	$(addprefix $(OBJSDIR)/, $(MODULES))
 DEPENDDIR	:=	$(addprefix $(DEPSDIR)/, $(MODULES))
