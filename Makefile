@@ -91,7 +91,7 @@ SOURCES 	:= 	main \
 				element \
 				mapinfo \
 				checker \
-				utils \
+				parse_utils \
 				move \
 				rotate \
 				walls \
@@ -116,6 +116,7 @@ BONUSES 	:= 	thread \
 				minimap \
 				fov \
 				animation \
+				map_utils \
 				asset \
 				render \
 				color
@@ -197,11 +198,11 @@ $(NAME): $(LIBMLX) $(LIBFT) $(OBJS)
 
 define build_cmd
 $1/%.o: %.c | $(BUILDDIR) $(DEPENDDIR)
-	@if ! $(CC) $(CFLAGS) $(OFLAGS) $(INCS) $(DEPFLAGS) $$< -o $$@ 2> $(ERRLOG); then \
+	@if ! $(CC) $(CFLAGS) $(INCS) $(DEPFLAGS) $$< -o $$@ 2> $(ERRORLOG); then \
 		printf "$(R)$(B)\nERROR!\n$(F)$(T)\n"; \
 		printf "$(V)Unable to create object file:$(T)\n\n"; \
 		printf "$(R)$(B)$$@$(T)\n"; \
-		printf "$(Y)\n"; sed '$$d' $(ERRLOG); \
+		printf "$(Y)\n"; sed '$$d' $(ERRORLOG); \
 		printf "$(R)$(B)\n$(F)\nExiting...$(T)\n"; exit 1 ; \
 	else \
 		printf "$(C)$(B)☑$(T)$(V) $(CC) $(CFLAGS) $$<$ \n  $(C)⮑  $(G)$(B)$$@$(T)\n"; \

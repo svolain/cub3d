@@ -50,7 +50,7 @@ static void	draw_column(int column, int height, t_camera *cam, t_cubed *game)
 	int32_t	roof;
 	int		row;
 
-	row = SCREEN_HEIGHT / 2 + height / 2 - 1;
+	row = SCREEN_HEIGHT / 2 + height / 2;
 	while (row < SCREEN_HEIGHT)
 	{
 		calculate_draw(row, tex, cam, game);
@@ -77,12 +77,11 @@ void	draw_floor(t_camera *cam, float angle, t_cubed *game)
 	while (column < SCREEN_WIDTH)
 	{
 		ray.a = angle;
-		calculate_ray(&ray, cam, game, CHARSET_WALL);
+		calculate_ray(&ray, cam, game);
 		fix_fisheye(&ray, cam->a);
 		cam->dy = ray.a;
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
-		if (height < SCREEN_HEIGHT)
-			draw_column(column, height, cam, game);
+		draw_column(column, height, cam, game);
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
 		column++;
 	}

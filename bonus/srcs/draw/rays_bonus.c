@@ -23,18 +23,12 @@ static void	update_ray_data(t_vector *vec, t_vector *ray, bool horizontal)
 		ray->img = IMG_EA;
 }
 
-static void	get_collosion_point(
-	t_vector *vec, t_camera *cam, t_cubed *game, char *set)
+static void	get_collosion_point(t_vector *vec, t_camera *cam, t_cubed *game)
 {
-	int	map[2];
-
 	while (true)
 	{
-		get_map_position(map, vec->x, vec->y);
-		if (map[X] < 0 || map[X] >= game->map->width
-			|| map[Y] < 0 || map[Y] >= game->map->height)
-			break ;
-		else if (ft_strchr(set, get_map_element(map[X], map[Y], game)))
+		if (!ft_inside_map(vec->x, vec->y, game)
+			|| ft_in_charset(vec->x, vec->y, CHARSET_WALL, game))
 			break ;
 		vec->x += cam->dx;
 		vec->y += cam->dy;
@@ -79,15 +73,14 @@ static void	calculate_horizontal(t_vector *vec, t_camera *cam, float angle)
 	cam->dx = -cam->dy * atan;
 }
 
-bool	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game, char *set)
+void	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game)
 {
 	t_vector	vec[2];
-	int			map[2];
 
 	calculate_horizontal(&vec[H], cam, ray->a);
-	get_collosion_point(&vec[H], cam, game, set);
+	get_collosion_point(&vec[H], cam, game);
 	calculate_vertical(&vec[V], cam, ray->a);
-	get_collosion_point(&vec[V], cam, game, set);
+	get_collosion_point(&vec[V], cam, game);
 	vec[H].d = sqrtf(powf((vec[H].x - cam->x), 2)
 			+ powf((vec[H].y - cam->y), 2));
 	vec[V].d = sqrtf(powf((vec[V].x - cam->x), 2)
@@ -96,9 +89,4 @@ bool	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game, char *set)
 		update_ray_data(&vec[H], ray, true);
 	else
 		update_ray_data(&vec[V], ray, false);
-	get_map_position(map, ray->x, ray->y);
-	if (map[X] < 0 || map[X] >= game->map->width
-		|| map[Y] < 0 || map[Y] >= game->map->height)
-		return (false);
-	return (true);
 }

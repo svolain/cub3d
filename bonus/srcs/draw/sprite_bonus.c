@@ -12,19 +12,6 @@
 
 #include <cubed_bonus.h>
 
-static int32_t	calculate_shade(int row, int32_t color)
-{
-	static int	treshold = 450;
-	static int	modifier = 140;
-	float		intensity;
-
-	if (row <= SCREEN_HEIGHT - treshold)
-		return (COLOR_BLACK);
-	else
-		intensity = (float)row / SCREEN_HEIGHT * 255.0f;
-	return (get_alpha_blend(get_rgba(0, 0, 0, modifier - intensity), color));
-}
-
 static void	calculate_draw(int row, float *tex, t_camera *cam, t_cubed *game)
 {
 	float	pp;
@@ -45,7 +32,6 @@ static void	calculate_draw(int row, float *tex, t_camera *cam, t_cubed *game)
 static void	draw_column(int column, int height, t_camera *cam, t_cubed *game)
 {
 	float	tex[2];
-	int32_t	shade;
 	int32_t	item;
 	int		row;
 
@@ -53,9 +39,7 @@ static void	draw_column(int column, int height, t_camera *cam, t_cubed *game)
 	while (row < SCREEN_HEIGHT)
 	{
 		calculate_draw(row, tex, cam, game);
-		shade = calculate_shade(row, game->color[COL_FL]);
-		item = get_alpha_blend(shade, get_pixel_color
-				(game->asset[IMG_HL], tex[X], tex[Y]));
+		item = get_pixel_color(game->asset[IMG_HL], tex[X], tex[Y]);
 		ft_put_pixel(column, row, item, game->asset[IMG_BG]);
 		row++;
 	}
@@ -72,8 +56,7 @@ void	draw_sprites(t_camera *cam, float angle, t_cubed *game)
 	while (++column < SCREEN_WIDTH)
 	{
 		ray.a = angle;
-		if (!calculate_ray(&ray, cam, game, CHARSET_SPRITE))
-			continue ;
+		calculate_ray(&ray, cam, game);
 		fix_fisheye(&ray, cam->a);
 		cam->dy = ray.a;
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;

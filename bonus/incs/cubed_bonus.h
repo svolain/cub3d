@@ -170,9 +170,9 @@ typedef struct s_cubed
 {
 	t_camera	*cam;
 	t_mapinfo	*map;
+	t_anim		*wpn;
 	char		*gnl;
 	mlx_t		*mlx;
-	t_anim		*wpn;
 	int32_t		mouse[2];
 	int32_t		color[GAME_COLORS];
 	mlx_image_t	*asset[GAME_ASSETS];
@@ -236,7 +236,7 @@ void	animate_weapon(t_cubed *game);
 void	wait_frame(t_cubed *game, float ms_limit);
 
 //		Calculate
-bool	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game, char *set);
+void	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game);
 
 //		Colors
 int32_t	get_channel_color(int32_t rgba, t_action action);
@@ -246,6 +246,12 @@ int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 //		Pixels
 int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
 void	ft_put_pixel(int x, int y, int32_t color, mlx_image_t *img);
+
+//		Map utils
+int		ft_is_grid(int x, int y);
+int		ft_is_border(int x, int y);
+bool	ft_inside_map(int x, int y, t_cubed *game);
+char	ft_in_charset(int x, int y, char *set, t_cubed *game);
 
 //		Error
 void	error_log(char *msg1, char *msg2, char *msg3);
