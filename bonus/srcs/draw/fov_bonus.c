@@ -46,10 +46,11 @@ void	draw_transparent(float angle, t_camera *cam, t_cubed *game)
 	ray.a = angle;
 	calculate_ray(&ray, cam, game);
 	calculate_draw(&ray, cam);
-	ray.d = (float)MAPSIZE / 2;
+	ray.d = MAPSIZE / 2 + MAPCELL;
 	while (ray.d >= 0)
 	{
-		mlx_put_pixel(game->asset[IMG_FV], ray.x, ray.y, TRANSPARENT);
+		if (ft_valid_pixel(game->asset[IMG_FV], ray.x, ray.y))
+			mlx_put_pixel(game->asset[IMG_FV], ray.x, ray.y, TRANSPARENT);
 		ray.x += cam->dx;
 		ray.y += cam->dy;
 		ray.d--;
@@ -86,7 +87,7 @@ void	draw_fov(t_camera *cam, float angle, t_cubed *game)
 	i = 0;
 	ft_rotate(&angle, FOV / 2, ROTATE_LEFT);
 	transparent_void(density, cam, game);
-	while (i < density * FOV_IN_DEG)
+	while (i < density * FOV_IN_DEGREE)
 	{
 		ray.a = angle;
 		draw_transparent(ray.a, cam, game);

@@ -44,8 +44,8 @@
 # define WEST PI
 # define SOUTH 3.0f * PI / 2.0f
 
-# define FOV_IN_DEG 66
-# define FOV ft_degtorad(FOV_IN_DEG)
+# define FOV_IN_DEGREE 60
+# define FOV ft_degtorad(FOV_IN_DEGREE)
 # define DEGREE ft_degtorad(1)
 
 # define CELLSIZE 256
@@ -245,6 +245,7 @@ int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 //		Pixels
 int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
+int		ft_valid_pixel(mlx_image_t *img, uint32_t x, uint32_t y);
 void	ft_put_pixel(int x, int y, int32_t color, mlx_image_t *img);
 
 //		Map utils

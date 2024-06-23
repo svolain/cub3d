@@ -21,15 +21,17 @@ static int	load_player(t_cubed *game, char c, int i, int j)
 	game->cam->x = j * CELLSIZE;
 	game->cam->y = i * CELLSIZE;
 	if (c == 'N')
-		game->cam->a = NORTH - STEP_ANGLE;
+		game->cam->a = NORTH;
 	else if (c == 'S')
-		game->cam->a = SOUTH - STEP_ANGLE;
+		game->cam->a = SOUTH;
 	else if (c == 'E')
-		game->cam->a = EAST - STEP_ANGLE;
+		game->cam->a = EAST;
 	else if (c == 'W')
-		game->cam->a = WEST - STEP_ANGLE;
+		game->cam->a = WEST;
 	game->map->matrix[i][j] = MAP_FLOOR;
-	ft_rotate(&game->cam->a, PI, ROTATE_LEFT);
+	if (c == 'N' || c == 'S')
+		ft_rotate(&game->cam->a, PI, ROTATE_LEFT);
+	ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_RIGHT);
 	loaded = true;
 	return (1);
 }

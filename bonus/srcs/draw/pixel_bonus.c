@@ -12,14 +12,14 @@
 
 #include <cubed_bonus.h>
 
-static bool	ft_istransparent(uint32_t color)
+static bool	ft_is_transparent(uint32_t color)
 {
 	if (!get_channel_color(color, GET_ALPHA))
 		return (true);
 	return (false);
 }
 
-static int	valid_pixel(mlx_image_t *img, uint32_t x, uint32_t y)
+int	ft_valid_pixel(mlx_image_t *img, uint32_t x, uint32_t y)
 {
 	return (x < img->width && y < img->height);
 }
@@ -28,7 +28,7 @@ int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y)
 {
 	uint8_t	*start;
 
-	if (!valid_pixel(img, x, y))
+	if (!ft_valid_pixel(img, x, y))
 		return (0xFF000000);
 	start = img->pixels + (y * img->width + x) * BPP;
 	return (get_rgba(*start, *(start + 1), *(start + 2), *(start + 3)));
@@ -36,7 +36,7 @@ int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y)
 
 void	ft_put_pixel(int x, int y, int32_t color, mlx_image_t *img)
 {
-	if (!valid_pixel(img, x, y) || ft_istransparent(color)
+	if (!ft_valid_pixel(img, x, y) || ft_is_transparent(color)
 		|| get_pixel_color(img, x, y) == color)
 		return ;
 	mlx_put_pixel(img, x, y, color);
