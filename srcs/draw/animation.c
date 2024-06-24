@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:06:35 by vsavolai          #+#    #+#             */
-/*   Updated: 2024/06/18 14:03:35 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/19 12:22:05 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	wait_frame(t_cubed *game, float limit)
  	double	frame;
 
 	frame = 0;
- 	while (frame < limit)
+ 	while (frame < limit * 4000)
 		frame += game->mlx->delta_time;
 }
 
@@ -39,7 +39,7 @@ void	animate_shotgun(t_cubed *game)
 		return ;
 	}
     (*game->anim[game->animation->current_frame]).enabled = true;
-	wait_frame(game, 1000000);
+	wait_frame(game, 1000);
 }
 
 void	draw_shotgun(t_cubed *game)

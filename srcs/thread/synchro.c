@@ -14,10 +14,10 @@
 
 bool	game_over(t_cubed *game)
 {
-	return (get_bool(&game->stt[STT_DONE], &game->mtx[MTX_DONE], game));
+	return (get_bool(&game->status[STAT_DONE], &game->mtx[MTX_DONE], game));
 }
 
 void	set_finished(t_cubed *game)
 {
-	set_bool(&game->stt[STT_DONE], true, &game->mtx[MTX_DONE], game);
+	set_bool(&game->status[STAT_DONE], true, &game->mtx[MTX_DONE], game);
 }

@@ -6,12 +6,13 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/28 10:37:44 by jmertane          #+#    #+#              #
-#    Updated: 2024/05/18 16:04:23 by jmertane         ###   ########.fr        #
+#    Updated: 2024/06/17 22:27:28 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:=	libft.a
 ERRTXT		:=	error.txt
+
 OBJSDIR		:=	build
 INCSDIR		:=	incs
 SRCSDIR		:=	srcs
@@ -19,12 +20,12 @@ DEPSDIR		:=	.deps
 
 RM			:=	rm -rf
 AR			:=	ar -rcs
+SCREENCLR	:=	printf "\033c"
+
 CC			:=	cc
 CFLAGS		:=	-Wall -Werror -Wextra
-DEBUGFLAGS	=	-g -fsanitize=address
+DEBUGFLAGS	=	-g #-fsanitize=address
 DEPFLAGS	=	-c -MT $$@ -MMD -MP -MF $(DEPSDIR)/$$*.d
-SCREENCLR	:=	printf "\033c"
-SLEEP		:=	sleep .1
 
 MODULES		:=	libft \
 				printf \
@@ -97,7 +98,7 @@ $1/%.o: %.c | $(BUILDDIR) $(DEPENDDIR)
 		printf "$(Y)\n"; sed '$$d' $(ERRTXT); \
 		printf "$(R)$(B)\n$(F)\nExiting...$(T)\n"; exit 1 ; \
 	else \
-		printf "$(C)$(B)☑$(T)$(V) $(CC) $(CFLAGS) $$<$ \n    $(C)⮑\t$(G)$(B)$$@$(T) \t\n"; \
+		printf "$(C)$(B)☑$(T)$(V) $(CC) $(CFLAGS) $$<$ \n   $(C)⮑  $(G)$(B)$$@$(T) \t\n"; \
 	fi
 endef
 
@@ -107,7 +108,7 @@ $(NAME): $(OBJS)
 	@$(AR) $@ $^
 
 debug: CFLAGS += $(DEBUGFLAGS)
-debug: all
+debug: re
 
 clean:
 	@$(RM) $(OBJSDIR) $(DEPSDIR) $(ERRTXT)
