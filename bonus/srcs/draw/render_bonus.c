@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
+/*   render_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 16:18:21 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/14 16:18:24 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:55:48 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	*render_sprites(void *param)
 	while (!game_over(game))
 	{
 		get_camera(&cam, game);
-		draw_sprites(&cam, cam.a, game);
+		// draw_sprites(&cam, cam.a, game);
 	}
 	return (NULL);
 }
