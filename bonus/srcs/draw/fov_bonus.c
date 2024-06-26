@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fov.c                                              :+:      :+:    :+:   */
+/*   fov_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 10:05:02 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/21 10:05:14 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:56:49 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	calculate_draw(t_vector *ray, t_camera *cam)
 	ray->y = MAPSIZE / 2;
 }
 
-void	draw_transparent(float angle, t_camera *cam, t_cubed *game)
+static void	draw_transparent(float angle, t_camera *cam, t_cubed *game)
 {
 	t_vector	ray;
 
@@ -57,7 +57,7 @@ void	draw_transparent(float angle, t_camera *cam, t_cubed *game)
 	}
 }
 
-void	transparent_void(int density, t_camera *cam, t_cubed *game)
+static void	transparent_void(int density, t_camera *cam, t_cubed *game)
 {
 	static float	multiplier = 5.7f;
 	float			angle[2];

@@ -6,7 +6,7 @@
 #    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/06/18 07:28:03 by jmertane         ###   ########.fr        #
+#    Updated: 2024/06/24 14:11:31 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ ERRORLOG	:=	error.txt
 ROOTDIR 	:=	mandatory
 FILETYPE	:=	.c
 BONUSGOAL	:=	b
+_b			:=
 
 MAPSDIR		:=	maps
 TESTMAP 	:=	map.cub
@@ -114,6 +115,7 @@ BONUSES 	:= 	thread \
 				floor \
 				sprite \
 				minimap \
+				wall_calc \
 				fov \
 				animation \
 				map_utils \
@@ -216,13 +218,13 @@ endef
 $(LIBMLX):
 	@$(SCREENCLR)
 ifeq ("$(wildcard $(MLXDIR))", "")
-	@echo "$(G)$(B)$(MLXDIR)$(T)$(V) not found, commencing download.$(T)\n"
+	@printf "$(G)$(B)$(MLXDIR)$(T)$(V) not found, commencing download.$(T)\n"
 	@git clone https://github.com/codam-coding-college/MLX42.git $(MLXDIR)
 else
-	@echo "\n$(V)Skipping download, $(G)$(B)$(MLXDIR)$(T)$(V) exists.$(T)"
+	@printf "$(V)Skipping download, $(G)$(B)$(MLXDIR)$(T)$(V) exists.$(T)\n"
 endif
-	@echo "\n$(V)Building $(G)$(B)MLX42$(T)$(V) binary...$(T)\n"
-	@cmake $(MLXDIR) -B $(MLXDIR)/build && make -C $(MLXDIR)/build -j4
+	@printf "$(V)Building $(G)$(B)MLX42$(T)$(V) binary...$(T)\n"
+	@cmake $(MLXDIR) -B $(MLXDIR)/$(OBJSDIR) && make -C $(MLXDIR)/$(OBJSDIR) -j4
 
 $(LIBFT):
 	@make --quiet -C $(LIBFTDIR) all
@@ -265,14 +267,14 @@ finish:
 #    FORMAT
 # **************************************************************************** #
 
-F			=	=================================
-B			=	\033[1m
-T			=	\033[0m
-G			=	\033[32m
-V			=	\033[35m
-C			=	\033[36m
-R			=	\033[31m
-Y			=	\033[33m
+F	=	=================================
+B	=	\033[1m
+T	=	\033[0m
+G	=	\033[32m
+V	=	\033[35m
+C	=	\033[36m
+R	=	\033[31m
+Y	=	\033[33m
 
 # **************************************************************************** #
 #    UTILS

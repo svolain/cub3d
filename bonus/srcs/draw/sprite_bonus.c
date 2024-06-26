@@ -1,108 +1,79 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sprite.c                                           :+:      :+:    :+:   */
+/*   sprite_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 09:39:35 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/21 09:39:54 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/26 11:31:43 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed_bonus.h>
 
-static void	calculate_draw(int row, float *tex, t_camera *cam, t_cubed *game)
-{
-	float	pp;
-	float	dy;
-	float	angle;
-
-	angle = cos(fabs(cam->a - cam->dy));
-	pp = (float)SCREEN_WIDTH / tan(FOV / 2);
-	dy = row - (float)SCREEN_HEIGHT / 2.0f;
-	tex[X] = cam->x * 1.4f;
-	tex[Y] = -cam->y * 1.4f;
-	tex[X] += cos(cam->dy) * pp * 64 / dy / angle;
-	tex[Y] -= sin(cam->dy) * pp * 64 / dy / angle;
-	tex[X] = (int)tex[X] % game->asset[IMG_FL]->width;
-	tex[Y] = (int)tex[Y] % game->asset[IMG_FL]->height;
-}
-
-static void	draw_column(int column, int height, t_camera *cam, t_cubed *game)
-{
-	float	tex[2];
-	int32_t	item;
-	int		row;
-
-	row = SCREEN_HEIGHT / 2 + height / 2 - 1;
-	while (row < SCREEN_HEIGHT)
-	{
-		calculate_draw(row, tex, cam, game);
-		item = get_pixel_color(game->asset[IMG_HL], tex[X], tex[Y]);
-		ft_put_pixel(column, row, item, game->asset[IMG_BG]);
-		row++;
-	}
-}
+/* void	a(t_camera *cam, float angle, t_cubed *game) */
+/* { */
+/* 	int	x; */
+/* 	int	y; */
+/**/
+/* 	x = 0; */
+/* 	while (x < game->map->width) */
+/* 	{ */
+/* 		y = 0; */
+/* 		while (y < game->map->height) */
+/* 		{ */
+/* 			y++; */
+/* 		} */
+/* 		x++; */
+/* 	} */
+/* } */
 
 void	draw_sprites(t_camera *cam, float angle, t_cubed *game)
 {
-	t_vector	ray;
-	int			height;
-	int			column;
+	int	size = 512;
 
-	column = -1;
-	ft_rotate(&angle, FOV / 2, ROTATE_LEFT);
-	while (++column < SCREEN_WIDTH)
+	float spx = (game->map->width - 4) * CELLSIZE - CELLSIZE / 2;
+	float spy = 2 * CELLSIZE;
+	float spz = SCREEN_HEIGHT / 2;
+
+	float sx = spx - cam->x;
+	float sy = spy - cam->y;
+	float sz = spz;
+
+	float tmpx = sy * -cos(angle) + sx * sin(angle);
+	float tmpy = sx * cos(angle) + sy * sin(angle);
+
+	sx = tmpx;
+	sy = tmpy;
+
+	sx = (sx * -2000 / sy) + (SCREEN_WIDTH / 2);
+	sy = (sz * 400 / sy) + (SCREEN_HEIGHT / 2);
+
+	float scale = size / tmpy * 2000.0f;
+	int x;
+	int y;
+
+	float tx = 0;
+	float ty = size;
+	float dtx = size / scale;
+	float dty = size / scale;
+
+	int32_t	color;
+	x = sx - scale / 2;
+	while (x < sx + scale / 2)
 	{
-		ray.a = angle;
-		calculate_ray(&ray, cam, game);
-		fix_fisheye(&ray, cam->a);
-		cam->dy = ray.a;
-		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
-		if (height < SCREEN_HEIGHT)
-			draw_column(column, height, cam, game);
-		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
+		y = 0;
+		ty = size;
+		while (y < scale)
+		{
+			color = get_pixel_color(game->asset[IMG_AM], tx, ty);
+			if (ft_valid_pixel(game->asset[IMG_OL], x, sy - y))
+				mlx_put_pixel(game->asset[IMG_OL], x, sy - y, color);
+			ty -= dty;
+			y++;
+		}
+		tx += dtx;
+		x++;
 	}
 }
-
-/* void	draw_sprites(t_camera *cam, float angle, t_cubed *game) */
-/* { */
-/* 	(void)angle; */
-/**/
-/* 	float spx = 23 * CELLSIZE; */
-/* 	float spy = 3 * CELLSIZE; */
-/* 	float spz = 20; */
-/**/
-/* 	float sx=spx-cam->x; */
-/* 	float sy=spy-cam->y; */
-/* 	float sz=spz; */
-/**/
-/* 	float CS=cos(cam->a); */
-/* 	float SN=sin(cam->a); */
-/**/
-/* 	float a=sy*CS+sx*SN; */
-/* 	float b=sx*CS-sy*SN; */
-/**/
-/* 	sx=a; */
-/* 	sy=b; */
-/**/
-/* 	sx=(sx*100.0/sy)+(SCREEN_HEIGHT/2); */
-/* 	sy=(sz*100.0/sy)+(SCREEN_WIDTH/2); */
-/**/
-/* 	float scale = CELLSIZE / b * 100.0f; */
-/* 	int x; */
-/* 	int y; */
-/**/
-/* 	ft_memset(game->asset[IMG_OL]->pixels, */
-/* 		0, game->asset[IMG_OL]->height */
-/* 		* game->asset[IMG_OL]->width * BPP); */
-/**/
-/* 	for(x=sx-scale/2;x<sx+scale/2;x++) */
-/* 	{ */
-/* 		for(y=0;y<scale;y++) */
-/* 		{ */
-/* 			ft_put_pixel(x, sy-y, COLOR_RAY, game->asset[IMG_OL]); */
-/* 		} */
-/* 	} */
-/* } */

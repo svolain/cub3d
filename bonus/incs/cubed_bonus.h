@@ -50,8 +50,8 @@
 
 # define CELLSIZE 256
 # define BUMP_BUFFER (CELLSIZE / 2)
-# define ANGLE_MODIFIER 0.0004f
-# define MOVE_MODIFIER 0.1500f
+# define ANGLE_MODIFIER 0.0002f
+# define MOVE_MODIFIER 0.0700f
 
 # define STEP_ANGLE (CELLSIZE * ANGLE_MODIFIER)
 # define STEP_MOVEMENT (CELLSIZE * MOVE_MODIFIER)
@@ -237,6 +237,7 @@ void	wait_frame(t_cubed *game, float ms_limit);
 
 //		Calculate
 void	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game);
+void	calculate_wall(int *height, t_vector *ray, t_cubed *game);
 
 //		Colors
 int32_t	get_channel_color(int32_t rgba, t_action action);

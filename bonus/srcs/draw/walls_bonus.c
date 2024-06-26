@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   walls.c                                            :+:      :+:    :+:   */
+/*   walls_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 13:35:51 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/18 06:46:41 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/26 11:31:46 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,16 @@ static void	transparent_void(int column, int height, t_cubed *game)
 	}
 }
 
-static int32_t	calculate_shade(int height)
+static int32_t	calculate_shade(int height, t_vector *ray)
 {
 	static int	treshold = 210;
-	static int	modifier = 300;
 	float		intensity;
 
 	if (height <= treshold)
 		return (COLOR_BLACK);
 	else
 		intensity = (float)height / SCREEN_HEIGHT * 255.0f;
-	return (get_rgba(0, 0, 0, modifier - intensity));
+	return (get_rgba(0, 0, 0, ray->a - intensity));
 }
 
 static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
@@ -46,7 +45,7 @@ static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
 	point[A] = SCREEN_HEIGHT / 2 - height / 2;
 	point[B] = SCREEN_HEIGHT / 2 + height / 2;
 	transparent_void(column, point[B], game);
-	shade = calculate_shade(height);
+	shade = calculate_shade(height, ray);
 	while (point[A] < point[B])
 	{
 		color = get_alpha_blend(shade, get_pixel_color
@@ -54,30 +53,6 @@ static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
 		ft_put_pixel(column, point[A], color, game->asset[IMG_FG]);
 		ray->y += ray->d;
 		point[A]++;
-	}
-}
-
-static void	calculate_draw(int *height, t_vector *ray, t_cubed *game)
-{
-	int	map[2];
-
-	get_map_position(map, ray->x, ray->y);
-	if (ray->img == IMG_EA)
-		ray->x = (int)(ray->y) % game->asset[ray->img]->height;
-	else
-		ray->x = (int)(ray->x) % game->asset[ray->img]->width;
-	if (get_map_element(map[X], map[Y], game) == MAP_CLOSED)
-		ray->img = IMG_DR;
-	else if (ray->img == IMG_EA && ray->a > NORTH && ray->a < SOUTH)
-		ray->img = IMG_WE;
-	else if (ray->img == IMG_SO && ray->a > WEST)
-		ray->img = IMG_NO;
-	ray->y = 0;
-	ray->d = (float)game->asset[ray->img]->width / *height;
-	if (*height > SCREEN_HEIGHT)
-	{
-		ray->y = (float)(*height - SCREEN_HEIGHT) / 2 * ray->d;
-		*height = SCREEN_HEIGHT;
 	}
 }
 
@@ -95,7 +70,7 @@ void	draw_walls(t_camera *cam, float angle, t_cubed *game)
 		calculate_ray(&ray, cam, game);
 		fix_fisheye(&ray, cam->a);
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
-		calculate_draw(&height, &ray, game);
+		calculate_wall(&height, &ray, game);
 		draw_column(column, height, &ray, game);
 		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
 		column++;
