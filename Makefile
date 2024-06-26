@@ -10,11 +10,19 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME 		:=	cub3d
-ERRLOG		:=	error.txt
-TESTMAP 	:=	maps/map.cub
+# **************************************************************************** #
+#    VARIABLES
+# **************************************************************************** #
 
-ROOTDIR		:=	mandatory
+NAME 		:=	cub3d
+ERRORLOG	:=	error.txt
+ROOTDIR 	:=	mandatory
+FILETYPE	:=	.c
+BONUSGOAL	:=	b
+
+MAPSDIR		:=	maps
+TESTMAP 	:=	map.cub
+
 OBJSDIR		:=	build
 INCSDIR		:=	incs
 SRCSDIR		:=	srcs
@@ -24,15 +32,36 @@ LIBFTDIR	:=	libft
 LIBFTBIN	:=	libft.a
 LIBFT		:=	$(LIBFTDIR)/$(LIBFTBIN)
 
+# **************************************************************************** #
+#    COMMANDS
+# **************************************************************************** #
+
 RM			:=	rm -rf
 AR			:=	ar -rcs
 SCREENCLR	:=	printf "\033c"
 
+# **************************************************************************** #
+#    COMPILATION
+# **************************************************************************** #
+
 CC			:=	cc
-CFLAGS		:=	-Wall -Werror -Wextra
-OFLAGS		=	-Ofast
+CFLAGS		:=	-Wall -Werror -Wextra -Ofast
 DBGFLAGS	=	-g #-fsanitize=address
 DEPFLAGS	=	-c -MT $$@ -MMD -MP -MF $(DEPSDIR)/$$*.d
+
+MLXDIR		:=	mlx
+MLXBIN		:=	libmlx42.a
+MLXBREW		=	-L "$(HOME)/.brew/opt/glfw/lib/"
+MLXFLAGS	=	-ldl -lglfw -pthread -lm
+LIBMLX		:=	$(MLXDIR)/$(OBJSDIR)/$(MLXBIN)
+
+ifeq ($(shell uname), Darwin)
+	MLXFLAGS += $(MLXBREW)
+endif
+
+# **************************************************************************** #
+#    VALGRIND
+# **************************************************************************** #
 
 VLG			:=	valgrind
 VLGLOG		:=	vglog.txt
@@ -47,88 +76,142 @@ VLGFLAGS	:=	--leak-check=full \
 				--verbose \
 				--quiet
 
-MLXDIR		:=	mlx
-MLXBIN		:=	libmlx42.a
-MLXBREW		=	-L "$(HOME)/.brew/opt/glfw/lib/"
-MLXFLAGS	=	-ldl -lglfw -pthread -lm
-LIBMLX		:=	$(MLXDIR)/$(OBJSDIR)/$(MLXBIN)
-
-ifeq ($(shell uname), Darwin)
-	MLXFLAGS += $(MLXBREW)
-endif
-
-F			=	=================================
-B			=	\033[1m
-T			=	\033[0m
-G			=	\033[32m
-V			=	\033[35m
-C			=	\033[36m
-R			=	\033[31m
-Y			=	\033[33m
+# **************************************************************************** #
+#    SOURCES
+# **************************************************************************** #
 
 MODULES		:=	main \
 				parse \
-				thread \
 				hook \
 				draw \
 				utils
 
-SOURCES 	:= 	main.c \
-				infile.c \
-				element.c \
-				mapinfo.c \
-				checker.c \
-				utils.c \
-				thread.c \
-				mutex.c \
-				synchro.c \
-				getset.c \
-				move.c \
-				rotate.c \
-				action.c \
-				mouse.c \
-				walls.c \
-				floor.c \
-				minimap.c \
-				animation.c \
-				render.c \
-				rays.c \
-				color.c \
-				pixel.c \
-				error.c \
-				free.c \
-				load.c \
-				safe.c \
-				string.c \
+SOURCES 	:= 	main \
+				infile \
+				element \
+				mapinfo \
+				checker \
+				parse_utils \
+				move \
+				rotate \
+				walls \
+				rays \
+				pixel \
+				error \
+				free \
+				load \
+				safe \
+				string
 
-SOURCEDIR	:=	$(addprefix $(SRCSDIR)/, $(MODULES))
+EXTRAS		:=	thread
+
+BONUSES 	:= 	thread \
+				mutex \
+				getset \
+				status \
+				action \
+				mouse \
+				floor \
+				sprite \
+				minimap \
+				fov \
+				animation \
+				map_utils \
+				asset \
+				render \
+				color
+
+# **************************************************************************** #
+#    GOALS
+# **************************************************************************** #
+
+ifeq ($(MAKECMDGOALS), bonus)
+	_b = $(BONUSGOAL)
+else ifeq ($(MAKECMDGOALS), re$(BONUSGOAL))
+	_b = $(BONUSGOAL)
+else ifeq ($(MAKECMDGOALS), db$(BONUSGOAL))
+	_b = $(BONUSGOAL)
+else ifeq ($(MAKECMDGOALS), vg$(BONUSGOAL))
+	_b = $(BONUSGOAL)
+else ifeq ($(MAKECMDGOALS), rn$(BONUSGOAL))
+	_b = $(BONUSGOAL)
+else ifeq ($(MAKECMDGOALS), nm$(BONUSGOAL))
+	_b = $(BONUSGOAL)
+endif
+
+ifeq ($(_b), $(BONUSGOAL))
+	ROOTDIR := bonus
+	FILETYPE := _bonus.c
+	MODULES += $(EXTRAS)
+	SOURCES += $(BONUSES)
+endif
+
+# **************************************************************************** #
+#    TARGETS
+# **************************************************************************** #
+
+SOURCES		:=	$(addsuffix $(FILETYPE), $(SOURCES))
+SOURCEDIR	:=	$(addprefix $(ROOTDIR)/$(SRCSDIR)/, $(MODULES))
 BUILDDIR	:=	$(addprefix $(OBJSDIR)/, $(MODULES))
 DEPENDDIR	:=	$(addprefix $(DEPSDIR)/, $(MODULES))
 
-SRCS		:=	$(foreach source, $(SOURCES), $(shell find $(SOURCEDIR) -name $(source)))
-OBJS		:=	$(patsubst $(SRCSDIR)/%.c, $(OBJSDIR)/%.o, $(SRCS))
-DEPS		:=	$(patsubst $(SRCSDIR)/%.c, $(DEPSDIR)/%.d, $(SRCS))
+SRCS	:=	$(foreach source, $(SOURCES), $(shell find $(SOURCEDIR) -name $(source)))
+OBJS	:=	$(patsubst $(ROOTDIR)/$(SRCSDIR)/%.c, $(OBJSDIR)/%.o, $(SRCS))
+DEPS	:=	$(patsubst $(ROOTDIR)/$(SRCSDIR)/%.c, $(DEPSDIR)/%.d, $(SRCS))
 
-INCS	 	:=	$(foreach header, $(INCSDIR), -I $(header))
-INCS	 	+=	$(foreach header, $(LIBFTDIR)/$(INCSDIR), -I $(header))
-INCS	 	+=	$(foreach header, $(MLXDIR)/include/MLX42, -I $(header))
+INCS	:=	$(foreach header, $(ROOTDIR)/$(INCSDIR), -I $(header))
+INCS	+=	$(foreach header, $(LIBFTDIR)/$(INCSDIR), -I $(header))
+INCS	+=	$(foreach header, $(MLXDIR)/include/MLX42, -I $(header))
 
 vpath %.c $(SOURCEDIR)
 
+# **************************************************************************** #
+#    RULES
+# **************************************************************************** #
+
+all: $(NAME)
+
+bonus: $(NAME)
+
+re$(_b): fclean all
+
+db$(_b): CFLAGS += $(DBGFLAGS)
+db$(_b): re$(_b)
+
+vg$(_b): db$(_b)
+	@$(VLG) $(VLGFLAGS) ./$(NAME) $(MAPSDIR)/$(ROOTDIR)/$(TESTMAP)
+
+rn$(_b): all
+	./$(NAME) $(MAPSDIR)/$(ROOTDIR)/$(TESTMAP)
+
+nm$(_b):
+	@$(foreach header, $(ROOTDIR)/$(INCSDIR), norminette -R CheckDefine $(header))
+	@$(foreach source, $(ROOTDIR)/$(SRCSDIR), norminette -R CheckForbiddenSourceHeader $(source))
+
+# **************************************************************************** #
+#    BUILD
+# **************************************************************************** #
+
+$(NAME): $(LIBMLX) $(LIBFT) $(OBJS)
+	@$(CC) $(CFLAGS) $(INCS) $^ $(LIBFT) $(LIBMLX) $(MLXFLAGS) -o $@
+	@make --quiet finish
+
 define build_cmd
 $1/%.o: %.c | $(BUILDDIR) $(DEPENDDIR)
-	@if ! $(CC) $(CFLAGS) $(OFLAGS) $(INCS) $(DEPFLAGS) $$< -o $$@ 2> $(ERRLOG); then \
+	@if ! $(CC) $(CFLAGS) $(INCS) $(DEPFLAGS) $$< -o $$@ 2> $(ERRORLOG); then \
 		printf "$(R)$(B)\nERROR!\n$(F)$(T)\n"; \
 		printf "$(V)Unable to create object file:$(T)\n\n"; \
 		printf "$(R)$(B)$$@$(T)\n"; \
-		printf "$(Y)\n"; sed '$$d' $(ERRLOG); \
+		printf "$(Y)\n"; sed '$$d' $(ERRORLOG); \
 		printf "$(R)$(B)\n$(F)\nExiting...$(T)\n"; exit 1 ; \
 	else \
-		printf "$(C)$(B)☑$(T)$(V) $(CC) $(CFLAGS) $(OFLAGS) $$<$ \n   $(C)⮑  $(G)$(B)$$@$(T)\n"; \
+		printf "$(C)$(B)☑$(T)$(V) $(CC) $(CFLAGS) $$<$ \n  $(C)⮑  $(G)$(B)$$@$(T)\n"; \
 	fi
 endef
 
-all: $(LIBMLX) $(LIBFT) $(NAME)
+# **************************************************************************** #
+#    LIBRARIES
+# **************************************************************************** #
 
 $(LIBMLX):
 	@$(SCREENCLR)
@@ -145,20 +228,9 @@ $(LIBFT):
 	@make --quiet -C $(LIBFTDIR) all
 	@make --quiet title
 
-$(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(OFLAGS) $(INCS) $^ $(LIBFT) $(LIBMLX) $(MLXFLAGS) -o $@
-	@make --quiet finish
-
-re: fclean all
-
-db: CFLAGS += $(DBGFLAGS)
-db: re
-
-vg: db
-	@$(VLG) $(VLGFLAGS) ./$(NAME) $(TESTMAP)
-
-run: all
-	./$(NAME) $(TESTMAP)
+# **************************************************************************** #
+#    CLEAN
+# **************************************************************************** #
 
 clean:
 	@make --quiet -C $(LIBFTDIR) clean
@@ -172,9 +244,9 @@ fclean: clean
 vclean: fclean
 	@$(RM) $(VLGLOG)
 
-nm:
-	@$(foreach header, $(INCSDIR), norminette -R CheckDefine $(header))
-	@$(foreach source, $(SRCSDIR), norminette -R CheckForbiddenSourceHeader $(source))
+# **************************************************************************** #
+#    TITLES
+# **************************************************************************** #
 
 title:
 	@$(SCREENCLR) && printf "\n"
@@ -189,6 +261,23 @@ finish:
 	@printf "$(C)╠╣ ║║║║║╚═╗╠═╣║╣  ║║$(T)\n"
 	@printf "$(C)╚  ╩╝╚╝╩╚═╝╩ ╩╚═╝═╩╝$(T)\n\n"
 
+# **************************************************************************** #
+#    FORMAT
+# **************************************************************************** #
+
+F			=	=================================
+B			=	\033[1m
+T			=	\033[0m
+G			=	\033[32m
+V			=	\033[35m
+C			=	\033[36m
+R			=	\033[31m
+Y			=	\033[33m
+
+# **************************************************************************** #
+#    UTILS
+# **************************************************************************** #
+
 $(BUILDDIR) $(DEPENDDIR):
 	@mkdir -p $@
 
@@ -197,4 +286,11 @@ $(DEPS):
 
 $(foreach build, $(BUILDDIR), $(eval $(call build_cmd, $(build))))
 
-.PHONY: all clean fclean vclean re db vg run nm title finish
+# **************************************************************************** #
+#    PHONY
+# **************************************************************************** #
+
+.PHONY: all bonus
+.PHONY: clean fclean vclean
+.PHONY: title finish
+.PHONY: re$(_b) db$(_b) vg$(_b) rn$(_b) nm$(_b)
