@@ -22,11 +22,7 @@ void	hook_close(void *param)
 
 static bool	ft_is_collision(t_camera *cam, t_cubed *game)
 {
-	int	map[2];
-
-	get_map_position(map, cam->x, cam->y);
-	if (!ft_strchr(CHARSET_MOVEABLE,
-			get_map_element(map[X], map[Y], game)))
+	if (!ft_in_charset(cam->x, cam->y, CHARSET_MOVEABLE, game))
 		return (true);
 	return (false);
 }
