@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:06:35 by vsavolai          #+#    #+#             */
-/*   Updated: 2024/06/24 08:25:38 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:01:06 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,21 @@ void	init_animation(t_cubed *game)
 {
 	game->wpn = safe_calloc(sizeof(t_anim), game);
 	game->wpn->active = 0;
+	game->wpn->move_wpn = 0;	
 	game->wpn->delay = 0.02f;
 	game->wpn->frame_count = GAME_ANIMS;
 	game->wpn->current_frame = IMG_GO;
+}
+void	animate_weapon_move(t_cubed	*game)
+{
+	static int	i;
+
+	if (game->wpn->move_wpn == 0)
+		return;
+	i++;
+	if (i % 2 == 1)
+		game->anim[IMG_GO]->instances->x += 40;
+	else
+		game->anim[IMG_GO]->instances->x -= 40;
+	game->wpn->move_wpn = 0;
 }

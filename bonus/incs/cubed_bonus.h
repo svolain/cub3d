@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/24 08:13:12 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/26 13:48:37 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ typedef struct s_mapinfo
 typedef struct s_anim
 {
 	bool		active;
+	bool		move_wpn;
 	int			current_frame;
 	int			frame_count;
 	double		timer;
@@ -234,6 +235,7 @@ void	init_animation(t_cubed *game);
 void	draw_weapon(t_cubed *game);
 void	animate_weapon(t_cubed *game);
 void	wait_frame(t_cubed *game, float ms_limit);
+void	animate_weapon_move(t_cubed	*game);
 
 //		Calculate
 void	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game);
