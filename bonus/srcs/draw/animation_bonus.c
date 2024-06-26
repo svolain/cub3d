@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:06:35 by vsavolai          #+#    #+#             */
-/*   Updated: 2024/06/26 14:01:06 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:09:48 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ void	animate_weapon_move(t_cubed	*game)
 
 	if (game->wpn->move_wpn == 0)
 		return;
+	if (i > 2)
+		i = 1;
 	i++;
 	if (i % 2 == 1)
 		game->anim[IMG_GO]->instances->x += 40;
