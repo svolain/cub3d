@@ -33,7 +33,7 @@
 
 # define CHARSET_ALLOWED	"01COHANSEW "
 # define CHARSET_PLAYER		"NSEW"
-# define CHARSET_MOVEABLE	"0O"
+# define CHARSET_MOVEABLE	"0OHA"
 # define CHARSET_WALL		"C1"
 # define CHARSET_SPRITE		"HA"
 
@@ -134,6 +134,7 @@ typedef struct s_camera
 {
 	float		x;
 	float		y;
+	float		z;
 	float		a;
 	float		dx;
 	float		dy;
@@ -225,7 +226,7 @@ void	*render_fov(void *param);
 //		Draw
 void	draw_walls(t_camera *cam, float angle, t_cubed *game);
 void	draw_floor(t_camera *cam, float angle, t_cubed *game);
-void	draw_sprites(t_camera *cam, float angle, t_cubed *game);
+void	draw_sprites(t_camera *cam, t_cubed *game);
 void	draw_minimap(int cam_x, int cam_y, t_cubed *game);
 void	draw_fov(t_camera *cam, float angle, t_cubed *game);
 
