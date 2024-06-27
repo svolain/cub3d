@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   animation_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:06:35 by vsavolai          #+#    #+#             */
-/*   Updated: 2024/06/26 14:09:48 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/27 08:42:12 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	init_animation(t_cubed *game)
 {
 	game->wpn = safe_calloc(sizeof(t_anim), game);
 	game->wpn->active = 0;
-	game->wpn->move_wpn = 0;	
+	game->wpn->move_wpn = 0;
 	game->wpn->delay = 0.02f;
 	game->wpn->frame_count = GAME_ANIMS;
 	game->wpn->current_frame = IMG_GO;
