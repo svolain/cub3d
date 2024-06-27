@@ -242,6 +242,7 @@ void	animate_weapon_move(t_cubed	*game);
 //		Calculate
 void	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game);
 void	calculate_wall(int *height, t_vector *ray, t_cubed *game);
+void	calc_spr_walls(float *depth, t_camera *cam, t_cubed *game);
 void	calc_spr_scr(int map[2], t_camera *spr, t_camera *cam);
 void	calc_spr_tex(int map[2], t_camera *spr, t_camera *tex, t_cubed *game);
 

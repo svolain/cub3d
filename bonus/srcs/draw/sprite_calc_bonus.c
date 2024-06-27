@@ -59,3 +59,22 @@ void	calc_spr_scr(int map[2], t_camera *spr, t_camera *cam)
 	spr->x = spr->x * x_scale / spr->y + SCREEN_WIDTH / 2;
 	spr->y = spr->z * y_scale / spr->y + SCREEN_HEIGHT / 2;
 }
+
+void	calc_spr_walls(float *depth, t_camera *cam, t_cubed *game)
+{
+	t_vector	ray;
+	float		angle;
+	int			column;
+
+	column = 0;
+	angle = cam->a;
+	ft_rotate(&angle, FOV / 2, ROTATE_LEFT);
+	while (column < SCREEN_WIDTH)
+	{
+		ray.a = angle;
+		calculate_ray(&ray, cam, game);
+		ft_rotate(&angle, STEP_WINDOW, ROTATE_RIGHT);
+		depth[column] = ray.d;
+		column++;
+	}
+}
