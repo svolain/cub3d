@@ -12,24 +12,24 @@
 
 #include <cubed_bonus.h>
 
-/* static int32_t	calculate_shade(float dy, int32_t color) */
-/* { */
-/* 	static int	treshold = 520; */
-/* 	static int	modifier = 510; */
-/* 	float		intensity; */
-/**/
-/* 	if (!get_channel_color(color, GET_ALPHA)) */
-/* 		return (TRANSPARENT); */
-/* 	else if (dy <= treshold) */
-/* 		return (COLOR_BLACK); */
-/* 	intensity = modifier / (dy / 255.0f); */
-/* 	return (get_rgba(0, 0, 0, intensity)); */
-/* } */
+static int32_t	calculate_shade(float dy, int32_t color)
+{
+	static int	treshold = 520;
+	static int	modifier = 510;
+	float		intensity;
+
+	if (!get_channel_color(color, GET_ALPHA))
+		return (TRANSPARENT);
+	else if (dy <= treshold)
+		return (COLOR_BLACK);
+	intensity = modifier / (dy / 255.0f);
+	return (get_rgba(0, 0, 0, intensity));
+}
 
 static void	draw_pixels(t_camera *sprite, t_camera *tex, t_cubed *game)
 {
 	int32_t	color;
-	/* int32_t	shade; */
+	int32_t	shade;
 	int		x;
 	int		y;
 
@@ -41,8 +41,8 @@ static void	draw_pixels(t_camera *sprite, t_camera *tex, t_cubed *game)
 		while (y < sprite->dy)
 		{
 			color = get_pixel_color(game->asset[(int)sprite->a], tex->x, tex->y);
-			/* shade = calculate_shade(sprite->dy, color); */
-			/* color = get_alpha_blend(shade, color); */
+			shade = calculate_shade(sprite->dy, color);
+			color = get_alpha_blend(shade, color);
 			if (ft_valid_pixel(game->asset[IMG_OL], x, sprite->y - y))
 				mlx_put_pixel(game->asset[IMG_OL], x, sprite->y - y, color);
 			tex->y -= tex->dy;
@@ -69,6 +69,10 @@ static void	calculate_texture(char c, t_camera *sprite, t_camera *tex, t_cubed *
 	sprite->a = assign_texture(c);
 	size = game->asset[(int)sprite->a]->height;
 	sprite->dx = size / sprite->dy * scale_factor;
+	if (sprite->dx < 0)
+		sprite->dx = 0;
+	if (sprite->dx > 2 * scale_factor)
+		sprite->dx = 2 * scale_factor;
 	sprite->dy = sprite->dx;
 	tex->dx = size / sprite->dx;
 	tex->dy = size / sprite->dy;
@@ -94,30 +98,32 @@ static void	calculate_sprite(int x, int y, t_camera *sprite, t_camera *cam)
 	sprite->y = sprite->z * y_scale / sprite->y + SCREEN_HEIGHT / 2;
 }
 
-/* static bool	player_on_element(int x, int y, t_camera *cam, t_cubed *game) */
-/* { */
-/* 	int	player[2]; */
-/**/
-/* 	get_map_position(player, cam->x, cam->y); */
-/* 	if (player[X] == x && player[Y] == y) */
-/* 	{ */
-/* 		set_map_element(x, y, MAP_FLOOR, game); */
-/* 		return (true); */
-/* 	} */
-/* 	return (false); */
-/* } */
+static bool	player_on_sprite(int x, int y, t_camera *cam, t_cubed *game)
+{
+	int	player[2];
+
+	get_map_position(player, cam->x, cam->y);
+	if (player[X] == x && player[Y] == y)
+	{
+		set_map_element(x, y, MAP_FLOOR, game);
+		return (true);
+	}
+	return (false);
+}
 
 static void	draw_sprite(int x, int y, t_camera *cam, t_cubed *game)
 {
-	t_camera	texture;
-	t_camera	sprite;
-	char		c;
+	static	float	sprite_limit = 4000.0f;
+	t_camera		texture;
+	t_camera		sprite;
+	char			c;
 
-	/* if (player_on_element(x, y, cam, game)) */
-	/* 	return ; */
-	c = get_map_element(x, y, game);
 	calculate_sprite(x, y, &sprite, cam);
+	c = get_map_element(x, y, game);
 	calculate_texture(c, &sprite, &texture, game);
+	if (!sprite.dy || player_on_sprite(x, y, cam, game)
+		|| sprite.dy >= sprite_limit)
+		return ;
 	draw_pixels(&sprite, &texture, game);
 }
 
@@ -134,11 +140,8 @@ void	draw_sprites(t_camera *cam, t_cubed *game)
 		while (y < game->map->height)
 		{
 			c = get_map_element(x, y, game);
-			/* if (ft_strchr(CHARSET_SPRITE, c)) */
 			if (c == MAP_HEALTH || c == MAP_AMMO)
 				draw_sprite(x, y, cam, game);
-			/* if (game_over(game)) */
-			/* 	return ; */
 			y++;
 		}
 		x++;
