@@ -28,19 +28,21 @@ static int32_t	calculate_shade(float dy, int32_t color)
 
 static void	draw_pixels(t_camera *sprite, t_camera *tex, t_cubed *game)
 {
-	int32_t	color;
-	int32_t	shade;
-	int		x;
-	int		y;
+	mlx_image_t	*img;
+	int32_t		color;
+	int32_t		shade;
+	int			x;
+	int			y;
 
 	x = sprite->x - sprite->dx / 2;
+	img = game->asset[(int)sprite->a];
 	while (x < sprite->x + sprite->dx / 2)
 	{
 		y = 0;
 		tex->y = game->asset[(int)sprite->a]->height;
 		while (y < sprite->dy)
 		{
-			color = get_pixel_color(game->asset[(int)sprite->a], tex->x, tex->y);
+			color = get_pixel_color(img, tex->x, tex->y);
 			shade = calculate_shade(sprite->dy, color);
 			color = get_alpha_blend(shade, color);
 			if (ft_valid_pixel(game->asset[IMG_OL], x, sprite->y - y))
@@ -61,21 +63,22 @@ static t_image	assign_texture(char c)
 		return (IMG_HL);
 }
 
-static void	calculate_texture(char c, t_camera *sprite, t_camera *tex, t_cubed *game)
+static void	calculate_texture(char c, t_camera *spr, t_camera *tex, t_cubed *game)
 {
 	static int	scale_factor = 2000;
+	static int	sprite_limit = 5000;
 	int			size;
 
-	sprite->a = assign_texture(c);
-	size = game->asset[(int)sprite->a]->height;
-	sprite->dx = size / sprite->dy * scale_factor;
-	if (sprite->dx < 0)
-		sprite->dx = 0;
-	if (sprite->dx > 2 * scale_factor)
-		sprite->dx = 2 * scale_factor;
-	sprite->dy = sprite->dx;
-	tex->dx = size / sprite->dx;
-	tex->dy = size / sprite->dy;
+	spr->a = assign_texture(c);
+	size = game->asset[(int)spr->a]->height;
+	spr->dx = size / spr->dy * scale_factor;
+	if (spr->dx < 0)
+		spr->dx = 0;
+	if (spr->dx > sprite_limit)
+		spr->dx = sprite_limit;
+	spr->dy = spr->dx;
+	tex->dx = size / spr->dx;
+	tex->dy = size / spr->dy;
 	tex->y = size;
 	tex->x = 0;
 }
@@ -113,10 +116,10 @@ static bool	player_on_sprite(int x, int y, t_camera *cam, t_cubed *game)
 
 static void	draw_sprite(int x, int y, t_camera *cam, t_cubed *game)
 {
-	static	float	sprite_limit = 4000.0f;
-	t_camera		texture;
-	t_camera		sprite;
-	char			c;
+	static int	sprite_limit = 5000;
+	t_camera	texture;
+	t_camera	sprite;
+	char		c;
 
 	calculate_sprite(x, y, &sprite, cam);
 	c = get_map_element(x, y, game);
