@@ -227,7 +227,7 @@ void	*render_fov(void *param);
 //		Draw
 void	draw_walls(t_camera *cam, float angle, t_cubed *game);
 void	draw_floor(t_camera *cam, float angle, t_cubed *game);
-void	draw_sprites(t_camera *cam, t_cubed *game);
+void	draw_sprites(t_camera *cam, float angle, t_cubed *game);
 void	draw_minimap(int cam_x, int cam_y, t_cubed *game);
 void	draw_fov(t_camera *cam, float angle, t_cubed *game);
 
@@ -241,6 +241,8 @@ void	animate_weapon_move(t_cubed	*game);
 //		Calculate
 void	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game);
 void	calculate_wall(int *height, t_vector *ray, t_cubed *game);
+void	calc_spr_scr(int map[2], t_camera *spr, t_camera *cam);
+void	calc_spr_tex(int map[2], t_camera *spr, t_camera *tex, t_cubed *game);
 
 //		Colors
 int32_t	get_channel_color(int32_t rgba, t_action action);
@@ -257,6 +259,7 @@ int		ft_is_grid(int x, int y);
 int		ft_is_border(int x, int y);
 bool	ft_inside_map(int x, int y, t_cubed *game);
 char	ft_in_charset(int x, int y, char *set, t_cubed *game);
+bool	ft_in_sprite(int map[2], t_camera *cam, t_cubed *game);
 
 //		Error
 void	error_log(char *msg1, char *msg2, char *msg3);

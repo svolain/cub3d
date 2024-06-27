@@ -49,7 +49,7 @@ void	*render_sprites(void *param)
 	while (!game_over(game))
 	{
 		get_camera(&cam, game);
-		draw_sprites(&cam, game);
+		draw_sprites(&cam, cam.a, game);
 	}
 	return (NULL);
 }
