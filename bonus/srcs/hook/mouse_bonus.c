@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mouse.c                                            :+:      :+:    :+:   */
+/*   mouse_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 08:39:10 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/18 14:04:31 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/26 13:46:16 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,5 @@ void	hook_animation(void *param)
 
 	game = (t_cubed *) param;
 	animate_weapon(game);
+	animate_weapon_move(game);
 }

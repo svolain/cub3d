@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   infile.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:01:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/05/27 19:15:02 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/24 08:19:42 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	open_infile(t_cubed *game)
 	t_mapinfo	*map;
 	char		*file;
 	char		buffer;
+	int			r;
 
 	map = game->map;
 	file = map->filename;
@@ -26,8 +27,8 @@ void	open_infile(t_cubed *game)
 	map->filefd = open(file, O_RDONLY);
 	if (map->filefd == FAILURE)
 		error_exit(ERR_MAP, strerror(errno), game);
-	read(map->filefd, &buffer, sizeof(char));
-	if (!buffer)
+	r = read(map->filefd, &buffer, sizeof(char));
+	if (!buffer || r == -1)
 		error_exit(ERR_MAP, MSG_VOID, game);
 	close(map->filefd);
 	map->filefd = open(file, O_RDONLY);
