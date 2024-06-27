@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rotate.c                                           :+:      :+:    :+:   */
+/*   rotate_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:17:29 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/17 14:54:44 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/27 18:16:57 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	rotate_camera(t_cubed *game, t_action action)
 	cam.dx = cos(cam.a) * STEP_MOVEMENT;
 	cam.dy = sin(cam.a) * STEP_MOVEMENT;
 	set_camera(&cam, game);
+	game->wpn->move_wpn = 1;
 }
 
 void	ft_rotate(float *target, float angle, t_action action)

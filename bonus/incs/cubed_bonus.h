@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/26 13:48:37 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/27 18:17:27 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef enum e_action
 	GET_GREEN,
 	GET_BLUE,
 	GET_ALPHA,
+	IDLE,
 }	t_action;
 
 typedef enum e_minimap
