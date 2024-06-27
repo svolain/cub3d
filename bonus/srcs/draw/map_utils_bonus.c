@@ -45,3 +45,16 @@ char	ft_in_charset(int x, int y, char *set, t_cubed *game)
 		return (c);
 	return (0);
 }
+
+bool	ft_in_sprite(int map[2], t_camera *cam, t_cubed *game)
+{
+	int	player[2];
+
+	get_map_position(player, cam->x, cam->y);
+	if (player[X] == map[X] && player[Y] == map[Y])
+	{
+		set_map_element(map[X], map[Y], MAP_FLOOR, game);
+		return (true);
+	}
+	return (false);
+}

@@ -47,7 +47,7 @@ SCREENCLR	:=	printf "\033c"
 
 CC			:=	cc
 CFLAGS		:=	-Wall -Werror -Wextra -Ofast
-DBGFLAGS	=	-g #-fsanitize=address
+DBGFLAGS	=	-g -fsanitize=address
 DEPFLAGS	=	-c -MT $$@ -MMD -MP -MF $(DEPSDIR)/$$*.d
 
 MLXDIR		:=	mlx
@@ -114,10 +114,11 @@ BONUSES 	:= 	thread \
 				mouse \
 				floor \
 				sprite \
-				minimap \
-				wall_calc \
-				fov \
 				animation \
+				minimap \
+				fov \
+				sprite_calc \
+				wall_calc \
 				map_utils \
 				asset \
 				render \
