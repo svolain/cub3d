@@ -45,6 +45,7 @@ static void	draw_sprite(float *pit, t_camera *spr, t_camera *tex, t_cubed *game)
 	int		x;
 	int		y;
 
+	(void)pit;
 	x = spr->x - spr->dx / 2;
 	while (x < spr->x + spr->dx / 2)
 	{
