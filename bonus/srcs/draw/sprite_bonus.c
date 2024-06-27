@@ -20,12 +20,9 @@ static int32_t	calculate_color(mlx_image_t *img, t_camera *spr, t_camera *tex)
 	int32_t		shade;
 
 	color = get_pixel_color(img, tex->x, tex->y);
-	if (!get_channel_color(color, GET_ALPHA))
+	if (!get_channel_color(color, GET_ALPHA) || spr->dy <= treshold)
 		return (TRANSPARENT);
-	if (spr->dy <= treshold)
-		shade = (COLOR_BLACK);
-	else
-		shade = get_rgba(0, 0, 0, modifier / (spr->dy / 255.0f));
+	shade = get_rgba(0, 0, 0, modifier / (spr->dy / 255.0f));
 	return (get_alpha_blend(shade, color));
 }
 
