@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   animation_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:06:35 by vsavolai          #+#    #+#             */
-/*   Updated: 2024/06/27 08:42:12 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/27 18:17:58 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,17 @@ void	init_animation(t_cubed *game)
 void	animate_weapon_move(t_cubed	*game)
 {
 	static int	i;
+	static int	dir;
 
 	if (game->wpn->move_wpn == 0)
 		return;
-	if (i > 2)
-		i = 1;
-	i++;
-	if (i % 2 == 1)
-		game->anim[IMG_GO]->instances->x += 40;
-	else
-		game->anim[IMG_GO]->instances->x -= 40;
+	if (i == 0 && dir == 0)
+		dir = 1;
+	if (i > 10)
+		dir = -1;
+	else if (i < -10)
+		dir = 1;
+	i += dir;
+	game->anim[IMG_GO]->instances->x += 10 * dir;
 	game->wpn->move_wpn = 0;
 }
