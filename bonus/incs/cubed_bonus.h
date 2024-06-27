@@ -228,7 +228,7 @@ void	*render_fov(void *param);
 //		Draw
 void	draw_walls(t_camera *cam, float angle, t_cubed *game);
 void	draw_floor(t_camera *cam, float angle, t_cubed *game);
-void	draw_sprites(t_camera *cam, float angle, t_cubed *game);
+void	draw_sprites(t_camera *cam, t_cubed *game);
 void	draw_minimap(int cam_x, int cam_y, t_cubed *game);
 void	draw_fov(t_camera *cam, float angle, t_cubed *game);
 
