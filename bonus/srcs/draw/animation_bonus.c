@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 15:06:35 by vsavolai          #+#    #+#             */
-/*   Updated: 2024/06/27 18:22:56 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/27 18:51:11 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,9 @@ void	animate_weapon_move(t_cubed	*game)
 		dir = 1;
 	i += dir;
 	game->anim[IMG_GO]->instances->x += 10 * dir;
+	if (i == 2 || i == -4 || i == 6 || i == -8)
+		game->anim[IMG_GO]->instances->y += 10;
+	else if (i == -2 || i == 4 || i == -6 || i == 8)
+		game->anim[IMG_GO]->instances->y -= 10;
 	game->wpn->move_wpn = 0;
 }
