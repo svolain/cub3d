@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   asset.h                                            :+:      :+:    :+:   */
+/*   asset_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 09:25:46 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/17 22:36:26 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/28 12:19:52 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ASSET_BONUS_H
 # define ASSET_BONUS_H
 
-# define GAME_ASSETS 15
+# define GAME_ASSETS 17
 # define GAME_COLORS 2
 # define GAME_ANIMS 16
 
@@ -56,7 +56,9 @@ typedef enum e_image
 	IMG_FV,
 	IMG_PL,
 	IMG_AM,
-	IMG_HL
+	IMG_HL,
+	IMG_HD,
+	IMG_FX
 }	t_image;
 
 typedef enum e_color

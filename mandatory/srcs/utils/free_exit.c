@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:01:07 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/17 15:22:56 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/05/27 19:00:23 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cubed_bonus.h>
+#include <cubed.h>
 
 static void	destruct_map(t_mapinfo *map)
 {
@@ -27,43 +27,17 @@ static void	clean_images(t_cubed *game)
 	i = 0;
 	while (i < GAME_ASSETS)
 	{
-		if (game->asset[i] != NULL)
-			mlx_delete_image(game->mlx, game->asset[i]);
+		if (game->image[i] != NULL)
+			mlx_delete_image(game->mlx, game->image[i]);
 		i++;
 	}
-	i = 0;
-	while (i < GAME_ANIMS)
-	{
-		if (game->anim[i] != NULL)
-			mlx_delete_image(game->mlx, game->asset[i]);
-		i++;
-	}
-}
-
-static void	join_threads(t_cubed *game)
-{
-	int	i;
-
-	i = 0;
-	set_game_over(game);
-	while (i < GAME_THREADS)
-	{
-		safe_thread(&game->tid[i], THD_JOIN, game);
-		i++;
-	}
-	i = 0;
-	while (i < GAME_MUTEXES)
-	{
-		safe_mutex(&game->mtx[i], MTX_DESTROY, game);
-		i++;
-	}
+	mlx_delete_image(game->mlx, game->canvas);
 }
 
 void	free_exit(t_cubed *game, int excode)
 {
 	if (!game)
 		exit(excode);
-	join_threads(game);
 	if (game->mlx != NULL)
 	{
 		mlx_close_window(game->mlx);
@@ -74,8 +48,6 @@ void	free_exit(t_cubed *game, int excode)
 		destruct_map(game->map);
 	if (game->cam != NULL)
 		free(game->cam);
-	if (game->wpn != NULL)
-		free(game->wpn);
 	if (game->gnl != NULL)
 		free_single(&game->gnl);
 	exit(excode);

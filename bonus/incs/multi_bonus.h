@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   multi.h                                            :+:      :+:    :+:   */
+/*   multi_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 09:32:28 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/21 09:57:28 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/28 12:35:32 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include <pthread.h>
 
-# define GAME_THREADS 5
-# define GAME_MUTEXES 4
+# define GAME_THREADS 6
+# define GAME_MUTEXES 5
 # define GAME_STATS 1
 
 typedef pthread_mutex_t	t_mtx;
@@ -27,15 +27,17 @@ typedef enum e_thread
 	THD_FG,
 	THD_OL,
 	THD_MM,
-	THD_FV
+	THD_FV,
+	THD_HD
 }	t_thread;
 
 typedef enum e_mutex
 {
 	MTX_DONE,
 	MTX_CAM,
+	MTX_PLR,
 	MTX_MAP,
-	MTX_ANIM
+	MTX_WPN
 }	t_mutex;
 
 typedef enum e_status

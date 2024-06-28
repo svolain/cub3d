@@ -12,27 +12,20 @@
 
 #include <cubed_bonus.h>
 
-void	get_map_position(int target[2], int x, int y)
+void	set_player(t_player *player, t_cubed *game)
 {
-	target[X] = x / CELLSIZE;
-	target[Y] = y / CELLSIZE;
+	safe_mutex(&game->mtx[MTX_PLR], MTX_LOCK, game);
+	game->plr->health = player->health;
+	game->plr->ammo = player->ammo;
+	safe_mutex(&game->mtx[MTX_PLR], MTX_UNLOCK, game);
 }
 
-void	set_map_element(int x, int y, char c, t_cubed *game)
+void	get_player(t_player *player, t_cubed *game)
 {
-	safe_mutex(&game->mtx[MTX_MAP], MTX_LOCK, game);
-	game->map->matrix[y][x] = c;
-	safe_mutex(&game->mtx[MTX_MAP], MTX_UNLOCK, game);
-}
-
-char	get_map_element(int x, int y, t_cubed *game)
-{
-	char	c;
-
-	safe_mutex(&game->mtx[MTX_MAP], MTX_LOCK, game);
-	c = game->map->matrix[y][x];
-	safe_mutex(&game->mtx[MTX_MAP], MTX_UNLOCK, game);
-	return (c);
+	safe_mutex(&game->mtx[MTX_PLR], MTX_LOCK, game);
+	player->health = game->plr->health;
+	player->ammo = game->plr->ammo;
+	safe_mutex(&game->mtx[MTX_PLR], MTX_UNLOCK, game);
 }
 
 void	set_camera(t_camera *cam, t_cubed *game)

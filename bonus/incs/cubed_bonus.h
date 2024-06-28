@@ -6,7 +6,7 @@
 /*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:25:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/27 18:17:27 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/28 13:52:38 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
+# define HUD_HEIGHT 108
 # define SCREEN_TITLE "cub3d"
 
 # define CHARSET_ALLOWED	"01COHANSEW "
@@ -78,6 +79,8 @@
 # define COLOR_FLOOR	get_rgba(215, 255, 255, 200)
 # define COLOR_DOOR_O	get_rgba(100, 200, 50, 255)
 # define COLOR_DOOR_C	get_rgba(50, 150, 150, 255)
+# define COLOR_FX		get_rgba(128, 255, 0, 255)
+# define COLOR_HD		get_rgba(108, 122, 137, 255)
 
 typedef enum e_check
 {
@@ -122,6 +125,15 @@ typedef enum e_minimap
 	MAP_AMMO = 65,
 }	t_minimap;
 
+typedef struct s_rgba
+{
+	uint32_t	color;
+	uint8_t		r;
+	uint8_t		g;
+	uint8_t		b;
+	uint8_t		a;
+}	t_rgba;
+
 typedef struct s_vector
 {
 	float		x;
@@ -141,14 +153,11 @@ typedef struct s_camera
 	float		dy;
 }	t_camera;
 
-typedef struct s_rgba
+typedef struct s_player
 {
-	uint32_t	color;
-	uint8_t		r;
-	uint8_t		g;
-	uint8_t		b;
-	uint8_t		a;
-}	t_rgba;
+	int			health;
+	int			ammo;
+}	t_player;
 
 typedef struct s_mapinfo
 {
@@ -172,6 +181,7 @@ typedef struct s_anim
 typedef struct s_cubed
 {
 	t_camera	*cam;
+	t_player	*plr;
 	t_mapinfo	*map;
 	t_anim		*wpn;
 	char		*gnl;
@@ -224,6 +234,7 @@ void	*render_floor(void *param);
 void	*render_sprites(void *param);
 void	*render_minimap(void *param);
 void	*render_fov(void *param);
+void	*render_hud(void *param);
 
 //		Draw
 void	draw_walls(t_camera *cam, float angle, t_cubed *game);
@@ -231,6 +242,7 @@ void	draw_floor(t_camera *cam, float angle, t_cubed *game);
 void	draw_sprites(t_camera *cam, t_cubed *game);
 void	draw_minimap(int cam_x, int cam_y, t_cubed *game);
 void	draw_fov(t_camera *cam, float angle, t_cubed *game);
+void    draw_hud(t_cubed *game);
 
 //		Animate
 void	init_animation(t_cubed *game);

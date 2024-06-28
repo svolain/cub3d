@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   asset.c                                            :+:      :+:    :+:   */
+/*   asset_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 09:38:57 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/21 09:39:27 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/28 13:01:37 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,13 @@ void	load_assets(t_cubed *game)
 	game->asset[IMG_PL] = safe_img(0, 0, safe_tex(TEX_PLAYER, 0, game), game);
 	game->asset[IMG_HL] = safe_img(0, 0, safe_tex(TEX_HEALTH, 0, game), game);
 	game->asset[IMG_AM] = safe_img(0, 0, safe_tex(TEX_AMMO, 0, game), game);
+	game->asset[IMG_HD] = safe_img(SCREEN_WIDTH, HUD_HEIGHT, NULL, game);
+	game->asset[IMG_FX] = safe_img(200, HUD_HEIGHT, NULL, game); 
 	set_image_color(game->asset[IMG_BG], COLOR_BLACK);
 	set_image_color(game->asset[IMG_FG], COLOR_BLACK);
 	set_image_color(game->asset[IMG_OL], TRANSPARENT);
+	set_image_color(game->asset[IMG_HD], COLOR_HD);
+	set_image_color(game->asset[IMG_FX], COLOR_FX);
 }
 
 void	load_weapon(t_cubed *game)

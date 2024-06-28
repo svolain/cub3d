@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   thread.c                                           :+:      :+:    :+:   */
+/*   thread_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 05:43:41 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/21 09:57:58 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/28 13:56:59 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ static void	create_threads(t_operation action, t_cubed *game)
 			NULL, render_minimap, game), action, game);
 	err_chkr(pthread_create(&game->tid[THD_FV],
 			NULL, render_fov, game), action, game);
+	err_chkr(pthread_create(&game->tid[THD_HD],
+			NULL, render_hud, game), action, game);
 }
 
 void	safe_thread(pthread_t *tid, t_operation action, t_cubed *game)

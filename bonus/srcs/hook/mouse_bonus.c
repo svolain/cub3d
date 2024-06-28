@@ -24,7 +24,7 @@ void	hook_mouse(void *param)
 	else if (mouse[X] > game->mouse[X])
 		rotate_camera(game, ROTATE_RIGHT);
 	else if (mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT))
-		set_status(&game->wpn->active, true, &game->mtx[MTX_ANIM], game);
+		set_status(&game->wpn->active, true, &game->mtx[MTX_WPN], game);
 	game->mouse[X] = mouse[X];
 }
 
