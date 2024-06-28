@@ -12,7 +12,7 @@
 
 #include <cubed_bonus.h>
 
-static t_image	assign_texture(char c)
+static t_image	assign_sprite_texture(char c)
 {
 	if (c == MAP_AMMO)
 		return (IMG_AM);
@@ -23,17 +23,21 @@ static t_image	assign_texture(char c)
 void	calc_spr_tex(int map[2], t_camera *spr, t_camera *tex, t_cubed *game)
 {
 	static int	scale_factor = 2000;
-	static int	sprite_limit = 5000;
+	static int	size_limit = 5000;
 	int			size;
+	float		scale;
 
-	spr->a = assign_texture(get_map_element(map[X], map[Y], game));
+	tex->z = spr->dy;
+	spr->a = assign_sprite_texture
+		(get_map_element(map[X], map[Y], game));
 	size = game->asset[(int)spr->a]->height;
-	spr->dx = size / spr->dy * scale_factor;
-	if (spr->dx < 0)
-		spr->dx = 0;
-	if (spr->dx > sprite_limit)
-		spr->dx = sprite_limit;
-	spr->dy = spr->dx;
+	scale = size / spr->dy * scale_factor;
+	if (scale < 0)
+		scale = 0;
+	if (scale > size_limit)
+		scale = size_limit;
+	spr->dx = scale;
+	spr->dy = scale;
 	tex->dx = size / spr->dx;
 	tex->dy = size / spr->dy;
 	tex->y = size;

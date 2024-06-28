@@ -34,7 +34,7 @@ bool	ft_inside_map(int x, int y, t_cubed *game)
 	return (true);
 }
 
-char	ft_in_charset(int x, int y, char *set, t_cubed *game)
+char	ft_in_elements(int x, int y, char *set, t_cubed *game)
 {
 	int		map[2];
 	char	c;
