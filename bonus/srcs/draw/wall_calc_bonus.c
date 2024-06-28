@@ -12,12 +12,12 @@
 
 #include <cubed_bonus.h>
 
-static void	raydata_to_texdata(int tx, t_image id, t_vector *ray)
+static void	raydata_to_texdata(int tx, t_image img, t_vector *ray)
 {
 	static int	shade = 300;
 
 	ray->x = tx;
-	ray->img = id;
+	ray->img = img;
 	ray->a = shade;
 }
 
@@ -57,10 +57,10 @@ static int	horizontal_position(t_vector *ray, t_cubed *game)
 void	calculate_wall(int *height, t_vector *ray, t_cubed *game)
 {
 	int		tx;
-	t_image	id;
+	t_image	img;
 
 	tx = horizontal_position(ray, game);
-	id = assing_wall_texture(ray, game);
+	img = assing_wall_texture(ray, game);
 	vertical_delta_offset(height, ray, game);
-	raydata_to_texdata(tx, id, ray);
+	raydata_to_texdata(tx, img, ray);
 }

@@ -28,7 +28,7 @@ static void	get_collosion_point(t_vector *vec, t_camera *cam, t_cubed *game)
 	while (true)
 	{
 		if (!ft_inside_map(vec->x, vec->y, game)
-			|| ft_in_charset(vec->x, vec->y, CHARSET_WALL, game))
+			|| ft_in_elements(vec->x, vec->y, CHARSET_WALL, game))
 			break ;
 		vec->x += cam->dx;
 		vec->y += cam->dy;
