@@ -105,7 +105,7 @@ SOURCES 	:= 	main \
 				safe_mlx \
 				safe_str
 
-BONUS_MODS		:=	thread \
+BONUS_MODS	:=	thread \
 				thread/getset \
 				render/draw \
 				render/calc \
