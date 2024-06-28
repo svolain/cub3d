@@ -57,7 +57,7 @@ void	hook_action(mlx_key_data_t keydata, void *param)
 		else if (mlx_is_key_down(game->mlx, MLX_KEY_E))
 			active_door(game);
 		else if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
-			set_status(&game->wpn->active, true, &game->mtx[MTX_ANIM], game);
+			set_status(&game->wpn->active, true, &game->mtx[MTX_WPN], game);
 	}
 }
 

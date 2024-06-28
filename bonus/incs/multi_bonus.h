@@ -16,7 +16,7 @@
 # include <pthread.h>
 
 # define GAME_THREADS 5
-# define GAME_MUTEXES 4
+# define GAME_MUTEXES 5
 # define GAME_STATS 1
 
 typedef pthread_mutex_t	t_mtx;
@@ -34,8 +34,9 @@ typedef enum e_mutex
 {
 	MTX_DONE,
 	MTX_CAM,
+	MTX_PLR,
 	MTX_MAP,
-	MTX_ANIM
+	MTX_WPN
 }	t_mutex;
 
 typedef enum e_status

@@ -47,6 +47,7 @@ static void	init_game(t_cubed *game, char *file)
 {
 	ft_bzero(game, sizeof(t_cubed));
 	game->cam = safe_calloc(sizeof(t_camera), game);
+	game->plr = safe_calloc(sizeof(t_player), game);
 	game->map = safe_calloc(sizeof(t_mapinfo), game);
 	game->map->filename = file;
 	game->map->filefd = -1;

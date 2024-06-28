@@ -12,30 +12,6 @@
 
 #include <cubed_bonus.h>
 
-void	free_single(char **str)
-{
-	if (!str || !*str)
-		return ;
-	free(*str);
-	*str = NULL;
-}
-
-void	free_double(char ***arr)
-{
-	int	i;
-
-	if (!arr || !*arr)
-		return ;
-	i = 0;
-	while ((*arr)[i])
-	{
-		free_single(&(*arr)[i]);
-		i++;
-	}
-	free(*arr);
-	*arr = NULL;
-}
-
 char	*safe_strjoin(char *s1, char *s2, t_cubed *game)
 {
 	char	*s;

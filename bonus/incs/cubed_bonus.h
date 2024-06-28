@@ -122,6 +122,15 @@ typedef enum e_minimap
 	MAP_AMMO = 65,
 }	t_minimap;
 
+typedef struct s_rgba
+{
+	uint32_t	color;
+	uint8_t		r;
+	uint8_t		g;
+	uint8_t		b;
+	uint8_t		a;
+}	t_rgba;
+
 typedef struct s_vector
 {
 	float		x;
@@ -141,14 +150,11 @@ typedef struct s_camera
 	float		dy;
 }	t_camera;
 
-typedef struct s_rgba
+typedef struct s_player
 {
-	uint32_t	color;
-	uint8_t		r;
-	uint8_t		g;
-	uint8_t		b;
-	uint8_t		a;
-}	t_rgba;
+	int			health;
+	int			ammo;
+}	t_player;
 
 typedef struct s_mapinfo
 {
@@ -172,6 +178,7 @@ typedef struct s_anim
 typedef struct s_cubed
 {
 	t_camera	*cam;
+	t_player	*plr;
 	t_mapinfo	*map;
 	t_anim		*wpn;
 	char		*gnl;

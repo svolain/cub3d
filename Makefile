@@ -84,7 +84,7 @@ VLGFLAGS	:=	--leak-check=full \
 MODULES		:=	main \
 				parse \
 				hook \
-				draw \
+				render \
 				utils
 
 SOURCES 	:= 	main \
@@ -99,17 +99,29 @@ SOURCES 	:= 	main \
 				rays \
 				pixel \
 				error \
-				free \
 				load \
-				safe \
-				string
+				free_exit \
+				free_str \
+				safe_mlx \
+				safe_str
 
-EXTRAS		:=	thread
+BONUS_MODS		:=	thread \
+				thread/getset \
+				render/draw \
+				render/calc \
+				render/anim \
+				render/utils \
+				utils/safe \
+				utils/load \
+				utils/free \
 
-BONUSES 	:= 	thread \
+BONUS_SRCS 	:= 	thread \
 				mutex \
-				getset \
-				status \
+				getset_map \
+				getset_cam \
+				getset_stat \
+				render_hud \
+				render_world \
 				action \
 				mouse \
 				floor \
@@ -117,11 +129,10 @@ BONUSES 	:= 	thread \
 				animation \
 				minimap \
 				fov \
-				sprite_calc \
 				wall_calc \
+				sprite_calc \
 				map_utils \
 				asset \
-				render \
 				color
 
 # **************************************************************************** #
@@ -145,8 +156,8 @@ endif
 ifeq ($(_b), $(BONUSGOAL))
 	ROOTDIR := bonus
 	FILETYPE := _bonus.c
-	MODULES += $(EXTRAS)
-	SOURCES += $(BONUSES)
+	MODULES += $(BONUS_MODS)
+	SOURCES += $(BONUS_SRCS)
 endif
 
 # **************************************************************************** #

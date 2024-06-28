@@ -23,7 +23,7 @@ void	wait_frame(t_cubed *game, float limit)
 
 void	animate_weapon(t_cubed *game)
 {
-	if (!get_status(&game->wpn->active, &game->mtx[MTX_ANIM], game))
+	if (!get_status(&game->wpn->active, &game->mtx[MTX_WPN], game))
 		return ;
 	game->wpn->timer = game->mlx->delta_time;
 	if (game->wpn->timer < game->wpn->delay)
@@ -33,7 +33,7 @@ void	animate_weapon(t_cubed *game)
 	game->wpn->timer = 0;
 	if (game->wpn->current_frame == game->wpn->frame_count)
 	{
-		set_status(&game->wpn->active, false, &game->mtx[MTX_ANIM], game);
+		set_status(&game->wpn->active, false, &game->mtx[MTX_WPN], game);
 		game->wpn->current_frame = IMG_GO;
 		(*game->anim[IMG_GO]).enabled = true;
 		return ;
@@ -71,7 +71,7 @@ void	animate_weapon_move(t_cubed	*game)
 	static int	i;
 	static int	dir;
 
-	if (game->wpn->move_wpn == 0)
+	if (!get_status(&game->wpn->move_wpn, &game->mtx[MTX_WPN], game))
 		return ;
 	if (i == 0 && dir == 0)
 		dir = 1;
@@ -81,5 +81,5 @@ void	animate_weapon_move(t_cubed	*game)
 		dir = 1;
 	i += dir;
 	game->anim[IMG_GO]->instances->x += 10 * dir;
-	game->wpn->move_wpn = 0;
+	set_status(&game->wpn->move_wpn, false, &game->mtx[MTX_WPN], game);
 }
