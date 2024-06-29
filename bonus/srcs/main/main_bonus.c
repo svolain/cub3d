@@ -30,12 +30,12 @@ static void	load_scene(t_cubed *game)
 	safe_draw(game->asset[IMG_MM], 0, 0, game);
 	safe_draw(game->asset[IMG_FV], 0, 0, game);
 	safe_draw(game->asset[IMG_PL], MAPCENTER, MAPCENTER, game);
-	//safe_draw(game->asset[IMG_HD], 0, SCREEN_HEIGHT - HUD_HEIGHT, game);
 	draw_weapon(game);
 	safe_draw(game->asset[IMG_HD], 0, SCREEN_HEIGHT - HUD_HEIGHT, game);
-	safe_draw(game->asset[IMG_FX], 0, SCREEN_HEIGHT - HUD_HEIGHT, game);
+	safe_draw(game->asset[IMG_FX], 0, 0, game);
 	safe_mutex(0, MTX_INIT, game);
 	safe_thread(0, THD_CREATE, game);
+	set_status(&game->status[STAT_LOADED], true, &game->mtx[MTX_LOADED], game);
 }
 
 static void	parse_file(t_cubed *game)
@@ -51,6 +51,8 @@ static void	init_game(t_cubed *game, char *file)
 	ft_bzero(game, sizeof(t_cubed));
 	game->cam = safe_calloc(sizeof(t_camera), game);
 	game->plr = safe_calloc(sizeof(t_player), game);
+	game->plr->health = 100;
+	game->plr->ammo = 8;
 	game->map = safe_calloc(sizeof(t_mapinfo), game);
 	game->map->filename = file;
 	game->map->filefd = -1;
@@ -61,7 +63,7 @@ static void	init_game(t_cubed *game, char *file)
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
 	load_assets(game);
 	load_weapon(game);
-	init_animation(game);
+	init_weapon(game);
 }
 
 int	main(int argc, char **argv)

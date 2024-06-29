@@ -15,7 +15,7 @@
 
 # define GAME_ASSETS 17
 # define GAME_COLORS 2
-# define GAME_ANIMS 16
+# define GAME_ANIMS 1
 
 # define TEX_FLOOR		"./textures/floor.png"
 # define TEX_ROOF		"./textures/roof.png"
@@ -23,6 +23,8 @@
 # define TEX_PLAYER		"./textures/player.png"
 # define TEX_HEALTH		"./textures/pickup/health.png"
 # define TEX_AMMO		"./textures/pickup/ammo.png"
+
+# define FRAMES_WEAPON 16
 
 # define TEX_GUN1		"./textures/gun/idle.png"
 # define TEX_GUN2		"./textures/gun/shoot0.png"

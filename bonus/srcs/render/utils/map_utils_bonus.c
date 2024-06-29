@@ -54,6 +54,7 @@ bool	ft_in_sprite(int map[2], t_camera *cam, t_cubed *game)
 	if (player[X] == map[X] && player[Y] == map[Y])
 	{
 		set_map_element(map[X], map[Y], MAP_FLOOR, game);
+		draw_screen_fx(COLOR_PICKUP, game);
 		return (true);
 	}
 	return (false);

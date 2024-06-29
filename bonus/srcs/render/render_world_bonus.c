@@ -22,6 +22,7 @@ void	*render_sprites(void *param)
 	{
 		get_camera(&cam, game);
 		draw_sprites(&cam, game);
+		wait_frame(game, FRAME_LIMIT);
 	}
 	return (NULL);
 }
@@ -36,6 +37,7 @@ void	*render_floor(void *param)
 	{
 		get_camera(&cam, game);
 		draw_floor(&cam, cam.a, game);
+		wait_frame(game, FRAME_LIMIT);
 	}
 	return (NULL);
 }
@@ -50,6 +52,7 @@ void	*render_walls(void *param)
 	{
 		get_camera(&cam, game);
 		draw_walls(&cam, cam.a, game);
+		wait_frame(game, FRAME_LIMIT);
 	}
 	return (NULL);
 }

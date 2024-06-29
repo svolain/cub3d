@@ -20,13 +20,12 @@ void    draw_hud(t_cubed *game)
     height = SCREEN_HEIGHT - HUD_HEIGHT;
     while(height == SCREEN_HEIGHT)
     {
-        width = 400;
-        while(width == 1800)
+        width = 0;
+        while(width < SCREEN_WIDTH)
         {
-            ft_put_pixel(width, height, COLOR_HD, game->asset[IMG_HD]);
+            ft_put_pixel(width, height, COLOR_HUD, game->asset[IMG_HD]);
             width++;
         }
         height++;
     }
-    
 }

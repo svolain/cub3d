@@ -29,7 +29,7 @@
 
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
-# define HUD_HEIGHT 108
+# define HUD_HEIGHT SCREEN_HEIGHT / 8
 # define SCREEN_TITLE "cub3d"
 
 # define CHARSET_ALLOWED	"01COHANSEW "
@@ -39,6 +39,7 @@
 # define CHARSET_SPRITE		"HA"
 
 # define PI 3.1415926535898f
+# define FRAME_LIMIT 500
 
 # define EAST 0
 # define NORTH PI / 2.0f
@@ -51,8 +52,8 @@
 
 # define CELLSIZE 256
 # define BUMP_BUFFER (CELLSIZE / 2)
-# define ANGLE_MODIFIER 0.0002f
-# define MOVE_MODIFIER 0.0700f
+# define ANGLE_MODIFIER 0.00033f
+# define MOVE_MODIFIER 0.1155f
 
 # define STEP_ANGLE (CELLSIZE * ANGLE_MODIFIER)
 # define STEP_MOVEMENT (CELLSIZE * MOVE_MODIFIER)
@@ -72,15 +73,14 @@
 # define TRANSPARENT	get_rgba(0, 0, 0, 0)
 # define COLOR_BLACK	get_rgba(0, 0, 0, 255)
 
-# define COLOR_BORDER	get_rgba(50, 100, 200, 100)
-# define COLOR_RAY		get_rgba(225, 100, 100, 150)
+# define COLOR_BORDER	get_rgba(50, 100, 200, 200)
 # define COLOR_GRID		get_rgba(50, 50, 50, 200)
-# define COLOR_WALL		get_rgba(150, 150, 150, 150)
+# define COLOR_WALL		get_rgba(150, 150, 150, 200)
 # define COLOR_FLOOR	get_rgba(215, 255, 255, 200)
-# define COLOR_DOOR_O	get_rgba(100, 200, 50, 255)
-# define COLOR_DOOR_C	get_rgba(50, 150, 150, 255)
-# define COLOR_FX		get_rgba(128, 255, 0, 255)
-# define COLOR_HD		get_rgba(108, 122, 137, 255)
+# define COLOR_DOOR_O	get_rgba(100, 200, 50, 200)
+# define COLOR_DOOR_C	get_rgba(50, 150, 150, 200)
+# define COLOR_PICKUP	get_rgba(125, 155, 75, 155)
+# define COLOR_HUD		get_rgba(50, 50, 150, 255)
 
 typedef enum e_check
 {
@@ -157,6 +157,8 @@ typedef struct s_player
 {
 	int			health;
 	int			ammo;
+	char		*hlth_cnt;
+	char		*ammo_cnt;
 }	t_player;
 
 typedef struct s_mapinfo
@@ -189,7 +191,7 @@ typedef struct s_cubed
 	int32_t		mouse[2];
 	int32_t		color[GAME_COLORS];
 	mlx_image_t	*asset[GAME_ASSETS];
-	mlx_image_t	*anim[GAME_ANIMS];
+	mlx_image_t	*weapon[FRAMES_WEAPON];
 	pthread_t	tid[GAME_THREADS];
 	t_mtx		mtx[GAME_MUTEXES];
 	bool		status[GAME_STATS];
@@ -242,10 +244,11 @@ void	draw_floor(t_camera *cam, float angle, t_cubed *game);
 void	draw_sprites(t_camera *cam, t_cubed *game);
 void	draw_minimap(int cam_x, int cam_y, t_cubed *game);
 void	draw_fov(t_camera *cam, float angle, t_cubed *game);
-void    draw_hud(t_cubed *game);
+void	draw_hud(t_cubed *game);
+void	draw_screen_fx(int32_t course, t_cubed *game);
 
 //		Animate
-void	init_animation(t_cubed *game);
+void	init_weapon(t_cubed *game);
 void	draw_weapon(t_cubed *game);
 void	animate_weapon(t_cubed *game);
 void	wait_frame(t_cubed *game, float ms_limit);
@@ -306,6 +309,8 @@ char	get_map_element(int x, int y, t_cubed *game);
 void	set_map_element(int x, int y, char c, t_cubed *game);
 void	get_camera(t_camera *cam, t_cubed *game);
 void	set_camera(t_camera *cam, t_cubed *game);
+void	get_player(t_player *player, t_cubed *game);
+void	set_player(t_player *player, t_cubed *game);
 
 //		Status
 void	set_status(bool *dst, bool val, t_mtx *mutex, t_cubed *game);
