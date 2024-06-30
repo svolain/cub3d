@@ -106,6 +106,7 @@ SOURCES 	:= 	main \
 				error_handler
 
 BONUS_MODS	:=	thread \
+				gameplay
 
 BONUS_SRCS 	:= 	thread \
 				mutex \
@@ -131,7 +132,8 @@ BONUS_SRCS 	:= 	thread \
 				draw_map_utils \
 				free_thread \
 				free_asset \
-				load_custom_asset
+				load_custom_asset \
+				gameplay_player
 
 # **************************************************************************** #
 #    GOALS

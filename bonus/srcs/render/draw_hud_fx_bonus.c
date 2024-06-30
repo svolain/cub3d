@@ -50,6 +50,4 @@ void	draw_hud(t_cubed *game)
 		}
 		height++;
 	}
-	/* char *s = get_player_value(game->plr->health, game); */
-	/* mlx_put_string(game->mlx, s, 300, SCREEN_HEIGHT - 300); */
 }

@@ -31,12 +31,12 @@ int	get_player_value(char *str, t_cubed *game)
 	return (value);
 }
 
-char	*get_player_str(char *str, t_cubed *game)
+char	*get_player_str(char **str, t_cubed *game)
 {
 	char	*value;
 
 	safe_mutex(&game->mtx[MTX_PLR], MTX_LOCK, game);
-	value = str;
+	value = *str;
 	safe_mutex(&game->mtx[MTX_PLR], MTX_UNLOCK, game);
 	return (value);
 }

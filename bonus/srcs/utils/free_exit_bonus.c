@@ -20,12 +20,16 @@ static void	destruct_map(t_mapinfo *map)
 	map = NULL;
 }
 
-static void	destruct_plr(t_player *plr)
+static void	destruct_plr(t_player *plr, t_cubed *game)
 {
 	if (plr->ammo != NULL)
 		free_single(&plr->ammo);
 	if (plr->health != NULL)
 		free_single(&plr->health);
+	if (plr->img[A] != NULL)
+		mlx_delete_image(game->mlx, plr->img[A]);
+	if (plr->img[H] != NULL)
+		mlx_delete_image(game->mlx, plr->img[H]);
 	free(plr);
 	plr = NULL;
 }
@@ -40,7 +44,7 @@ static void	stop_mlx(t_cubed *game)
 	mlx_terminate(game->mlx);
 }
 
-static void	stop_multithreading(t_cubed *game)
+static void	stop_threads(t_cubed *game)
 {
 	set_game_over(game);
 	if (!get_status(&game->status[STAT_LOADED],
@@ -54,12 +58,12 @@ void	free_exit(t_cubed *game, int excode)
 {
 	if (!game)
 		exit(excode);
-	stop_multithreading(game);
+	stop_threads(game);
 	stop_mlx(game);
 	if (game->map != NULL)
 		destruct_map(game->map);
 	if (game->plr != NULL)
-		destruct_plr(game->plr);
+		destruct_plr(game->plr, game);
 	if (game->cam != NULL)
 		free(game->cam);
 	if (game->gnl != NULL)

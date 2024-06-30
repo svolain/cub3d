@@ -29,12 +29,11 @@
 
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
-# define HUD_HEIGHT SCREEN_HEIGHT / 8
 # define SCREEN_TITLE "cub3d"
 
 # define CHARSET_ALLOWED	"01COHAXNSEW "
 # define CHARSET_PLAYER		"NSEW"
-# define CHARSET_MOVEABLE	"0OHA"
+# define CHARSET_MOVEABLE	"0OHAX"
 # define CHARSET_WALL		"C1"
 # define CHARSET_SPRITE		"HAX"
 
@@ -69,6 +68,9 @@
 # define MAPSIZE (MAPCELL * MAPGRID)
 # define MAPCENTER ((MAPSIZE / 2) - (MAPCELL / 2))
 
+# define HUD_HEIGHT SCREEN_HEIGHT / 8
+# define HUD_MIDDLE SCREEN_HEIGHT - 150
+
 # define BPP sizeof(int32_t)
 
 # define TRANSPARENT	get_rgba(0, 0, 0, 0)
@@ -89,8 +91,8 @@ typedef enum e_check
 	SUCCESS = 0,
 	X = 0,
 	Y = 1,
-	H = 0,
-	V = 1,
+	V = 0,
+	H = 1,
 	A = 0,
 	B = 1,
 }	t_check;
@@ -158,6 +160,7 @@ typedef struct s_player
 {
 	char		*health;
 	char		*ammo;
+	mlx_image_t	*img[2];
 }	t_player;
 
 typedef struct s_sprite
@@ -238,6 +241,9 @@ void	ft_rotate(float *target, float angle, t_action action);
 void	fix_fisheye(t_vector *ray, float angle);
 float	ft_degtorad(float degree);
 
+//		Gameplay
+void	init_player_info(t_cubed *game);
+
 //		Render
 void	*render_walls(void *param);
 void	*render_floor(void *param);
@@ -316,7 +322,7 @@ char	get_map_element(int x, int y, t_cubed *game);
 void	set_map_element(int x, int y, char c, t_cubed *game);
 void	get_camera(t_camera *cam, t_cubed *game);
 void	set_camera(t_camera *cam, t_cubed *game);
-char	*get_player_str(char *str, t_cubed *game);
+char	*get_player_str(char **str, t_cubed *game);
 void	set_player_value(char **str, int value, t_cubed *game);
 int		get_player_value(char *str, t_cubed *game);
 void	*get_portal_frame(t_sprite *spr, t_cubed *game);

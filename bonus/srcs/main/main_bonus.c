@@ -19,6 +19,7 @@ static void	run_game(t_cubed *game)
 	mlx_loop_hook(game->mlx, hook_movement, game);
 	mlx_loop_hook(game->mlx, hook_mouse, game);
 	mlx_loop_hook(game->mlx, hook_weapon, game);
+	init_player_info(game);
 	mlx_loop(game->mlx);
 }
 
@@ -35,9 +36,8 @@ static void	load_scene(t_cubed *game)
 	safe_draw(game->asset[IMG_FX], 0, 0, game);
 	safe_mutex(0, MTX_INIT, game);
 	safe_thread(0, THD_CREATE, game);
-	set_status(&game->status[STAT_LOADED], true, &game->mtx[MTX_LOADED], game);
-	set_player_value(&game->plr->health, 100, game);
-	set_player_value(&game->plr->ammo, 8, game);
+	set_status(&game->status[STAT_LOADED],
+		true, &game->mtx[MTX_LOADED], game);
 }
 
 static void	parse_file(t_cubed *game)
