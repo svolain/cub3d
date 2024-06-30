@@ -25,7 +25,8 @@ static int32_t	calculate_color(mlx_image_t *img, float scale, t_sprinfo *tex)
 	return (get_alpha_blend(shade, color));
 }
 
-static void	draw_pixels(float *dep, t_sprinfo *spr, t_sprinfo *tex, t_cubed *game)
+static void	draw_pixels(float *dep,
+	t_sprinfo *spr, t_sprinfo *tex, t_cubed *game)
 {
 	int32_t	color;
 	float	scale;

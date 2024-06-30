@@ -19,8 +19,7 @@ static mlx_image_t	*get_sprite_texture(char element, t_cubed *game)
 	else if (element == MAP_HEALTH)
 		return (game->asset[IMG_HL]);
 	else if (element == MAP_EXIT)
-		return (game->sprite[SPRT_GATE]->frame
-			[game->sprite[SPRT_GATE]->current_frame]);
+		return (get_portal_frame(game->sprite[SPRT_GATE], game));
 	return (NULL);
 }
 

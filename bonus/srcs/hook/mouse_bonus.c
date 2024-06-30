@@ -36,5 +36,5 @@ void	hook_weapon(void *param)
 	game = (t_cubed *)param;
 	weapon_shoot(game->sprite[SPRT_WPN], game);
 	weapon_move(game->sprite[SPRT_WPN], game);
-	portal_loop(game->sprite[SPRT_GATE], game);
+	loop_portal(game->sprite[SPRT_GATE], game);
 }

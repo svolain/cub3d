@@ -87,11 +87,11 @@ typedef enum e_animation
 	SPRT_GATE
 }	t_animation;
 
-typedef enum e_sstatus
+typedef enum e_sprstat
 {
 	SHOOT_WPN,
 	MOVE_WPN
-}	t_sstatus;
+}	t_sprstat;
 
 typedef enum e_weapon
 {

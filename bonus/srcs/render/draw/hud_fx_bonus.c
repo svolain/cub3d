@@ -12,6 +12,28 @@
 
 #include <cubed_bonus.h>
 
+void	draw_screen_fx(int32_t color, t_cubed *game)
+{
+	int		screen[2];
+
+	screen[X] = 0;
+	safe_mutex(&game->mtx[MTX_FX], MTX_LOCK, game);
+	while (screen[X] < SCREEN_WIDTH)
+	{
+		screen[Y] = 0;
+		while (screen[Y] < SCREEN_HEIGHT)
+		{
+			ft_put_pixel(screen[X], screen[Y], color, game->asset[IMG_FX]);
+			screen[Y]++;
+		}
+		screen[X]++;
+	}
+	game->asset[IMG_FX]->enabled = true;
+	wait_frame(game, 10000);
+	game->asset[IMG_FX]->enabled = false;
+	safe_mutex(&game->mtx[MTX_FX], MTX_UNLOCK, game);
+}
+
 void	draw_hud(t_cubed *game)
 {
 	int	height;
@@ -28,7 +50,6 @@ void	draw_hud(t_cubed *game)
 		}
 		height++;
 	}
+	/* char *s = get_player_value(game->plr->health, game); */
+	/* mlx_put_string(game->mlx, s, 300, SCREEN_HEIGHT - 300); */
 }
-
-/* char *s = get_player_value(game->plr->health, game); */
-/* mlx_put_string(game->mlx, s, 300, SCREEN_HEIGHT - 300); */

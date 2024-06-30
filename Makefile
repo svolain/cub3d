@@ -96,8 +96,8 @@ SOURCES 	:= 	main \
 				move \
 				rotate \
 				walls \
-				rays \
-				pixel \
+				ray_calc \
+				pixel_utils \
 				error \
 				load \
 				free_exit \
@@ -119,9 +119,12 @@ BONUS_SRCS 	:= 	thread \
 				mutex \
 				getset_map \
 				getset_cam \
+				getset_plr \
+				getset_frm \
 				getset_stat \
 				render_hud \
 				render_world \
+				asset \
 				action \
 				mouse \
 				floor \
@@ -130,13 +133,11 @@ BONUS_SRCS 	:= 	thread \
 				weapon \
 				minimap \
 				fov \
-				hud \
-				fx \
+				hud_fx \
 				wall_calc \
 				sprite_calc \
 				map_utils \
-				color \
-				asset \
+				color_utils \
 				free_asset \
 				free_thread
 
@@ -176,7 +177,7 @@ DEPENDDIR	:=	$(addprefix $(DEPSDIR)/, $(MODULES))
 
 SRCS	:=	$(foreach source, $(SOURCES), $(shell find $(SOURCEDIR) -name $(source)))
 OBJS	:=	$(patsubst $(ROOTDIR)/$(SRCSDIR)/%.c, $(OBJSDIR)/%.o, $(SRCS))
-DEPS	:=	$(patsubst $(ROOTDIR)/$(SRCSDIR)/%.c, $(DEPSDIR)/%.d, $(SRCS))
+DEPS	:=	$(patsubst $(OBJSDIR)/%.o, $(DEPSDIR)/%.d, $(OBJS))
 
 INCS	:=	$(foreach header, $(ROOTDIR)/$(INCSDIR), -I $(header))
 INCS	+=	$(foreach header, $(LIBFTDIR)/$(INCSDIR), -I $(header))

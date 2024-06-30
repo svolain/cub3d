@@ -260,7 +260,7 @@ void	draw_weapon_frames(t_sprite *spr, t_cubed *game);
 void	weapon_shoot(t_sprite *spr, t_cubed *game);
 void	weapon_move(t_sprite *spr, t_cubed	*game);
 void	wait_frame(t_cubed *game, float ms_limit);
-void	portal_loop(t_sprite *spr, t_cubed *game);
+void	loop_portal(t_sprite *spr, t_cubed *game);
 
 //		Calculate
 void	calculate_ray(t_vector *ray, t_camera *cam, t_cubed *game);
@@ -316,9 +316,10 @@ char	get_map_element(int x, int y, t_cubed *game);
 void	set_map_element(int x, int y, char c, t_cubed *game);
 void	get_camera(t_camera *cam, t_cubed *game);
 void	set_camera(t_camera *cam, t_cubed *game);
-char	*draw_player_value(char *str, t_cubed *game);
+char	*draw_player_str(char *str, t_cubed *game);
 void	set_player_value(char **str, int value, t_cubed *game);
 int		get_player_value(char *str, t_cubed *game);
+void	*get_portal_frame(t_sprite *spr, t_cubed *game);
 void	set_status(bool *dst, bool val, t_mtx *mutex, t_cubed *game);
 bool	get_status(bool *val, t_mtx *mutex, t_cubed *game);
 void	set_game_over(t_cubed *game);
