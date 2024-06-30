@@ -82,38 +82,30 @@ VLGFLAGS	:=	--leak-check=full \
 # **************************************************************************** #
 
 MODULES		:=	main \
-				parse \
+				parser \
 				hook \
 				render \
 				utils
 
 SOURCES 	:= 	main \
-				infile \
-				element \
-				mapinfo \
-				checker \
+				parse_infile \
+				parse_element \
+				parse_mapinfo \
+				parse_checker \
 				parse_utils \
-				move \
-				rotate \
-				walls \
-				ray_calc \
-				pixel_utils \
-				error \
-				load \
+				hook_move \
+				hook_rotate \
+				draw_walls \
+				draw_calc_ray \
+				draw_pixel_utils \
 				free_exit \
 				free_str \
 				safe_mlx \
-				safe_str
+				safe_str \
+				load_scene_asset \
+				error_handler
 
 BONUS_MODS	:=	thread \
-				thread/getset \
-				render/draw \
-				render/calc \
-				render/anim \
-				render/utils \
-				utils/safe \
-				utils/load \
-				utils/free \
 
 BONUS_SRCS 	:= 	thread \
 				mutex \
@@ -124,22 +116,22 @@ BONUS_SRCS 	:= 	thread \
 				getset_stat \
 				render_hud \
 				render_world \
-				asset \
-				action \
-				mouse \
-				floor \
-				sprite \
-				animation \
-				weapon \
-				minimap \
-				fov \
-				hud_fx \
-				wall_calc \
-				sprite_calc \
-				map_utils \
-				color_utils \
+				hook_action \
+				hook_mouse \
+				draw_floor \
+				draw_sprite \
+				anim_weapon \
+				anim_utils \
+				draw_minimap \
+				draw_fov \
+				draw_hud_fx \
+				draw_calc_wall \
+				draw_calc_sprite \
+				draw_color_utils \
+				draw_map_utils \
+				free_thread \
 				free_asset \
-				free_thread
+				load_custom_asset
 
 # **************************************************************************** #
 #    GOALS

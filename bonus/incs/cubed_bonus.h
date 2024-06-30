@@ -316,7 +316,7 @@ char	get_map_element(int x, int y, t_cubed *game);
 void	set_map_element(int x, int y, char c, t_cubed *game);
 void	get_camera(t_camera *cam, t_cubed *game);
 void	set_camera(t_camera *cam, t_cubed *game);
-char	*draw_player_str(char *str, t_cubed *game);
+char	*get_player_str(char *str, t_cubed *game);
 void	set_player_value(char **str, int value, t_cubed *game);
 int		get_player_value(char *str, t_cubed *game);
 void	*get_portal_frame(t_sprite *spr, t_cubed *game);
