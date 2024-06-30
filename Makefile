@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+         #
+#    By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 17:42:13 by jmertane          #+#    #+#              #
-#    Updated: 2024/06/28 14:04:56 by vsavolai         ###   ########.fr        #
+#    Updated: 2024/06/30 11:47:21 by jmertane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -127,15 +127,18 @@ BONUS_SRCS 	:= 	thread \
 				floor \
 				sprite \
 				animation \
+				weapon \
 				minimap \
 				fov \
+				hud \
+				fx \
 				wall_calc \
 				sprite_calc \
 				map_utils \
-				asset \
 				color \
-				hud \
-				fx
+				asset \
+				free_asset \
+				free_thread
 
 # **************************************************************************** #
 #    GOALS

@@ -48,5 +48,6 @@ void	move_camera(t_cubed *game, t_action action)
 		update_position(&cam, -cam.dy, cam.dx);
 	if (!ft_is_collision(&cam, game))
 		set_camera(&cam, game);
-	set_status(&game->wpn->move_wpn, true, &game->mtx[MTX_WPN], game);
+	set_status(&game->sprite[SPRT_WPN]->status[MOVE_WPN],
+		true, &game->mtx[MTX_WPN], game);
 }

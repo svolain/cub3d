@@ -12,6 +12,16 @@
 
 #include <cubed_bonus.h>
 
+char	*safe_itoa(int value, t_cubed *game)
+{
+	char	*s;
+
+	s = ft_itoa(value);
+	if (!s)
+		error_fatal(ENOMEM, MSG_MEM, game);
+	return (s);
+}
+
 char	*safe_strjoin(char *s1, char *s2, t_cubed *game)
 {
 	char	*s;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mouse_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 08:39:10 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/26 13:46:16 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/06/30 11:44:15 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,17 @@ void	hook_mouse(void *param)
 	else if (mouse[X] > game->mouse[X])
 		rotate_camera(game, ROTATE_RIGHT);
 	else if (mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT))
-		set_status(&game->wpn->active, true, &game->mtx[MTX_WPN], game);
+		set_status(&game->sprite[SPRT_WPN]->status[SHOOT_WPN],
+			true, &game->mtx[MTX_WPN], game);
 	game->mouse[X] = mouse[X];
 }
 
-void	hook_animation(void *param)
+void	hook_weapon(void *param)
 {
 	t_cubed	*game;
 
-	game = (t_cubed *) param;
-	animate_weapon(game);
-	animate_weapon_move(game);
+	game = (t_cubed *)param;
+	weapon_shoot(game->sprite[SPRT_WPN], game);
+	weapon_move(game->sprite[SPRT_WPN], game);
+	portal_loop(game->sprite[SPRT_GATE], game);
 }

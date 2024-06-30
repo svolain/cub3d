@@ -66,7 +66,7 @@ void	load_color(t_color index, char *start, bool *loaded, t_cubed *game)
 	*loaded = true;
 }
 
-void	load_sprite(t_image index, char *start, bool *loaded, t_cubed *game)
+void	load_texture(t_image index, char *start, bool *loaded, t_cubed *game)
 {
 	mlx_texture_t	*tex;
 	char			*file;
@@ -79,4 +79,14 @@ void	load_sprite(t_image index, char *start, bool *loaded, t_cubed *game)
 	free_single(&file);
 	game->asset[index] = safe_img(0, 0, tex, game);
 	*loaded = true;
+}
+
+void	init_sprite(int index, int frame_count, double delay, t_cubed *game)
+{
+	game->sprite[index] = safe_calloc(sizeof(t_sprite), game);
+	game->sprite[index]->delay = delay;
+	game->sprite[index]->frame_count = frame_count;
+	game->sprite[index]->current_frame = IMG_BASE;
+	game->sprite[index]->frame = safe_calloc
+		(frame_count * sizeof(mlx_image_t*), game);
 }

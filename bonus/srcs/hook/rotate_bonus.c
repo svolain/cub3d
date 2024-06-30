@@ -30,7 +30,8 @@ void	rotate_camera(t_cubed *game, t_action action)
 	cam.dx = cos(cam.a) * STEP_MOVEMENT;
 	cam.dy = sin(cam.a) * STEP_MOVEMENT;
 	set_camera(&cam, game);
-	game->wpn->move_wpn = 1;
+	set_status(&game->sprite[SPRT_WPN]->status[MOVE_WPN],
+		true, &game->mtx[MTX_WPN], game);
 }
 
 void	ft_rotate(float *target, float angle, t_action action)

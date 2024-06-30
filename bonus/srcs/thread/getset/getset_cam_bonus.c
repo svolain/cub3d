@@ -12,20 +12,33 @@
 
 #include <cubed_bonus.h>
 
-void	set_player(t_player *player, t_cubed *game)
+void	set_player_value(char **str, int value, t_cubed *game)
 {
 	safe_mutex(&game->mtx[MTX_PLR], MTX_LOCK, game);
-	game->plr->health = player->health;
-	game->plr->ammo = player->ammo;
+	if (*str != NULL)
+		free_single(str);
+	*str = safe_itoa(value, game);
 	safe_mutex(&game->mtx[MTX_PLR], MTX_UNLOCK, game);
 }
 
-void	get_player(t_player *player, t_cubed *game)
+char	*draw_player_value(char *str, t_cubed *game)
 {
+	char	*value;
+
 	safe_mutex(&game->mtx[MTX_PLR], MTX_LOCK, game);
-	player->health = game->plr->health;
-	player->ammo = game->plr->ammo;
+	value = str;
 	safe_mutex(&game->mtx[MTX_PLR], MTX_UNLOCK, game);
+	return (value);
+}
+
+int	get_player_value(char *str, t_cubed *game)
+{
+	int	value;
+
+	safe_mutex(&game->mtx[MTX_PLR], MTX_LOCK, game);
+	value = ft_atoi(str);
+	safe_mutex(&game->mtx[MTX_PLR], MTX_UNLOCK, game);
+	return (value);
 }
 
 void	set_camera(t_camera *cam, t_cubed *game)

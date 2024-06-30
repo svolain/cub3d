@@ -6,21 +6,25 @@
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 17:52:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/27 17:52:04 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/30 11:44:50 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed_bonus.h>
 
-static t_image	assign_sprite_texture(char c)
+static mlx_image_t	*get_sprite_texture(char element, t_cubed *game)
 {
-	if (c == MAP_AMMO)
-		return (IMG_AM);
-	else
-		return (IMG_HL);
+	if (element == MAP_AMMO)
+		return (game->asset[IMG_AM]);
+	else if (element == MAP_HEALTH)
+		return (game->asset[IMG_HL]);
+	else if (element == MAP_EXIT)
+		return (game->sprite[SPRT_GATE]->frame
+			[game->sprite[SPRT_GATE]->current_frame]);
+	return (NULL);
 }
 
-void	calc_spr_tex(int map[2], t_camera *spr, t_camera *tex, t_cubed *game)
+void	calc_spr_tex(int map[2], t_sprinfo *spr, t_sprinfo *tex, t_cubed *game)
 {
 	static int	scale_factor = 2000;
 	static int	size_limit = 5000;
@@ -28,9 +32,8 @@ void	calc_spr_tex(int map[2], t_camera *spr, t_camera *tex, t_cubed *game)
 	float		scale;
 
 	tex->z = spr->dy;
-	spr->a = assign_sprite_texture
-		(get_map_element(map[X], map[Y], game));
-	size = game->asset[(int)spr->a]->height;
+	spr->img = get_sprite_texture(get_map_element(map[X], map[Y], game), game);
+	size = spr->img->height;
 	scale = size / spr->dy * scale_factor;
 	if (scale < 0)
 		scale = 0;
@@ -44,7 +47,7 @@ void	calc_spr_tex(int map[2], t_camera *spr, t_camera *tex, t_cubed *game)
 	tex->x = 0;
 }
 
-void	calc_spr_scr(int map[2], t_camera *spr, t_camera *cam)
+void	calc_spr_scr(int map[2], t_sprinfo *spr, t_camera *cam)
 {
 	static float	x_scale = -2000.0f;
 	static float	y_scale = 400.0f;

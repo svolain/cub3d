@@ -1,34 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hud_bonus.c                                        :+:      :+:    :+:   */
+/*   free_thread_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/28 13:56:17 by vsavolai          #+#    #+#             */
-/*   Updated: 2024/06/30 11:52:40 by jmertane         ###   ########.fr       */
+/*   Created: 2024/06/30 11:48:41 by jmertane          #+#    #+#             */
+/*   Updated: 2024/06/30 11:48:43 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed_bonus.h>
 
-void	draw_hud(t_cubed *game)
+void	join_threads(t_cubed *game)
 {
-	int	height;
-	int	width;
+	int	i;
 
-	height = SCREEN_HEIGHT - HUD_HEIGHT;
-	while (height == SCREEN_HEIGHT)
+	i = 0;
+	while (i < GAME_THREADS)
 	{
-		width = 0;
-		while (width < SCREEN_WIDTH)
-		{
-			ft_put_pixel(width, height, COLOR_HUD, game->asset[IMG_HD]);
-			width++;
-		}
-		height++;
+		safe_thread(&game->tid[i], THD_JOIN, game);
+		i++;
 	}
 }
 
-/* char *s = get_player_value(game->plr->health, game); */
-/* mlx_put_string(game->mlx, s, 300, SCREEN_HEIGHT - 300); */
+void	destroy_mutexes(t_cubed *game)
+{
+	int	i;
+
+	i = 0;
+	while (i < GAME_MUTEXES)
+	{
+		safe_mutex(&game->mtx[i], MTX_DESTROY, game);
+		i++;
+	}
+}

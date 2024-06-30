@@ -12,7 +12,7 @@
 
 #include <cubed_bonus.h>
 
-static int32_t	calculate_color(mlx_image_t *img, float scale, t_camera *tex)
+static int32_t	calculate_color(mlx_image_t *img, float scale, t_sprinfo *tex)
 {
 	static int	treshold = 510;
 	int32_t		color;
@@ -25,7 +25,7 @@ static int32_t	calculate_color(mlx_image_t *img, float scale, t_camera *tex)
 	return (get_alpha_blend(shade, color));
 }
 
-static void	draw_pixels(float *dep, t_camera *spr, t_camera *tex, t_cubed *game)
+static void	draw_pixels(float *dep, t_sprinfo *spr, t_sprinfo *tex, t_cubed *game)
 {
 	int32_t	color;
 	float	scale;
@@ -37,13 +37,13 @@ static void	draw_pixels(float *dep, t_camera *spr, t_camera *tex, t_cubed *game)
 	while (++x < spr->x + scale / 2)
 	{
 		y = -1;
-		tex->y = game->asset[(int)spr->a]->height;
+		tex->y = spr->img->height;
 		while (++y < scale)
 		{
 			if (x >= 0 && x < SCREEN_WIDTH && dep[x] < tex->z)
 				color = TRANSPARENT;
 			else
-				color = calculate_color(game->asset[(int)spr->a], spr->dy, tex);
+				color = calculate_color(spr->img, spr->dy, tex);
 			if (ft_valid_pixel(game->asset[IMG_OL], x, spr->y - y))
 				mlx_put_pixel(game->asset[IMG_OL], x, spr->y - y, color);
 			tex->y -= tex->dy;
@@ -55,8 +55,8 @@ static void	draw_pixels(float *dep, t_camera *spr, t_camera *tex, t_cubed *game)
 static void	process_sprite(int map[2], float *dep, t_camera *cam, t_cubed *game)
 {
 	static int	size_limit = 5000;
-	t_camera	texture;
-	t_camera	sprite;
+	t_sprinfo	texture;
+	t_sprinfo	sprite;
 
 	calc_spr_scr(map, &sprite, cam);
 	calc_spr_tex(map, &sprite, &texture, game);
@@ -80,7 +80,7 @@ void	draw_sprites(t_camera *cam, t_cubed *game)
 		while (map[Y] < game->map->height)
 		{
 			c = get_map_element(map[X], map[Y], game);
-			if (c == MAP_HEALTH || c == MAP_AMMO)
+			if (c == MAP_HEALTH || c == MAP_AMMO || c == MAP_EXIT)
 				process_sprite(map, depths, cam, game);
 			map[Y]++;
 		}

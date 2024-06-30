@@ -1,30 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minimap.c                                          :+:      :+:    :+:   */
+/*   minimap_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:12:26 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/15 10:01:11 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/06/30 11:47:34 by jmertane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cubed_bonus.h>
 
+static int32_t	get_texture_color(mlx_image_t *img)
+{
+	static uint32_t	dx = 0;
+	static uint32_t	dy = 0;
+	uint32_t		tx;
+	uint32_t		ty;
+
+	tx = 280;
+	ty = 460;
+	tx += dx;
+	ty += dy;
+	if (ty == 460 + 32)
+	{
+		dy = 0;
+		dx++;
+	}
+	if (tx == 270 + 32)
+		dx = 0;
+	dy++;
+	return (get_pixel_color(img, tx, ty));
+}
+
 static int32_t	get_map_color(int cam_x, int cam_y, t_cubed *game)
 {
-	int	map[2];
+	int		map[2];
+	char	c;
 
 	if (!ft_inside_map(cam_x, cam_y, game))
 		return (COLOR_WALL);
 	get_map_position(map, cam_x, cam_y);
-	if (get_map_element(map[X], map[Y], game) == MAP_CLOSED)
+	c = get_map_element(map[X], map[Y], game);
+	if (c == MAP_CLOSED)
 		return (COLOR_DOOR_C);
-	else if (get_map_element(map[X], map[Y], game) == MAP_OPENED)
+	else if (c == MAP_OPENED)
 		return (COLOR_DOOR_O);
-	else if (get_map_element(map[X], map[Y], game) == MAP_FLOOR)
+	else if (c == MAP_FLOOR)
 		return (COLOR_FLOOR);
+	else if (c == MAP_AMMO)
+		return (get_texture_color(game->asset[IMG_AM]));
 	else
 		return (COLOR_WALL);
 }
