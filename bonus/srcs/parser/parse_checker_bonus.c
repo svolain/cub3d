@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checker.c                                          :+:      :+:    :+:   */
+/*   parse_checker_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 19:59:50 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/22 15:26:50 by jmertane         ###   ########.fr       */
+/*   Updated: 2024/07/01 18:04:58 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	load_player(t_cubed *game, char c, int i, int j)
 	game->map->matrix[i][j] = MAP_FLOOR;
 	if (c == MAP_NORTH || c == MAP_SOUTH)
 		ft_rotate(&game->cam->a, PI, ROTATE_LEFT);
-	ft_rotate(&game->cam->a, STEP_ANGLE / 10, ROTATE_RIGHT);
+	rotate_camera(game, ROTATE_RIGHT);
 	loaded = true;
 	return (1);
 }
