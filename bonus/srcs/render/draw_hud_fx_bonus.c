@@ -29,25 +29,7 @@ void	draw_screen_fx(int32_t color, t_cubed *game)
 		screen[X]++;
 	}
 	game->asset[IMG_FX]->enabled = true;
-	wait_frame(game, 10000);
+	wait_frame(game, 5000);
 	game->asset[IMG_FX]->enabled = false;
 	safe_mutex(&game->mtx[MTX_FX], MTX_UNLOCK, game);
-}
-
-void	draw_hud(t_cubed *game)
-{
-	int	height;
-	int	width;
-
-	height = SCREEN_HEIGHT - HUD_HEIGHT;
-	while (height == SCREEN_HEIGHT)
-	{
-		width = 0;
-		while (width < SCREEN_WIDTH)
-		{
-			ft_put_pixel(width, height, COLOR_HUD, game->asset[IMG_HD]);
-			width++;
-		}
-		height++;
-	}
 }

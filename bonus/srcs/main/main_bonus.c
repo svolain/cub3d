@@ -32,7 +32,6 @@ static void	load_scene(t_cubed *game)
 	safe_draw(game->asset[IMG_FV], 0, 0, game);
 	draw_weapon_frames(game->sprite[SPRT_WPN], game);
 	safe_draw(game->asset[IMG_PL], MAPCENTER, MAPCENTER, game);
-	safe_draw(game->asset[IMG_HD], 0, SCREEN_HEIGHT - HUD_HEIGHT, game);
 	safe_draw(game->asset[IMG_FX], 0, 0, game);
 	safe_mutex(0, MTX_INIT, game);
 	safe_thread(0, THD_CREATE, game);

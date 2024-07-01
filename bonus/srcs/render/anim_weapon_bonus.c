@@ -62,7 +62,7 @@ void	draw_weapon_frames(t_sprite *spr, t_cubed *game)
 
 	i = IMG_W15;
 	offset[X] = SCREEN_WIDTH - spr->frame[IMG_BASE]->width;
-	offset[Y] = SCREEN_HEIGHT - spr->frame[IMG_BASE]->height;
+	offset[Y] = SCREEN_HEIGHT + 40 - spr->frame[IMG_BASE]->height;
 	while (i > IMG_W1)
 	{
 		safe_draw(spr->frame[i], offset[X], offset[Y], game);

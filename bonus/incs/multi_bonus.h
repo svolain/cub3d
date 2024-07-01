@@ -15,7 +15,7 @@
 
 # include <pthread.h>
 
-# define GAME_THREADS 6
+# define GAME_THREADS 5
 # define GAME_MUTEXES 8
 # define GAME_STATS 2
 
@@ -28,7 +28,6 @@ typedef enum e_thread
 	THD_OL,
 	THD_MM,
 	THD_FV,
-	THD_HD
 }	t_thread;
 
 typedef enum e_mutex

@@ -57,8 +57,6 @@ static void	create_threads(t_operation action, t_cubed *game)
 			NULL, render_minimap, game), action, game);
 	err_chkr(pthread_create(&game->tid[THD_FV],
 			NULL, render_fov, game), action, game);
-	err_chkr(pthread_create(&game->tid[THD_HD],
-			NULL, render_hud, game), action, game);
 }
 
 void	safe_thread(pthread_t *tid, t_operation action, t_cubed *game)

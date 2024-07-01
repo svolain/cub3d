@@ -22,7 +22,6 @@ void	*render_fov(void *param)
 	{
 		get_camera(&cam, game);
 		draw_fov(&cam, cam.a, game);
-		wait_frame(game, FRAME_LIMIT);
 	}
 	return (NULL);
 }
@@ -37,20 +36,6 @@ void	*render_minimap(void *param)
 	{
 		get_camera(&cam, game);
 		draw_minimap(cam.x, cam.y, game);
-		wait_frame(game, FRAME_LIMIT);
-	}
-	return (NULL);
-}
-
-void	*render_hud(void *param)
-{
-	t_cubed		*game;
-
-	game = param;
-	while (!game_over(game))
-	{
-		draw_hud(game);
-		wait_frame(game, FRAME_LIMIT);
 	}
 	return (NULL);
 }

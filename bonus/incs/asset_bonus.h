@@ -13,7 +13,7 @@
 #ifndef ASSET_BONUS_H
 # define ASSET_BONUS_H
 
-# define GAME_ASSETS 17
+# define GAME_ASSETS 16
 # define GAME_COLORS 2
 # define GAME_SPRITES 2
 
@@ -70,7 +70,6 @@ typedef enum e_image
 	IMG_PL,
 	IMG_AM,
 	IMG_HL,
-	IMG_HD,
 	IMG_FX,
 	IMG_BASE = 0
 }	t_image;

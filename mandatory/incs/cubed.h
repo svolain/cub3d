@@ -51,8 +51,8 @@
 # define FOV ft_degtorad(66)
 # define DEGREE ft_degtorad(1)
 
-# define STEP_ANGLE 0.02f
-# define STEP_MOVEMENT 2.0f
+# define STEP_ANGLE 0.04f
+# define STEP_MOVEMENT 5.0f
 # define STEP_WINDOW FOV / SCREEN_WIDTH
 
 # define MAPCELL CELLSIZE / SCALE_FACTOR
