@@ -31,7 +31,7 @@ static int	load_player(t_cubed *game, char c, int i, int j)
 	game->map->matrix[i][j] = MAP_FLOOR;
 	if (c == 'N' || c == 'S')
 		ft_rotate(&game->cam->a, PI, ROTATE_LEFT);
-	ft_rotate(&game->cam->a, STEP_ANGLE, ROTATE_RIGHT);
+	rotate_camera(game, ROTATE_RIGHT);
 	loaded = true;
 	return (1);
 }

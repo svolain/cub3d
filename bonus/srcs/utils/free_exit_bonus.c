@@ -20,7 +20,7 @@ static void	destruct_map(t_mapinfo *map)
 	map = NULL;
 }
 
-static void	destruct_plr(t_player *plr, t_cubed *game)
+static void	destruct_plr(t_player *plr)
 {
 	if (plr->ammo != NULL)
 		free_single(&plr->ammo);
@@ -28,11 +28,6 @@ static void	destruct_plr(t_player *plr, t_cubed *game)
 		free_single(&plr->health);
 	free(plr);
 	plr = NULL;
-	return ;
-	if (plr->img[A] != NULL)
-		mlx_delete_image(game->mlx, plr->img[A]);
-	if (plr->img[H] != NULL)
-		mlx_delete_image(game->mlx, plr->img[H]);
 }
 
 static void	stop_mlx(t_cubed *game)
@@ -64,7 +59,7 @@ void	free_exit(t_cubed *game, int excode)
 	if (game->map != NULL)
 		destruct_map(game->map);
 	if (game->plr != NULL)
-		destruct_plr(game->plr, game);
+		destruct_plr(game->plr);
 	if (game->cam != NULL)
 		free(game->cam);
 	if (game->gnl != NULL)
