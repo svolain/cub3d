@@ -12,14 +12,17 @@
 
 #include <cubed_bonus.h>
 
-static void	transparent_void(t_cubed *game)
+static void	transparent_void(int32_t color, t_cubed *game, bool gameover)
 {
 	game->asset[IMG_OL]->enabled = false;
 	ft_memset(game->asset[IMG_OL]->pixels,
 		0, game->asset[IMG_OL]->width
 		* game->asset[IMG_OL]->height * BPP);
-	draw_screen_fx(COLOR_PICKUP, game);
-	game->asset[IMG_OL]->enabled = true;
+	draw_screen_fx(color, game);
+	if (gameover)
+		game->asset[IMG_FX]->enabled = true;
+	else
+		game->asset[IMG_OL]->enabled = true;
 }
 
 static int32_t	calculate_color(mlx_image_t *img, float scale, t_sprinfo *tex)
@@ -68,14 +71,17 @@ static void	process_sprite(int map[2], float *dep, t_camera *cam, t_cubed *game)
 	static int	size_limit = 5500;
 	t_sprinfo	texture;
 	t_sprinfo	sprite;
+	char		c;
 
 	calc_spr_scr(map, &sprite, cam);
 	calc_spr_tex(map, &sprite, &texture, game);
 	if (!sprite.dy)
 		return ;
-	else if (ft_in_sprite(map, cam, game)
-		|| sprite.dy >= size_limit)
-		return ((void)transparent_void(game));
+	c = ft_in_sprite(map, cam, game);
+	if (c == MAP_EXIT)
+		return ((void)transparent_void(COLOR_EXIT, game, true));
+	else if (c || sprite.dy >= size_limit)
+		return ((void)transparent_void(COLOR_PICKUP, game, false));
 	draw_pixels(dep, &sprite, &texture, game);
 }
 

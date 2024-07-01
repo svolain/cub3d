@@ -12,28 +12,6 @@
 
 #include <cubed_bonus.h>
 
-static int32_t	get_texture_color(mlx_image_t *img)
-{
-	static uint32_t	dx = 0;
-	static uint32_t	dy = 0;
-	uint32_t		tx;
-	uint32_t		ty;
-
-	tx = 280;
-	ty = 460;
-	tx += dx;
-	ty += dy;
-	if (ty == 460 + 32)
-	{
-		dy = 0;
-		dx++;
-	}
-	if (tx == 270 + 32)
-		dx = 0;
-	dy++;
-	return (get_pixel_color(img, tx, ty));
-}
-
 static int32_t	get_map_color(int cam_x, int cam_y, t_cubed *game)
 {
 	int		map[2];
@@ -49,8 +27,11 @@ static int32_t	get_map_color(int cam_x, int cam_y, t_cubed *game)
 		return (COLOR_DOOR_O);
 	else if (c == MAP_FLOOR)
 		return (COLOR_FLOOR);
-	else if (c == MAP_AMMO)
-		return (get_texture_color(game->asset[IMG_AM]));
+	else if (c == MAP_AMMO
+		|| c == MAP_HEALTH)
+		return (COLOR_PICKUP);
+	else if (c == MAP_EXIT)
+		return (COLOR_EXIT);
 	else
 		return (COLOR_WALL);
 }

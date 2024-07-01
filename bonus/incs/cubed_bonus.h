@@ -75,6 +75,7 @@
 
 # define TRANSPARENT	get_rgba(0, 0, 0, 0)
 # define COLOR_BLACK	get_rgba(0, 0, 0, 255)
+# define COLOR_EXIT		get_rgba(175, 150, 175, 255)
 
 # define COLOR_BORDER	get_rgba(50, 100, 200, 200)
 # define COLOR_GRID		get_rgba(50, 50, 50, 200)
@@ -331,5 +332,6 @@ void	set_status(bool *dst, bool val, t_mtx *mutex, t_cubed *game);
 bool	get_status(bool *val, t_mtx *mutex, t_cubed *game);
 void	set_game_over(t_cubed *game);
 bool	game_over(t_cubed *game);
+bool	player_won(t_cubed *game);
 
 #endif

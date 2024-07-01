@@ -29,7 +29,7 @@ void	draw_screen_fx(int32_t color, t_cubed *game)
 		screen[X]++;
 	}
 	game->asset[IMG_FX]->enabled = true;
-	wait_frame(game, 5000);
+	wait_frame(game, 3000);
 	game->asset[IMG_FX]->enabled = false;
 	safe_mutex(&game->mtx[MTX_FX], MTX_UNLOCK, game);
 }
