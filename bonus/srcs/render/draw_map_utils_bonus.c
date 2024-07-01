@@ -46,7 +46,7 @@ char	ft_in_elements(int x, int y, char *set, t_cubed *game)
 	return (0);
 }
 
-bool	ft_in_sprite(int map[2], t_camera *cam, t_cubed *game)
+char	ft_in_sprite(int map[2], t_camera *cam, t_cubed *game)
 {
 	int	player[2];
 
@@ -54,8 +54,7 @@ bool	ft_in_sprite(int map[2], t_camera *cam, t_cubed *game)
 	if (player[X] == map[X] && player[Y] == map[Y])
 	{
 		set_map_element(map[X], map[Y], MAP_FLOOR, game);
-		draw_screen_fx(COLOR_PICKUP, game);
-		return (true);
+		return (get_map_element(player[X], player[Y], game));
 	}
-	return (false);
+	return (0);
 }

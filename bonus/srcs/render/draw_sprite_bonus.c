@@ -12,6 +12,16 @@
 
 #include <cubed_bonus.h>
 
+static void	transparent_void(t_cubed *game)
+{
+	game->asset[IMG_OL]->enabled = false;
+	ft_memset(game->asset[IMG_OL]->pixels,
+		0, game->asset[IMG_OL]->width
+		* game->asset[IMG_OL]->height * BPP);
+	draw_screen_fx(COLOR_PICKUP, game);
+	game->asset[IMG_OL]->enabled = true;
+}
+
 static int32_t	calculate_color(mlx_image_t *img, float scale, t_sprinfo *tex)
 {
 	static int	treshold = 510;
@@ -55,15 +65,17 @@ static void	draw_pixels(float *dep,
 
 static void	process_sprite(int map[2], float *dep, t_camera *cam, t_cubed *game)
 {
-	static int	size_limit = 5000;
+	static int	size_limit = 5500;
 	t_sprinfo	texture;
 	t_sprinfo	sprite;
 
 	calc_spr_scr(map, &sprite, cam);
 	calc_spr_tex(map, &sprite, &texture, game);
-	if (!sprite.dy || ft_in_sprite(map, cam, game)
-		|| sprite.dy >= size_limit)
+	if (!sprite.dy)
 		return ;
+	else if (ft_in_sprite(map, cam, game)
+		|| sprite.dy >= size_limit)
+		return ((void)transparent_void(game));
 	draw_pixels(dep, &sprite, &texture, game);
 }
 

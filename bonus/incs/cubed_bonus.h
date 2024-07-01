@@ -83,7 +83,7 @@
 # define COLOR_DOOR_O	get_rgba(100, 200, 50, 200)
 # define COLOR_DOOR_C	get_rgba(50, 150, 150, 200)
 # define COLOR_PICKUP	get_rgba(125, 155, 75, 155)
-# define COLOR_HUD		get_rgba(50, 50, 150, 255)
+# define COLOR_HUD		get_rgba(50, 100, 200, 200)
 
 typedef enum e_check
 {
@@ -265,6 +265,8 @@ void	draw_screen_fx(int32_t course, t_cubed *game);
 void	draw_weapon_frames(t_sprite *spr, t_cubed *game);
 void	weapon_shoot(t_sprite *spr, t_cubed *game);
 void	weapon_move(t_sprite *spr, t_cubed	*game);
+
+//		Animation
 void	wait_frame(t_cubed *game, float ms_limit);
 void	loop_portal(t_sprite *spr, t_cubed *game);
 
@@ -288,7 +290,7 @@ int		ft_is_grid(int x, int y);
 int		ft_is_border(int x, int y);
 bool	ft_inside_map(int x, int y, t_cubed *game);
 char	ft_in_elements(int x, int y, char *set, t_cubed *game);
-bool	ft_in_sprite(int map[2], t_camera *cam, t_cubed *game);
+char	ft_in_sprite(int map[2], t_camera *cam, t_cubed *game);
 
 //		Error
 void	error_log(char *msg1, char *msg2, char *msg3);
@@ -313,6 +315,7 @@ void	*safe_calloc(size_t n, t_cubed *game);
 void	*safe_tex(char *file, bool allocated, t_cubed *game);
 void	*safe_img(uint32_t w, uint32_t h, mlx_texture_t *t, t_cubed *game);
 void	safe_draw(mlx_image_t *img, int x, int y, t_cubed *game);
+void	safe_resize(mlx_image_t *img, int x, int y, t_cubed *game);
 void	safe_thread(pthread_t *tid, t_operation action, t_cubed *game);
 void	safe_mutex(t_mtx *mutex, t_operation action, t_cubed *game);
 

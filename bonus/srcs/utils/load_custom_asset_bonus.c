@@ -48,8 +48,9 @@ void	load_custom_assets(t_cubed *game)
 	set_image_color(game->asset[IMG_BG], COLOR_BLACK);
 	set_image_color(game->asset[IMG_FG], COLOR_BLACK);
 	set_image_color(game->asset[IMG_OL], TRANSPARENT);
-	set_image_color(game->asset[IMG_FX], TRANSPARENT);
+	set_image_color(game->asset[IMG_FX], COLOR_PICKUP);
 	set_image_color(game->asset[IMG_HD], COLOR_HUD);
+	game->asset[IMG_FX]->enabled = false;
 }
 
 void	load_weapon_frames(t_sprite *spr, t_cubed *game)

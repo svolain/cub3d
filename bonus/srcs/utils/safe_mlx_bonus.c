@@ -18,6 +18,12 @@ void	safe_draw(mlx_image_t *img, int x, int y, t_cubed *game)
 		error_exit(ERR_MLX, MSG_MLX, game);
 }
 
+void	safe_resize(mlx_image_t *img, int x, int y, t_cubed *game)
+{
+	if (mlx_resize_image(img, x, y) == false)
+		error_exit(ERR_MLX, MSG_MLX, game);
+}
+
 void	*safe_img(uint32_t w, uint32_t h, mlx_texture_t *t, t_cubed *game)
 {
 	mlx_image_t	*i;
