@@ -68,7 +68,7 @@ static int	flood_fill(char **map, int i, int j)
 	int	r;
 
 	r = 0;
-	if (i < 0 || j < 0 || (map[i] && !map[i][j]))
+	if (i < 0 || j < 0 || (!map[i]) || (map[i] && !map[i][j]))
 		return (1);
 	else if (map[i][j] == '1')
 		return (0);
