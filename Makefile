@@ -113,6 +113,7 @@ BONUS_SRCS 	:= 	thread \
 				getset_map \
 				getset_cam \
 				getset_plr \
+				getset_frm \
 				getset_stat \
 				render_hud \
 				render_world \

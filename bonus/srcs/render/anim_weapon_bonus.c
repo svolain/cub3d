@@ -18,15 +18,10 @@ void	weapon_shoot(t_sprite *spr, t_cubed *game)
 			&game->mtx[MTX_WPN], game))
 		return ;
 	(*spr->frame[spr->current_frame]).enabled = false;
-	spr->current_frame += 1;
-	if (spr->current_frame == spr->frame_count)
-	{
+	set_sprite_frame(spr, &game->mtx[MTX_WPN], game);
+	if (!spr->current_frame)
 		set_status(&spr->status[SHOOT_WPN],
 			false, &game->mtx[MTX_WPN], game);
-		spr->current_frame = IMG_BASE;
-		(*spr->frame[IMG_BASE]).enabled = true;
-		return ;
-	}
 	(*spr->frame[spr->current_frame]).enabled = true;
 	wait_frame(game, FRAME_LIMIT);
 }

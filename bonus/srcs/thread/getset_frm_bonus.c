@@ -12,29 +12,21 @@
 
 #include <cubed_bonus.h>
 
-void	set_status(bool *dst, bool val, t_mtx *mutex, t_cubed *game)
+void	set_sprite_frame(t_sprite *spr, t_mtx *mutex, t_cubed *game)
 {
 	safe_mutex(mutex, MTX_LOCK, game);
-	*dst = val;
+	spr->current_frame += 1;
+	if (spr->current_frame == spr->frame_count)
+		spr->current_frame = IMG_BASE;
 	safe_mutex(mutex, MTX_UNLOCK, game);
 }
 
-bool	get_status(bool *val, t_mtx *mutex, t_cubed *game)
+void	*get_sprite_frame(t_sprite *spr, t_mtx *mutex, t_cubed *game)
 {
-	bool	ret;
+	mlx_image_t	*img;
 
 	safe_mutex(mutex, MTX_LOCK, game);
-	ret = *val;
+	img = spr->frame[spr->current_frame];
 	safe_mutex(mutex, MTX_UNLOCK, game);
-	return (ret);
-}
-
-bool	game_over(t_cubed *game)
-{
-	return (get_status(&game->status[STAT_DONE], &game->mtx[MTX_DONE], game));
-}
-
-void	set_game_over(t_cubed *game)
-{
-	set_status(&game->status[STAT_DONE], true, &game->mtx[MTX_DONE], game);
+	return (img);
 }

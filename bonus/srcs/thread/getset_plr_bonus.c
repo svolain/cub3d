@@ -21,12 +21,12 @@ void	set_player_value(char **str, int value, t_cubed *game)
 	safe_mutex(&game->mtx[MTX_PLR], MTX_UNLOCK, game);
 }
 
-int	get_player_value(char *str, t_cubed *game)
+int	get_player_value(char **str, t_cubed *game)
 {
 	int	value;
 
 	safe_mutex(&game->mtx[MTX_PLR], MTX_LOCK, game);
-	value = ft_atoi(str);
+	value = ft_atoi(*str);
 	safe_mutex(&game->mtx[MTX_PLR], MTX_UNLOCK, game);
 	return (value);
 }
