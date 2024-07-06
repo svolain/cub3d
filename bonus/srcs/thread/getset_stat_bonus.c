@@ -38,3 +38,13 @@ void	set_game_over(t_cubed *game)
 {
 	set_status(&game->status[STAT_DONE], true, &game->mtx[MTX_DONE], game);
 }
+
+void	*get_sprite_frame(t_sprite *spr, t_mtx *mutex, t_cubed *game)
+{
+	mlx_image_t	*img;
+
+	safe_mutex(mutex, MTX_LOCK, game);
+	img = spr->frame[spr->current_frame];
+	safe_mutex(mutex, MTX_UNLOCK, game);
+	return (img);
+}

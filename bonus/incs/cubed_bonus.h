@@ -326,11 +326,10 @@ void	set_camera(t_camera *cam, t_cubed *game);
 char	*get_player_str(char **str, t_cubed *game);
 void	set_player_value(char **str, int value, t_cubed *game);
 int		get_player_value(char *str, t_cubed *game);
-void	*get_portal_frame(t_sprite *spr, t_cubed *game);
+void	*get_sprite_frame(t_sprite *spr, t_mtx *mutex, t_cubed *game);
 void	set_status(bool *dst, bool val, t_mtx *mutex, t_cubed *game);
 bool	get_status(bool *val, t_mtx *mutex, t_cubed *game);
 void	set_game_over(t_cubed *game);
 bool	game_over(t_cubed *game);
-bool	player_won(t_cubed *game);
 
 #endif
