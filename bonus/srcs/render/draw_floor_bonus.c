@@ -57,11 +57,11 @@ static void	draw_column(int column, int height, t_camera *cam, t_cubed *game)
 		shade = calculate_shade(row, game->color[COL_FL]);
 		floor = get_alpha_blend(shade, get_pixel_color
 				(game->asset[IMG_FL], tex[X], tex[Y]));
-		ft_put_pixel(column, row, floor, game->asset[IMG_BG]);
+		ft_put_pixel(column, row, floor, game->layer[IMG_BG]);
 		shade = calculate_shade(row, game->color[COL_RF]);
 		roof = get_alpha_blend(shade, get_pixel_color
 				(game->asset[IMG_RF], tex[X], tex[Y]));
-		ft_put_pixel(column, SCREEN_HEIGHT - row, roof, game->asset[IMG_BG]);
+		ft_put_pixel(column, SCREEN_HEIGHT - row, roof, game->layer[IMG_BG]);
 		row++;
 	}
 }

@@ -32,23 +32,23 @@ static void	set_image_color(mlx_image_t *img, int32_t color)
 
 void	load_custom_assets(t_cubed *game)
 {
-	game->asset[IMG_BG] = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
-	game->asset[IMG_FG] = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
-	game->asset[IMG_OL] = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
-	game->asset[IMG_FX] = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
-	game->asset[IMG_MM] = safe_img(MAPSIZE, MAPSIZE, NULL, game);
-	game->asset[IMG_FV] = safe_img(MAPSIZE, MAPSIZE, NULL, game);
+	game->layer[IMG_BG] = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
+	game->layer[IMG_FG] = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
+	game->layer[IMG_OL] = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
+	game->layer[IMG_FX] = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
+	game->layer[IMG_MM] = safe_img(MAPSIZE, MAPSIZE, NULL, game);
+	game->layer[IMG_FV] = safe_img(MAPSIZE, MAPSIZE, NULL, game);
+	game->asset[IMG_DR] = safe_img(0, 0, safe_tex(TEX_DOOR, 0, game), game);
 	game->asset[IMG_FL] = safe_img(0, 0, safe_tex(TEX_FLOOR, 0, game), game);
 	game->asset[IMG_RF] = safe_img(0, 0, safe_tex(TEX_ROOF, 0, game), game);
-	game->asset[IMG_DR] = safe_img(0, 0, safe_tex(TEX_DOOR, 0, game), game);
 	game->asset[IMG_PL] = safe_img(0, 0, safe_tex(TEX_PLAYER, 0, game), game);
 	game->asset[IMG_HL] = safe_img(0, 0, safe_tex(TEX_HEALTH, 0, game), game);
 	game->asset[IMG_AM] = safe_img(0, 0, safe_tex(TEX_AMMO, 0, game), game);
-	set_image_color(game->asset[IMG_BG], COLOR_BLACK);
-	set_image_color(game->asset[IMG_FG], COLOR_BLACK);
-	set_image_color(game->asset[IMG_OL], TRANSPARENT);
-	set_image_color(game->asset[IMG_FX], COLOR_PICKUP);
-	game->asset[IMG_FX]->enabled = false;
+	set_image_color(game->layer[IMG_BG], COLOR_BLACK);
+	set_image_color(game->layer[IMG_FG], COLOR_BLACK);
+	set_image_color(game->layer[IMG_OL], TRANSPARENT);
+	set_image_color(game->layer[IMG_FX], COLOR_PICKUP);
+	game->layer[IMG_FX]->enabled = false;
 }
 
 void	load_weapon_frames(t_sprite *spr, t_cubed *game)

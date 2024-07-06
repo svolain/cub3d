@@ -14,15 +14,15 @@
 
 static void	transparent_void(int32_t color, t_cubed *game, bool gameover)
 {
-	game->asset[IMG_OL]->enabled = false;
-	ft_memset(game->asset[IMG_OL]->pixels,
-		0, game->asset[IMG_OL]->width
-		* game->asset[IMG_OL]->height * BPP);
+	game->layer[IMG_OL]->enabled = false;
+	ft_memset(game->layer[IMG_OL]->pixels,
+		0, game->layer[IMG_OL]->width
+		* game->layer[IMG_OL]->height * BPP);
 	draw_screen_fx(color, game);
 	if (gameover)
-		game->asset[IMG_FX]->enabled = true;
+		game->layer[IMG_FX]->enabled = true;
 	else
-		game->asset[IMG_OL]->enabled = true;
+		game->layer[IMG_OL]->enabled = true;
 }
 
 static int32_t	calculate_color(mlx_image_t *img, float scale, t_sprinfo *tex)
@@ -58,8 +58,8 @@ static void	draw_pixels(float *dep,
 				color = TRANSPARENT;
 			else
 				color = calculate_color(spr->img, spr->dy, tex);
-			if (ft_valid_pixel(game->asset[IMG_OL], x, spr->y - y))
-				mlx_put_pixel(game->asset[IMG_OL], x, spr->y - y, color);
+			if (ft_valid_pixel(game->layer[IMG_OL], x, spr->y - y))
+				mlx_put_pixel(game->layer[IMG_OL], x, spr->y - y, color);
 			tex->y -= tex->dy;
 		}
 		tex->x += tex->dx;

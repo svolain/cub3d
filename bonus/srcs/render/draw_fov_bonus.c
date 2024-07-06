@@ -23,7 +23,7 @@ static void	draw_ray(t_vector *ray, t_camera *cam, t_cubed *game)
 	{
 		src.color = get_rgba(src.r--, 75, 75, src.a--);
 		if (!ft_is_border(ray->x, ray->y))
-			ft_put_pixel(ray->x, ray->y, src.color, game->asset[IMG_FV]);
+			ft_put_pixel(ray->x, ray->y, src.color, game->layer[IMG_FV]);
 		ray->x += cam->dx;
 		ray->y += cam->dy;
 		ray->d--;
@@ -49,8 +49,8 @@ static void	draw_transparent(float angle, t_camera *cam, t_cubed *game)
 	ray.d = MAPSIZE / 2 + MAPCELL;
 	while (ray.d >= 0)
 	{
-		if (ft_valid_pixel(game->asset[IMG_FV], ray.x, ray.y))
-			mlx_put_pixel(game->asset[IMG_FV], ray.x, ray.y, TRANSPARENT);
+		if (ft_valid_pixel(game->layer[IMG_FV], ray.x, ray.y))
+			mlx_put_pixel(game->layer[IMG_FV], ray.x, ray.y, TRANSPARENT);
 		ray.x += cam->dx;
 		ray.y += cam->dy;
 		ray.d--;

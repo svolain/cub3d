@@ -12,13 +12,13 @@
 
 #include <cubed_bonus.h>
 
-static void	transparent_void(int column, int height, t_cubed *game)
+static void	transparent_edges(int column, int height, t_cubed *game)
 {
 	while (height < SCREEN_HEIGHT)
 	{
-		mlx_put_pixel(game->asset[IMG_FG],
+		mlx_put_pixel(game->layer[IMG_FG],
 			column, height, TRANSPARENT);
-		mlx_put_pixel(game->asset[IMG_FG],
+		mlx_put_pixel(game->layer[IMG_FG],
 			column, SCREEN_HEIGHT - height, TRANSPARENT);
 		height++;
 	}
@@ -44,13 +44,13 @@ static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
 
 	point[A] = SCREEN_HEIGHT / 2 - height / 2;
 	point[B] = SCREEN_HEIGHT / 2 + height / 2;
-	transparent_void(column, point[B], game);
+	transparent_edges(column, point[B], game);
 	shade = calculate_shade(height, ray);
 	while (point[A] < point[B])
 	{
 		color = get_alpha_blend(shade, get_pixel_color
 				(game->asset[ray->img], ray->x, ray->y));
-		ft_put_pixel(column, point[A], color, game->asset[IMG_FG]);
+		ft_put_pixel(column, point[A], color, game->layer[IMG_FG]);
 		ray->y += ray->d;
 		point[A]++;
 	}

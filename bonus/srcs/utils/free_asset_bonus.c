@@ -12,6 +12,19 @@
 
 #include <cubed_bonus.h>
 
+void	free_layers(t_cubed *game)
+{
+	int	i;
+
+	i = 0;
+	while (i < GAME_LAYERS)
+	{
+		if (game->layer[i] != NULL)
+			mlx_delete_image(game->mlx, game->layer[i]);
+		i++;
+	}
+}
+
 void	free_assets(t_cubed *game)
 {
 	int	i;

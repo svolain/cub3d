@@ -37,6 +37,7 @@ static void	stop_mlx(t_cubed *game)
 	if (!game->mlx)
 		return ;
 	mlx_close_window(game->mlx);
+	free_layers(game);
 	free_assets(game);
 	free_sprites(game);
 	mlx_terminate(game->mlx);

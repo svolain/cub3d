@@ -203,6 +203,7 @@ typedef struct s_cubed
 	int32_t		mouse[2];
 	int32_t		color[GAME_COLORS];
 	mlx_image_t	*asset[GAME_ASSETS];
+	mlx_image_t	*layer[GAME_LAYERS];
 	t_sprite	*sprite[GAME_SPRITES];
 	t_mtx		mtx[GAME_MUTEXES];
 	pthread_t	tid[GAME_THREADS];
@@ -298,6 +299,7 @@ void	error_fatal(int errcode, char *errmsg, t_cubed *game);
 
 //		Free
 void	free_exit(t_cubed *game, int excode);
+void	free_layers(t_cubed *game);
 void	free_assets(t_cubed *game);
 void	free_sprites(t_cubed *game);
 void	join_threads(t_cubed *game);

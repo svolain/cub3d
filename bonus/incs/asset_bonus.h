@@ -13,9 +13,11 @@
 #ifndef ASSET_BONUS_H
 # define ASSET_BONUS_H
 
-# define GAME_ASSETS 16
+# define GAME_BASE_A 4
 # define GAME_COLORS 2
-# define GAME_SPRITES 2
+# define GAME_LAYERS 6
+
+# define GAME_CUSTOM_A 6
 
 # define TEX_FLOOR		"./textures/bonus/floor.png"
 # define TEX_ROOF		"./textures/bonus/roof.png"
@@ -23,6 +25,10 @@
 # define TEX_PLAYER		"./textures/bonus/minimap/player.png"
 # define TEX_HEALTH		"./textures/bonus/pickup/health.png"
 # define TEX_AMMO		"./textures/bonus/pickup/ammo.png"
+
+# define GAME_ASSETS GAME_BASE_A + GAME_CUSTOM_A
+
+# define GAME_SPRITES 2
 
 # define FRAMES_WEAPON 16
 
@@ -55,24 +61,28 @@
 
 typedef enum e_image
 {
-	IMG_NO,
+	IMG_BASE = 0,
+	IMG_NO = 0,
 	IMG_SO,
 	IMG_WE,
 	IMG_EA,
 	IMG_DR,
 	IMG_FL,
 	IMG_RF,
+	IMG_PL,
+	IMG_AM,
+	IMG_HL,
+}	t_image;
+
+typedef enum e_layer
+{
 	IMG_BG,
 	IMG_FG,
 	IMG_OL,
 	IMG_MM,
 	IMG_FV,
-	IMG_PL,
-	IMG_AM,
-	IMG_HL,
-	IMG_FX,
-	IMG_BASE = 0
-}	t_image;
+	IMG_FX
+}	t_layer;
 
 typedef enum e_color
 {

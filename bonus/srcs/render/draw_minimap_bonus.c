@@ -51,7 +51,7 @@ static void	draw_column(int column, int cam_x, int cam_y, t_cubed *game)
 			color = COLOR_GRID;
 		else
 			color = get_map_color(cam_x, cam_y, game);
-		ft_put_pixel(column, row, color, game->asset[IMG_MM]);
+		ft_put_pixel(column, row, color, game->layer[IMG_MM]);
 		cam_y += MAPSCALE;
 		row++;
 	}

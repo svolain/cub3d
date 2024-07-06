@@ -23,13 +23,13 @@ void	draw_screen_fx(int32_t color, t_cubed *game)
 		screen[Y] = 0;
 		while (screen[Y] < SCREEN_HEIGHT)
 		{
-			ft_put_pixel(screen[X], screen[Y], color, game->asset[IMG_FX]);
+			ft_put_pixel(screen[X], screen[Y], color, game->layer[IMG_FX]);
 			screen[Y]++;
 		}
 		screen[X]++;
 	}
-	game->asset[IMG_FX]->enabled = true;
+	game->layer[IMG_FX]->enabled = true;
 	wait_frame(game, 3000);
-	game->asset[IMG_FX]->enabled = false;
+	game->layer[IMG_FX]->enabled = false;
 	safe_mutex(&game->mtx[MTX_FX], MTX_UNLOCK, game);
 }
