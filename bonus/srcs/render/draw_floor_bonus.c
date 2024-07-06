@@ -78,7 +78,6 @@ void	draw_floor(t_camera *cam, float angle, t_cubed *game)
 	{
 		ray.a = angle;
 		calculate_ray(&ray, cam, game);
-		fix_fisheye(&ray, cam->a);
 		cam->dy = ray.a;
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
 		draw_column(column, height, cam, game);

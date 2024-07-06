@@ -56,6 +56,7 @@ static void	init_game(t_cubed *game, char *file)
 	game->map = safe_calloc(sizeof(t_mapinfo), game);
 	game->map->filename = file;
 	game->map->filefd = -1;
+	game->cam->z = PLAYER_HEIGHT;
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, false);
 	if (!game->mlx)
 		error_exit(ERR_MLX, MSG_MLX, game);

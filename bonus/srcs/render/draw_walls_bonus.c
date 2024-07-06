@@ -24,16 +24,17 @@ static void	transparent_edges(int column, int height, t_cubed *game)
 	}
 }
 
-static int32_t	calculate_shade(int height, t_vector *ray)
+static int32_t	calculate_shade(int height)
 {
 	static int	treshold = SCREEN_HEIGHT / 5;
+	static int	modifier = 300;
 	float		intensity;
 
 	if (height <= treshold)
 		return (COLOR_BLACK);
 	else
 		intensity = (float)height / SCREEN_HEIGHT * 255.0f;
-	return (get_rgba(0, 0, 0, ray->a - intensity));
+	return (get_rgba(0, 0, 0, modifier - intensity));
 }
 
 static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
@@ -45,7 +46,7 @@ static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)
 	point[A] = SCREEN_HEIGHT / 2 - height / 2;
 	point[B] = SCREEN_HEIGHT / 2 + height / 2;
 	transparent_edges(column, point[B], game);
-	shade = calculate_shade(height, ray);
+	shade = calculate_shade(height);
 	while (point[A] < point[B])
 	{
 		color = get_alpha_blend(shade, get_pixel_color
@@ -68,7 +69,6 @@ void	draw_walls(t_camera *cam, float angle, t_cubed *game)
 	{
 		ray.a = angle;
 		calculate_ray(&ray, cam, game);
-		fix_fisheye(&ray, cam->a);
 		height = CELLSIZE * SCREEN_HEIGHT / ray.d;
 		calculate_wall(&height, &ray, game);
 		draw_column(column, height, &ray, game);

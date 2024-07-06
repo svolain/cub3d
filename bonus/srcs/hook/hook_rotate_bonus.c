@@ -12,12 +12,6 @@
 
 #include <cubed_bonus.h>
 
-void	fix_fisheye(t_vector *ray, float angle)
-{
-	ft_rotate(&angle, ray->a, ROTATE_LEFT);
-	ray->d *= cos(angle);
-}
-
 void	rotate_camera(t_cubed *game, t_action action)
 {
 	t_camera	cam;

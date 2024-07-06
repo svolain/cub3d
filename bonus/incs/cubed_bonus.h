@@ -56,6 +56,7 @@
 
 # define CELLSIZE 256
 # define BUMP_BUFFER (CELLSIZE / 2)
+# define PLAYER_HEIGHT SCREEN_HEIGHT / 4
 
 # define MAPLIMIT 500
 # define MAPSCALE 8
@@ -237,7 +238,6 @@ void	hook_weapon(void *param);
 void	move_camera(t_cubed *game, t_action action);
 void	rotate_camera(t_cubed *game, t_action action);
 void	ft_rotate(float *target, float angle, t_action action);
-void	fix_fisheye(t_vector *ray, float angle);
 float	ft_degtorad(float degree);
 
 //		Gameplay

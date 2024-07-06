@@ -14,11 +14,8 @@
 
 static void	raydata_to_texdata(int tx, t_image img, t_vector *ray)
 {
-	static int	shade = 300;
-
 	ray->x = tx;
 	ray->img = img;
-	ray->a = shade;
 }
 
 static void	vertical_delta_offset(int *height, t_vector *ray, t_cubed *game)
