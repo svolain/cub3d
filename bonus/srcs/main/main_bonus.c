@@ -61,8 +61,8 @@ static void	init_game(t_cubed *game, char *file)
 		error_exit(ERR_MLX, MSG_MLX, game);
 	mlx_get_mouse_pos(game->mlx, &game->mouse[X], &game->mouse[Y]);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
-	init_sprite(SPRT_WPN, FRAMES_WEAPON, FRAME_DELAY, game);
-	init_sprite(SPRT_GATE, FRAMES_PORTAL, FRAME_DELAY, game);
+	init_sprite(SPRT_WPN, FRAMES_WEAPON, game);
+	init_sprite(SPRT_GATE, FRAMES_PORTAL, game);
 	load_weapon_frames(game->sprite[SPRT_WPN], game);
 	load_portal_frames(game->sprite[SPRT_GATE], game);
 	load_custom_assets(game);

@@ -81,10 +81,9 @@ void	load_texture(t_image index, char *start, bool *loaded, t_cubed *game)
 	*loaded = true;
 }
 
-void	init_sprite(int index, int frame_count, double delay, t_cubed *game)
+void	init_sprite(int index, int frame_count, t_cubed *game)
 {
 	game->sprite[index] = safe_calloc(sizeof(t_sprite), game);
-	game->sprite[index]->delay = delay;
 	game->sprite[index]->frame_count = frame_count;
 	game->sprite[index]->current_frame = IMG_BASE;
 	game->sprite[index]->frame = safe_calloc

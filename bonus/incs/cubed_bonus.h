@@ -38,13 +38,13 @@
 # define CHARSET_SPRITE		"HAX"
 
 # define PI 3.1415926535898f
-# define FRAME_LIMIT 500
-# define FRAME_DELAY 0.002f
 
 # define EAST 0
 # define NORTH PI / 2.0f
 # define WEST PI
 # define SOUTH 3.0f * PI / 2.0f
+
+# define FRAME_LIMIT 500
 
 # define FOV_IN_DEGREES 60
 # define FOV ft_degtorad(FOV_IN_DEGREES)
@@ -70,14 +70,10 @@
 # define MAPXCOOR MAPOFFSET
 # define MAPYCOOR SCREEN_HEIGHT - MAPSIZE - MAPOFFSET
 
-# define HUD_HEIGHT SCREEN_HEIGHT / 8
-# define HUD_MIDDLE SCREEN_HEIGHT - 150
-
 # define BPP sizeof(int32_t)
 
 # define TRANSPARENT	get_rgba(0, 0, 0, 0)
 # define COLOR_BLACK	get_rgba(0, 0, 0, 255)
-# define COLOR_EXIT		get_rgba(175, 150, 175, 255)
 
 # define COLOR_BORDER	get_rgba(50, 100, 200, 200)
 # define COLOR_GRID		get_rgba(50, 50, 50, 200)
@@ -86,6 +82,7 @@
 # define COLOR_DOOR_O	get_rgba(100, 200, 50, 200)
 # define COLOR_DOOR_C	get_rgba(50, 150, 150, 200)
 # define COLOR_PICKUP	get_rgba(125, 155, 75, 155)
+# define COLOR_EXIT		get_rgba(175, 150, 175, 255)
 # define COLOR_HUD		get_rgba(50, 100, 200, 200)
 
 typedef enum e_check
@@ -172,8 +169,6 @@ typedef struct s_sprite
 	int			current_frame;
 	int			frame_count;
 	mlx_image_t	**frame;
-	double		timer;
-	double		delay;
 }	t_sprite;
 
 typedef struct s_sprinfo
@@ -225,7 +220,7 @@ bool	ft_isemptyline(char *str);
 //		Load
 void	load_texture(t_image index, char *start, bool *loaded, t_cubed *game);
 void	load_color(t_color index, char *start, bool *loaded, t_cubed *game);
-void	init_sprite(int index, int frame_count, double delay, t_cubed *game);
+void	init_sprite(int index, int frame_count, t_cubed *game);
 void	load_custom_assets(t_cubed *game);
 void	load_weapon_frames(t_sprite *spr, t_cubed *game);
 void	load_portal_frames(t_sprite *spr, t_cubed *game);
