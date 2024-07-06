@@ -14,7 +14,7 @@
 #    VARIABLES
 # **************************************************************************** #
 
-NAME 		:=	cub3d
+NAME 		:=	cub3D
 ERRORLOG	:=	error.txt
 ROOTDIR 	:=	mandatory
 FILETYPE	:=	.c
