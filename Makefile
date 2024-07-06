@@ -108,7 +108,20 @@ SOURCES 	:= 	main \
 BONUS_MODS	:=	thread \
 				gameplay
 
-BONUS_SRCS 	:= 	thread \
+BONUS_SRCS 	:= 	hook_action \
+				hook_mouse \
+				draw_floor \
+				draw_sprite \
+				draw_minimap \
+				draw_fov \
+				draw_hud_fx \
+				draw_calc_wall \
+				draw_calc_sprite \
+				draw_color_utils \
+				draw_map_utils \
+				anim_weapon \
+				anim_utils \
+				thread \
 				mutex \
 				getset_map \
 				getset_cam \
@@ -117,19 +130,6 @@ BONUS_SRCS 	:= 	thread \
 				getset_stat \
 				render_hud \
 				render_world \
-				hook_action \
-				hook_mouse \
-				draw_floor \
-				draw_sprite \
-				anim_weapon \
-				anim_utils \
-				draw_minimap \
-				draw_fov \
-				draw_hud_fx \
-				draw_calc_wall \
-				draw_calc_sprite \
-				draw_color_utils \
-				draw_map_utils \
 				free_thread \
 				free_asset \
 				load_custom_asset \

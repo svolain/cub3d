@@ -14,12 +14,12 @@
 
 static void	run_game(t_cubed *game)
 {
+	init_player_info(game);
 	mlx_close_hook(game->mlx, hook_close, game);
 	mlx_key_hook(game->mlx, hook_action, game);
 	mlx_loop_hook(game->mlx, hook_movement, game);
 	mlx_loop_hook(game->mlx, hook_mouse, game);
 	mlx_loop_hook(game->mlx, hook_weapon, game);
-	init_player_info(game);
 	mlx_loop(game->mlx);
 }
 
@@ -30,8 +30,8 @@ static void	load_scene(t_cubed *game)
 	safe_draw(game->layer[IMG_OL], 0, 0, game);
 	safe_draw(game->layer[IMG_MM], MAPXCOOR, MAPYCOOR, game);
 	safe_draw(game->layer[IMG_FV], MAPXCOOR, MAPYCOOR, game);
-	safe_draw(game->asset[IMG_PL], MAPXCOOR + MAPCENTER,
-		MAPYCOOR + MAPCENTER, game);
+	safe_draw(game->asset[IMG_PL],
+		MAPXCOOR + MAPCENTER, MAPYCOOR + MAPCENTER, game);
 	draw_weapon_frames(game->sprite[SPRT_WPN], game);
 	safe_draw(game->layer[IMG_FX], 0, 0, game);
 	safe_mutex(0, MTX_INIT, game);
@@ -56,8 +56,8 @@ static void	init_game(t_cubed *game, char *file)
 	game->map = safe_calloc(sizeof(t_mapinfo), game);
 	game->map->filename = file;
 	game->map->filefd = -1;
-	game->cam->z = PLAYER_HEIGHT;
-	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, false);
+	game->mlx = mlx_init(SCREEN_WIDTH,
+			SCREEN_HEIGHT, SCREEN_TITLE, false);
 	if (!game->mlx)
 		error_exit(ERR_MLX, MSG_MLX, game);
 	mlx_get_mouse_pos(game->mlx, &game->mouse[X], &game->mouse[Y]);

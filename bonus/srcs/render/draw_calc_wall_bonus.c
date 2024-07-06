@@ -40,7 +40,7 @@ static t_image	assing_wall_texture(t_vector *ray, t_cubed *game)
 		return (IMG_WE);
 	else if (ray->img == IMG_SO && ray->a > WEST)
 		return (IMG_NO);
-	return (0);
+	return (ray->img);
 }
 
 static int	horizontal_position(t_vector *ray, t_cubed *game)
