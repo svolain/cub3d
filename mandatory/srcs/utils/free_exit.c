@@ -16,6 +16,8 @@ static void	destruct_map(t_mapinfo *map)
 {
 	if (map->matrix != NULL)
 		free_double(&map->matrix);
+	if (map->filefd != FAILURE)
+		close(map->filefd);
 	free(map);
 	map = NULL;
 }

@@ -130,10 +130,10 @@ typedef struct s_camera
 
 typedef struct s_mapinfo
 {
-	char		**matrix;
-	int			width;
-	int			height;
 	char		*filename;
+	char		**matrix;
+	int			height;
+	int			width;
 	int			filefd;
 }	t_mapinfo;
 
