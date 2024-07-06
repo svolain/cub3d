@@ -87,7 +87,7 @@ void	draw_fov(t_camera *cam, float angle, t_cubed *game)
 	i = 0;
 	ft_rotate(&angle, FOV / 2, ROTATE_LEFT);
 	transparent_void(density, cam, game);
-	while (i < density * FOV_IN_DEGREE)
+	while (i < density * FOV_IN_DEGREES)
 	{
 		ray.a = angle;
 		draw_transparent(ray.a, cam, game);

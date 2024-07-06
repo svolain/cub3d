@@ -26,7 +26,7 @@ static void	transparent_edges(int column, int height, t_cubed *game)
 
 static int32_t	calculate_shade(int height, t_vector *ray)
 {
-	static int	treshold = 210;
+	static int	treshold = SCREEN_HEIGHT / 5;
 	float		intensity;
 
 	if (height <= treshold)

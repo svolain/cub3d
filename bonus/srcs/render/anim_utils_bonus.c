@@ -29,7 +29,9 @@ void	loop_portal(t_sprite *spr, t_cubed *game)
 	safe_mutex(&game->mtx[MTX_GATE], MTX_UNLOCK, game);
 	if (spr->current_frame == spr->frame_count)
 	{
+		safe_mutex(&game->mtx[MTX_GATE], MTX_LOCK, game);
 		spr->current_frame = IMG_BASE;
+		safe_mutex(&game->mtx[MTX_GATE], MTX_UNLOCK, game);
 		(*spr->frame[IMG_BASE]).enabled = true;
 		return ;
 	}

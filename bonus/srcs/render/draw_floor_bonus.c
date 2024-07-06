@@ -14,7 +14,7 @@
 
 static int32_t	calculate_shade(int row, int32_t color)
 {
-	static int	treshold = 450;
+	static int	treshold = SCREEN_WIDTH / 4;
 	static int	modifier = 140;
 	float		intensity;
 

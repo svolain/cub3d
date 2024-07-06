@@ -46,18 +46,16 @@
 # define WEST PI
 # define SOUTH 3.0f * PI / 2.0f
 
-# define FOV_IN_DEGREE 60
-# define FOV ft_degtorad(FOV_IN_DEGREE)
+# define FOV_IN_DEGREES 60
+# define FOV ft_degtorad(FOV_IN_DEGREES)
 # define DEGREE ft_degtorad(1)
+
+# define STEP_WINDOW (FOV / SCREEN_WIDTH)
+# define STEP_MOVEMENT 20.0f
+# define STEP_ANGLE 0.05f
 
 # define CELLSIZE 256
 # define BUMP_BUFFER (CELLSIZE / 2)
-# define ANGLE_MODIFIER 0.00015f
-# define MOVE_MODIFIER 0.06f
-
-# define STEP_ANGLE (CELLSIZE * ANGLE_MODIFIER)
-# define STEP_MOVEMENT (CELLSIZE * MOVE_MODIFIER)
-# define STEP_WINDOW (FOV / SCREEN_WIDTH)
 
 # define MAPLIMIT 500
 # define MAPSCALE 8
@@ -67,6 +65,10 @@
 # define MAPCELL (CELLSIZE / MAPSCALE)
 # define MAPSIZE (MAPCELL * MAPGRID)
 # define MAPCENTER ((MAPSIZE / 2) - (MAPCELL / 2))
+
+# define MAPOFFSET 20
+# define MAPXCOOR MAPOFFSET
+# define MAPYCOOR SCREEN_HEIGHT - MAPSIZE - MAPOFFSET
 
 # define HUD_HEIGHT SCREEN_HEIGHT / 8
 # define HUD_MIDDLE SCREEN_HEIGHT - 150

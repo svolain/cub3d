@@ -34,7 +34,7 @@ void	weapon_shoot(t_sprite *spr, t_cubed *game)
 void	weapon_move(t_sprite *spr, t_cubed	*game)
 {
 	static int	step_limit = 15;
-	static int	pixels = 8;
+	static int	pixels = 6;
 	static int	i = 0;
 
 	if (!get_status(&spr->status[MOVE_WPN],
@@ -42,9 +42,9 @@ void	weapon_move(t_sprite *spr, t_cubed	*game)
 		return ;
 	spr->frame[IMG_BASE]->instances->x += pixels;
 	if (i < step_limit / 2)
-		spr->frame[IMG_BASE]->instances->y += pixels / 2;
+		spr->frame[IMG_BASE]->instances->y += pixels / 3;
 	else
-		spr->frame[IMG_BASE]->instances->y += -pixels / 2;
+		spr->frame[IMG_BASE]->instances->y += -pixels / 3;
 	if (i == step_limit)
 	{
 		pixels = -pixels;
@@ -62,7 +62,7 @@ void	draw_weapon_frames(t_sprite *spr, t_cubed *game)
 
 	i = IMG_W15;
 	offset[X] = SCREEN_WIDTH - spr->frame[IMG_BASE]->width;
-	offset[Y] = SCREEN_HEIGHT + 40 - spr->frame[IMG_BASE]->height;
+	offset[Y] = SCREEN_HEIGHT + 25 - spr->frame[IMG_BASE]->height;
 	while (i > IMG_W1)
 	{
 		safe_draw(spr->frame[i], offset[X], offset[Y], game);
