@@ -18,8 +18,8 @@ static int	load_player(t_cubed *game, char c, int y, int x)
 
 	if (loaded)
 		error_exit(ERR_MAP, MSG_PLAY, game);
-	game->cam->x = x * CELLSIZE - CELLSIZE / 2;
-	game->cam->y = y * CELLSIZE - CELLSIZE / 2;
+	game->cam->x = x * CELLSIZE + CELLSIZE / 2;
+	game->cam->y = y * CELLSIZE + CELLSIZE / 2;
 	if (c == MAP_NORTH)
 		game->cam->a = NORTH;
 	else if (c == MAP_SOUTH)
@@ -89,11 +89,9 @@ void	check_walls(t_cubed *game, char **duplex)
 		x = 0;
 		while (duplex[y][x])
 		{
-			if (duplex[y][x] == MAP_FLOOR && flood_fill(duplex, y, x))
-			{
-				free_double(&duplex);
+			if (duplex[y][x] == MAP_FLOOR
+				&& flood_fill(duplex, y, x))
 				error_exit(ERR_MAP, MSG_WALL, game);
-			}
 			x++;
 		}
 		y++;

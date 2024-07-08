@@ -26,6 +26,8 @@ static int	load_element(bool *elements, char *id, t_cubed *game)
 		load_color(COL_FL, id + 1, &elements[4], game);
 	else if (!elements[5] && !ft_strncmp(id, "C ", 2))
 		load_color(COL_RF, id + 1, &elements[5], game);
+	else if (*game->gnl == MAP_WALL || *game->gnl == ' ')
+		error_exit(ERR_MAP, MSG_ASSET, game);
 	else
 		error_exit(ERR_ELEM, MSG_ELEM, game);
 	return (1);
@@ -45,8 +47,8 @@ void	parse_elements(t_cubed *game)
 			break ;
 		game->gnl = get_next_line(game->map->filefd);
 		if (!game->gnl)
-			error_exit(ERR_ELEM, MSG_ELEM, game);
-		if (ft_isemptyline(game->gnl))
+			error_exit(ERR_MAP, MSG_NOMAP, game);
+		if (ft_is_empty_line(game->gnl))
 			continue ;
 		loaded += load_element(elements, game->gnl, game);
 	}

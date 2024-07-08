@@ -19,10 +19,10 @@ static void	draw_background(int start, int end, int x, t_cubed *game)
 
 	roof = -1;
 	while (++roof < start)
-		ft_put_pixel(x, roof, game->color[COL_C], game);
+		ft_put_pixel(x, roof, game->color[COL_RF], game);
 	floor = SCREEN_HEIGHT + 1;
 	while (--floor > end)
-		ft_put_pixel(x, floor, game->color[COL_F], game);
+		ft_put_pixel(x, floor, game->color[COL_FL], game);
 }
 
 static void	draw_column(int column, int height, t_vector *ray, t_cubed *game)

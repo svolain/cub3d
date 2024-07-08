@@ -12,39 +12,54 @@
 
 #include <cubed_bonus.h>
 
-void	open_infile(t_cubed *game)
+static void	error_occured(int fd, char *file, char *errmsg, t_cubed *game)
 {
-	t_mapinfo	*map;
-	char		*file;
-	char		buffer;
-	int			r;
-
-	map = game->map;
-	file = map->filename;
-	map->filefd = open(file, O_DIRECTORY);
-	if (map->filefd != FAILURE)
-		error_exit(ERR_MAP, MSG_FLDR, game);
-	map->filefd = open(file, O_RDONLY);
-	if (map->filefd == FAILURE)
-		error_exit(ERR_MAP, strerror(errno), game);
-	r = read(map->filefd, &buffer, sizeof(char));
-	if (!buffer || r == -1)
-		error_exit(ERR_MAP, MSG_VOID, game);
-	close(map->filefd);
-	map->filefd = open(file, O_RDONLY);
+	if (fd != FAILURE)
+		close(fd);
+	if (file != NULL)
+		free_single(&file);
+	error_exit(ERR_ELEM, errmsg, game);
 }
 
-void	parse_filename(t_cubed *game)
+void	parse_texture(t_cubed *game, char *file)
 {
-	char	*file;
-	char	*extn;
-	int		len;
+	char	buffer;
+	int		fd;
 
-	file = game->map->filename;
-	extn = ft_strrchr(file, '.');
-	len = ft_strlen(file) - 4;
-	if (len <= 0 || !extn || ft_strncmp(extn, ".cub", 5))
+	fd = FAILURE;
+	fd = open(file, O_DIRECTORY);
+	if (fd != FAILURE)
+		error_occured(fd, file, MSG_FLDR, game);
+	fd = open(file, O_RDONLY);
+	if (fd == FAILURE)
+		error_occured(fd, file, strerror(errno), game);
+	if (!ft_has_extension(file, ".png"))
+		error_occured(fd, file, MSG_EXTN, game);
+	if (!ft_has_filename(file, "/.png"))
+		error_occured(fd, file, MSG_NAME, game);
+	(void)read(fd, &buffer, sizeof(char));
+	if (!buffer)
+		error_occured(fd, file, MSG_EMPTY, game);
+	close(fd);
+}
+
+void	parse_filename(t_cubed *game, char *file)
+{
+	char	buffer;
+
+	game->map->filefd = open(file, O_DIRECTORY);
+	if (game->map->filefd != FAILURE)
+		error_exit(ERR_MAP, MSG_FLDR, game);
+	game->map->filefd = open(file, O_RDONLY);
+	if (game->map->filefd == FAILURE)
+		error_exit(ERR_MAP, strerror(errno), game);
+	if (!ft_has_extension(file, ".cub"))
 		error_exit(ERR_MAP, MSG_EXTN, game);
-	if (len > 0 && !ft_strncmp(extn - 1, "/.cub", 6))
+	if (!ft_has_filename(file, "/.cub"))
 		error_exit(ERR_MAP, MSG_NAME, game);
+	(void)read(game->map->filefd, &buffer, sizeof(char));
+	if (!buffer)
+		error_exit(ERR_MAP, MSG_EMPTY, game);
+	close(game->map->filefd);
+	game->map->filefd = open(file, O_RDONLY);
 }

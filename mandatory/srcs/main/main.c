@@ -21,10 +21,9 @@ static void	run_game(t_cubed *game)
 	mlx_loop(game->mlx);
 }
 
-static void	parse_file(t_cubed *game)
+static void	parse_file(t_cubed *game, char *file)
 {
-	parse_filename(game);
-	open_infile(game);
+	parse_filename(game, file);
 	parse_elements(game);
 	parse_mapinfo(game);
 }
@@ -35,8 +34,9 @@ static void	init_game(t_cubed *game, char *file)
 	game->cam = safe_calloc(sizeof(t_camera), game);
 	game->map = safe_calloc(sizeof(t_mapinfo), game);
 	game->map->filename = file;
-	game->map->filefd = -1;
-	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, false);
+	game->map->filefd = FAILURE;
+	game->mlx = mlx_init(SCREEN_WIDTH,
+			SCREEN_HEIGHT, SCREEN_TITLE, false);
 	if (!game->mlx)
 		error_exit(ERR_MLX, MSG_MLX, game);
 	game->canvas = safe_img(SCREEN_WIDTH, SCREEN_HEIGHT, NULL, game);
@@ -50,7 +50,7 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		error_exit(ERR_ARGC, MSG_ARGC, NULL);
 	init_game(&game, argv[1]);
-	parse_file(&game);
+	parse_file(&game, argv[1]);
 	run_game(&game);
 	free_exit(&game, NOERROR);
 }

@@ -2,6 +2,7 @@ NO ./textures/mandatory/wall_north.png
 SO ./textures/mandatory/wall_south.png
 WE ./textures/mandatory/wall_west.png
 EA ./textures/mandatory/wall_east.png
+
 F 220,100,0
 C 225,30,0
 

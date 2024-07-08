@@ -12,18 +12,27 @@
 
 #include <cubed.h>
 
+static void	error_occured(char *str, char *errmsg, t_cubed *game)
+{
+	if (str != NULL)
+		free_single(&str);
+	error_exit(ERR_MAP, errmsg, game);
+}
+
 static void	parse_map(char *joined, t_cubed *game)
 {
-	char	**duplex;
-
+	if (game->map->height < 3 || game->map->width < 3)
+		error_occured(joined, MSG_SMALL, game);
+	else if (game->map->height > MAPLIMIT
+		|| game->map->width > MAPLIMIT)
+		error_occured(joined, MSG_LARGE, game);
+	else if (ft_has_extra_delimiter(joined, '\n'))
+		error_occured(joined, MSG_BLANK, game);
 	game->map->matrix = safe_split(joined, '\n', game);
-	duplex = safe_split(joined, '\n', game);
+	game->map->duplex = safe_split(joined, '\n', game);
 	free_single(&joined);
-	check_walls(game, duplex);
-	free_double(&duplex);
+	check_walls(game, game->map->duplex);
 	check_inward(game, game->map->matrix);
-	if (game->map->height > MAXSIZE || game->map->width > MAXSIZE)
-		error_exit(ERR_MAP, MSG_SIZE, game);
 }
 
 static char	*prefilter(t_cubed *game)
@@ -33,11 +42,11 @@ static char	*prefilter(t_cubed *game)
 		free_single(&game->gnl);
 		game->gnl = get_next_line(game->map->filefd);
 		if (!game->gnl)
-			error_exit(ERR_MAP, MSG_NOMP, game);
-		if (ft_isemptyline(game->gnl))
+			error_exit(ERR_MAP, MSG_NOMAP, game);
+		if (ft_is_empty_line(game->gnl))
 			continue ;
 		else if (*game->gnl != MAP_WALL && *game->gnl != ' ')
-			error_exit(ERR_MAP, MSG_WALL, game);
+			error_exit(ERR_ELEM, MSG_ELEM, game);
 		break ;
 	}
 	return (game->gnl);

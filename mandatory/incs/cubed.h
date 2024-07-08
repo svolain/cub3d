@@ -31,7 +31,7 @@
 # define SCREEN_HEIGHT 1080
 # define SCREEN_TITLE "cub3d"
 
-# define MAXSIZE 500
+# define MAPLIMIT 100
 # define CELLSIZE 64
 # define BUMP_BUFFER 20
 # define SCALE_FACTOR 2
@@ -106,8 +106,8 @@ typedef enum e_image
 
 typedef enum e_color
 {
-	COL_F,
-	COL_C
+	COL_FL,
+	COL_RF
 }	t_color;
 
 typedef struct s_vector
@@ -132,6 +132,7 @@ typedef struct s_mapinfo
 {
 	char		*filename;
 	char		**matrix;
+	char		**duplex;
 	int			height;
 	int			width;
 	int			filefd;
@@ -149,25 +150,28 @@ typedef struct s_cubed
 }	t_cubed;
 
 //		Parse
-void	parse_filename(t_cubed *game);
-void	open_infile(t_cubed *game);
+void	parse_filename(t_cubed *game, char *file);
 void	parse_elements(t_cubed *game);
+void	parse_texture(t_cubed *game, char *file);
 void	parse_mapinfo(t_cubed *game);
 void	check_walls(t_cubed *game, char **duplex);
 void	check_inward(t_cubed *game, char **map);
-char	*ft_skipspaces(char *start, t_cubed *game);
-bool	ft_isemptyline(char *str);
+
+//		Parse Utils
+char	*ft_skip_spaces(char *start, t_cubed *game);
+bool	ft_has_extra_delimiter(char *str, char c);
+bool	ft_has_extension(char *file, char *extension);
+bool	ft_has_filename(char *file, char *extension);
+bool	ft_is_empty_line(char *line);
 
 //		Load
-void	load_sprite(t_image index, char *start, bool *loaded, t_cubed *game);
+void	load_texture(t_image index, char *start, bool *loaded, t_cubed *game);
 void	load_color(t_color index, char *start, bool *loaded, t_cubed *game);
 
 //		Hook
-void	hook_close(void *param);
 void	hook_movement(void *param);
 void	hook_action(mlx_key_data_t keydata, void *param);
-void	move_camera(t_cubed *game, t_action action);
-void	rotate_camera(t_cubed *game, t_action action);
+void	hook_close(void *param);
 
 //		Render
 void	render_scenario(void *param);
@@ -177,6 +181,8 @@ void	ft_put_pixel(int x, int y, int32_t color, t_cubed *game);
 int32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 //		Rotate
+void	move_camera(t_cubed *game, t_action action);
+void	rotate_camera(t_cubed *game, t_action action);
 void	ft_rotate(float *target, float angle, t_action action);
 void	fix_fisheye(t_vector *ray, t_cubed *game);
 float	ft_degtorad(float degree);

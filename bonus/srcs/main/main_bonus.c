@@ -14,7 +14,6 @@
 
 static void	run_game(t_cubed *game)
 {
-	init_player_info(game);
 	mlx_close_hook(game->mlx, hook_close, game);
 	mlx_key_hook(game->mlx, hook_action, game);
 	mlx_loop_hook(game->mlx, hook_movement, game);
@@ -40,10 +39,9 @@ static void	load_scene(t_cubed *game)
 		true, &game->mtx[MTX_LOADED], game);
 }
 
-static void	parse_file(t_cubed *game)
+static void	parse_file(t_cubed *game, char *file)
 {
-	parse_filename(game);
-	open_infile(game);
+	parse_filename(game, file);
 	parse_elements(game);
 	parse_mapinfo(game);
 }
@@ -55,18 +53,19 @@ static void	init_game(t_cubed *game, char *file)
 	game->plr = safe_calloc(sizeof(t_player), game);
 	game->map = safe_calloc(sizeof(t_mapinfo), game);
 	game->map->filename = file;
-	game->map->filefd = -1;
+	game->map->filefd = FAILURE;
 	game->mlx = mlx_init(SCREEN_WIDTH,
 			SCREEN_HEIGHT, SCREEN_TITLE, false);
 	if (!game->mlx)
 		error_exit(ERR_MLX, MSG_MLX, game);
 	mlx_get_mouse_pos(game->mlx, &game->mouse[X], &game->mouse[Y]);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
-	init_sprite(SPRT_WPN, FRAMES_WEAPON, game);
-	init_sprite(SPRT_GATE, FRAMES_PORTAL, game);
+	load_sprite(SPRT_WPN, FRAMES_WEAPON, game);
 	load_weapon_frames(game->sprite[SPRT_WPN], game);
+	load_sprite(SPRT_GATE, FRAMES_PORTAL, game);
 	load_portal_frames(game->sprite[SPRT_GATE], game);
 	load_custom_assets(game);
+	init_player_info(game);
 }
 
 int	main(int argc, char **argv)
@@ -76,7 +75,7 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		error_exit(ERR_ARGC, MSG_ARGC, NULL);
 	init_game(&game, argv[1]);
-	parse_file(&game);
+	parse_file(&game, argv[1]);
 	load_scene(&game);
 	run_game(&game);
 	free_exit(&game, NOERROR);

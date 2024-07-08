@@ -42,7 +42,10 @@ void	error_exit(int errcode, char *errmsg, t_cubed *game)
 		else if (errcode == ERR_MAP)
 			error_log(game->map->filename, ": ", errmsg);
 		else if (errcode == ERR_ELEM)
+		{
+			game->gnl[ft_strlen(game->gnl) - 1] = '\0';
 			error_log(game->gnl, ": ", errmsg);
+		}
 		else
 			error_log(errmsg, ": ", strerror(errno));
 	}

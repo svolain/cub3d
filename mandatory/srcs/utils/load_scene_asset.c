@@ -48,7 +48,7 @@ void	load_color(t_color index, char *start, bool *loaded, t_cubed *game)
 	char	*end;
 	int		i;
 
-	start = ft_skipspaces(start, game);
+	start = ft_skip_spaces(start, game);
 	end = ft_strrchr(start, '\n');
 	values = safe_substr(start, end, game);
 	colors = safe_split(values, ',', game);
@@ -60,25 +60,25 @@ void	load_color(t_color index, char *start, bool *loaded, t_cubed *game)
 			error_occured(values, colors, game);
 		i++;
 	}
-	if (i != 3)
+	if (i < 3 || ft_has_extra_delimiter(values, ','))
 		error_occured(values, colors, game);
-	game->color[index] = get_rgba(rgba[0], rgba[1], rgba[2], 255);
+	game->color[index] = get_rgba(rgba[0], rgba[1], rgba[2], 125);
 	free_double(&colors);
 	free_single(&values);
 	*loaded = true;
 }
 
-void	load_sprite(t_image index, char *start, bool *loaded, t_cubed *game)
+void	load_texture(t_image index, char *start, bool *loaded, t_cubed *game)
 {
-	mlx_texture_t	*tex;
-	char			*file;
-	char			*end;
+	char	*file;
+	char	*end;
 
-	start = ft_skipspaces(start, game);
+	start = ft_skip_spaces(start, game);
 	end = ft_strrchr(start, '\n');
 	file = safe_substr(start, end, game);
-	tex = safe_tex(file, true, game);
+	parse_texture(game, file);
+	game->image[index] = safe_img
+		(0, 0, safe_tex(file, 1, game), game);
 	free_single(&file);
-	game->image[index] = safe_img(0, 0, tex, game);
 	*loaded = true;
 }

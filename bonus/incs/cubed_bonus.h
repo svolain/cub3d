@@ -31,6 +31,7 @@
 # define SCREEN_HEIGHT 1080
 # define SCREEN_TITLE "cub3d"
 
+# define CHARSET_ELEMENT	"NSEWFC1 "
 # define CHARSET_ALLOWED	"01COHAXNSEW "
 # define CHARSET_PLAYER		"NSEW"
 # define CHARSET_MOVEABLE	"0OHAX"
@@ -44,8 +45,6 @@
 # define WEST PI
 # define SOUTH 3.0f * PI / 2.0f
 
-# define FRAME_LIMIT 500
-
 # define FOV_IN_DEGREES 60
 # define FOV ft_degtorad(FOV_IN_DEGREES)
 # define DEGREE ft_degtorad(1)
@@ -54,11 +53,12 @@
 # define STEP_MOVEMENT 20.0f
 # define STEP_ANGLE 0.05f
 
+# define FRAME_LIMIT 500
 # define CELLSIZE 256
 # define BUMP_BUFFER (CELLSIZE / 2)
 # define PLAYER_HEIGHT SCREEN_HEIGHT / 4
 
-# define MAPLIMIT 500
+# define MAPLIMIT 100
 # define MAPSCALE 8
 # define MAPGRID 10
 # define MAPBORDER 5
@@ -186,6 +186,7 @@ typedef struct s_mapinfo
 {
 	char		*filename;
 	char		**matrix;
+	char		**duplex;
 	int			height;
 	int			width;
 	int			filefd;
@@ -209,30 +210,34 @@ typedef struct s_cubed
 }	t_cubed;
 
 //		Parse
-void	parse_filename(t_cubed *game);
-void	open_infile(t_cubed *game);
+void	parse_filename(t_cubed *game, char *file);
 void	parse_elements(t_cubed *game);
+void	parse_texture(t_cubed *game, char *file);
 void	parse_mapinfo(t_cubed *game);
 void	check_walls(t_cubed *game, char **duplex);
 void	check_inward(t_cubed *game, char **map);
-char	*ft_skipspaces(char *start, t_cubed *game);
-bool	ft_isemptyline(char *str);
+
+//		Parse Utils
+char	*ft_skip_spaces(char *start, t_cubed *game);
+bool	ft_has_extra_delimiter(char *str, char c);
+bool	ft_has_extension(char *file, char *extension);
+bool	ft_has_filename(char *file, char *extension);
+bool	ft_is_empty_line(char *line);
 
 //		Load
 void	load_texture(t_image index, char *start, bool *loaded, t_cubed *game);
 void	load_color(t_color index, char *start, bool *loaded, t_cubed *game);
-void	init_sprite(int index, int frame_count, t_cubed *game);
-void	load_custom_assets(t_cubed *game);
+void	load_sprite(int index, int frame_count, t_cubed *game);
 void	load_weapon_frames(t_sprite *spr, t_cubed *game);
 void	load_portal_frames(t_sprite *spr, t_cubed *game);
+void	load_custom_assets(t_cubed *game);
 
 //		Hook
 void	hook_movement(void *param);
 void	hook_action(mlx_key_data_t keydata, void *param);
 void	hook_mouse(void *param);
-void	hook_click(void *param);
-void	hook_close(void *param);
 void	hook_weapon(void *param);
+void	hook_close(void *param);
 
 //		Camera
 void	move_camera(t_cubed *game, t_action action);
@@ -256,7 +261,7 @@ void	draw_floor(t_camera *cam, float angle, t_cubed *game);
 void	draw_sprites(t_camera *cam, t_cubed *game);
 void	draw_minimap(int cam_x, int cam_y, t_cubed *game);
 void	draw_fov(t_camera *cam, float angle, t_cubed *game);
-void	draw_screen_fx(int32_t course, t_cubed *game);
+void	draw_screen_fx(int32_t color, t_cubed *game);
 
 //		Weapon
 void	draw_weapon_frames(t_sprite *spr, t_cubed *game);

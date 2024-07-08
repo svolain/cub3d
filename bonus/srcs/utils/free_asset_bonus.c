@@ -51,7 +51,8 @@ void	free_sprites(t_cubed *game)
 		sprite = game->sprite[i];
 		while (j < sprite->frame_count)
 		{
-			mlx_delete_image(game->mlx, sprite->frame[j]);
+			if (sprite->frame[j] != NULL)
+				mlx_delete_image(game->mlx, sprite->frame[j]);
 			j++;
 		}
 		free(sprite->frame);
