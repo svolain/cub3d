@@ -1,1 +1,3 @@
 # cub3d
+
+Cub3d is a 3D game by using raycasting and minimalistic C graphichs library [42mlx](https://github.com/codam-coding-college/MLX42). The general style and graphics of the game has been done by using [Wolfenstein 3D](https://fr.wikipedia.org/wiki/Wolfenstein_3D) as a reference. All the work in this repo has been done in cooperation by [Jarnomer](https://github.com/Jarnomer) & [Svolain](https://github.com/svolain).
