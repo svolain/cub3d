@@ -4,7 +4,7 @@ Cub3d is a 3D game coded by using raycasting and a minimalistic C graphichs libr
 
 ## Install & Run
 
-Install needed dependencies for mlx42 library according to [codam instructions](https://github.com/codam-coding-college/MLX42). The actual mlx42 library is installed by below commands so only dependencies are needed from codam.
+Install needed dependencies for mlx42 library according to [codam instructions](https://github.com/codam-coding-college/MLX42?tab=readme-ov-file#for-linux). The actual mlx42 library is installed by below commands so only dependencies are needed from codam.
 
 Full version
 ```
