@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   infile_bonus.c                                     :+:      :+:    :+:   */
+/*   parse_infile_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsavolai <vsavolai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vsavolai <vsavolai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 21:01:01 by jmertane          #+#    #+#             */
-/*   Updated: 2024/06/24 08:23:05 by vsavolai         ###   ########.fr       */
+/*   Updated: 2024/09/15 20:49:38 by vsavolai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	parse_texture(t_cubed *game, char *file)
 		error_occured(fd, file, MSG_EXTN, game);
 	if (!ft_has_filename(file, "/.png"))
 		error_occured(fd, file, MSG_NAME, game);
-	(void)read(fd, &buffer, sizeof(char));
+	int r = read(fd, &buffer, sizeof(char));
+	(void)r;
 	if (!buffer)
 		error_occured(fd, file, MSG_EMPTY, game);
 	close(fd);
@@ -57,7 +58,8 @@ void	parse_filename(t_cubed *game, char *file)
 		error_exit(ERR_MAP, MSG_EXTN, game);
 	if (!ft_has_filename(file, "/.cub"))
 		error_exit(ERR_MAP, MSG_NAME, game);
-	(void)read(game->map->filefd, &buffer, sizeof(char));
+	int r = read(game->map->filefd, &buffer, sizeof(char));
+	(void)r;
 	if (!buffer)
 		error_exit(ERR_MAP, MSG_EMPTY, game);
 	close(game->map->filefd);
