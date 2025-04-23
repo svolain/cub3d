@@ -12,7 +12,7 @@ Keys:
 
 - WASD is used for moving around
 - Left and Right arrows are used for rotating camera
-- Space ir left click for shooting
+- Space or left click for shooting
 - E for opening doors
 
 Full version
